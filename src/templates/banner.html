@@ -1,0 +1,60 @@
+<div class='mobile-menu' ng-class='{"hide":!mobile.menu}' ng-click='mobile.menu = false'>
+    <div class='mobile-menu-item'>
+        <a ui-sref='home' class='ui-link'>
+            <div>Home</div>
+        </a>
+    </div>
+    <div class='mobile-menu-item'>
+        <a ui-sref='ask' class='ui-link'>
+            <div>New Question</div>
+        </a>
+    </div>
+    <div class='mobile-menu-item'>
+        <a ui-sref='questions' class='ui-link'>
+            <div>Questions</div>
+        </a>
+    </div>
+    <div class='mobile-menu-item'>
+        <a ui-sref='tags' class='ui-link'>
+            <div>Tags</div>
+        </a>
+    </div>
+    <div class='mobile-menu-item'>
+        <a ui-sref='profile' class='ui-link'>
+            <div>Profile</div>
+        </a>
+    </div>
+</div>
+<div class='banner wrapper-horizontal centered'>
+    <div class='menu mobile'>
+        <button ng-click='mobile.menu = mobile.menu == true? false:true'><i class="fa fa-bars"></i></button>
+    </div>
+    <a ui-sref="home" class='ui-link banner-btn  mobile-hide'>
+        <i class="fa fa-lg fa-home"></i>
+    </a>
+    <a ui-sref="ask" class='ui-link banner-btn  mobile-hide'>
+        <span><i class="fa fa-pen"></i></span>
+        <span class='small-hide'>Ask a Question</span>
+    </a>
+
+    <div class='center-width wrapper-horizontal centered search-container'>
+        <search class='search'></search>
+    </div>
+    <a ui-sref="profile" class='ui-link banner-btn profile-btn mobile-hide'>
+        <div>{{vm.initials}}</div>
+    </a>
+    <i class="fa fa-bell menu-btn mobile-hide" style='font-size:1.7em' ng-click='vm.openNotifications()' id='notification-bell'>
+        <div class='notifications-num' ng-show='vm.unread&gt;0'>{{vm.unread}}</div>
+        <div class='notifications-container' ng-click="$event.stopPropagation()" ng-show='vm.showNotifications'>
+            <div class='ko-notification' ng-class='{"unread": !notification.read}' ng-click='vm.clickNotification($event, notification.qid)' ng-repeat="notification in vm.notifications">
+                <div class='notification-title'>{{notification.title}}</div>
+                <div class='notification-content'>{{notification.question}}</div>
+                <div class='notification-time' ng-bind-html='notification.time | formatDate'></div>
+                <div class='delete' ng-click='vm.deleteNotification(notification.id)'>
+                    <i class="fa fa-times"></i>
+                </div>
+            </div>
+        </div>
+    </i>
+    <span style='width:40px'></span>
+</div>

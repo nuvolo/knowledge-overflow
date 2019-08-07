@@ -1,0 +1,32 @@
+<div class='wrapper-vertical comment-container'>
+    <div ng-repeat='comment in cvm.comments'>
+        <div class='comment' ng-class="{'hide': !cvm.expand &amp;&amp; {{$index+1}} > cvm.minifiedResults}">
+            <span ng-bind-html='comment.comment'></span>
+            <span>-</span>
+            <span class='user'>{{comment.author}}</span>
+            <span>on</span>
+            <span class='time' ng-bind='comment.time | formatDate'></span>
+        </div>
+    </div>
+</div>
+
+<div ng-class='{hide : cvm.commenting == false}'>
+    <form ng-submit='cvm.postComment()' class='wrapper-vertical'>
+        <textarea ng-model='cvm.commentText' class='comment-input' rows="2" placeholder="Add a comment..."
+            required='true' minlength='5' maxlength='500'></textarea>
+        <div class='post-wrapper'>
+            <button type='submit' class='comment-submit'>Post</button>
+        </div>
+    </form>
+</div>
+
+<div class='comments-actions'>
+    <div ng-click='cvm.expand = true'
+        ng-class='{hide : cvm.expand == true || cvm.comments.length &lt;= cvm.minifiedResults}'>
+        Show more comments
+    </div>
+    <div ng-click='cvm.commenting = !cvm.commenting'
+        ng-class='{hide : cvm.commenting == true || (cvm.expand == false &amp;&amp; cvm.comments.length &gt; cvm.minifiedResults)}'>
+        Add a comment
+    </div>
+</div>

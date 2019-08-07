@@ -1,0 +1,19 @@
+{
+    "jshint.lintHTML": true,
+    "jshint.options": {
+        "esversion": 6
+    },
+    "beautify.config": {
+        "brace_style": "collapse,preserve-inline"
+    },
+    "saveAndRun": {
+        "commands": [
+          {
+            "match": ".*",
+            "cmd": "npx webpack",
+            "useShortcut": false,
+            "silent": false
+          }
+        ]
+      }
+}

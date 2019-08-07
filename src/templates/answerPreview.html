@@ -1,0 +1,32 @@
+<div class='wrapper-horizontal' style='align-items:center'>
+    <div class='wrapper-vertical'>
+        <div class='question'>
+            <a ui-sref='question({id:"{{vm.question_id}}"})' class='ui-link'>
+                <h4 class='question-title'>Q: {{vm.question}}</h4>
+            </a>
+        </div>
+        <div class='wrapper-horizontal'>
+            <div ng-repeat="tag in vm.tags">
+                <tag></tag>
+            </div>
+        </div>
+
+        <div class='wrapper-horizontal'>
+            <div class='community-info'>
+                <div class='info-container'>
+                    <div class='value'>{{vm.votes}}</div>
+                    <div>votes</div>
+                </div>
+            </div>
+            <div class='wrapper-vertical' style='justify-content:center'>
+                <div>
+                    <div ng-bind-html='vm.answer | renderHtml'></div>
+                </div>
+                <div>
+                    <span>You answered: </span>
+                    <span class='time' ng-bind='vm.time | formatDate'></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

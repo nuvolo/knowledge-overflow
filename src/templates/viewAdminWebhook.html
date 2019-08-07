@@ -1,0 +1,75 @@
+<div class='admin-modal' ng-class='{"hide":vm.state=="view"}'>
+    <div class="admin-modal-content center-width">
+        <div class='webhook-edit'>
+            <div class='input-wrapper'>
+                <label>Channel Name</label>
+                <input ng-model='vm.hook.channel'></input>
+            </div>
+            <div class='input-wrapper'>
+                <label>Url</label>
+                <textarea ng-model='vm.hook.url' class='url-input'></textarea>
+            </div>
+            <div class='input-wrapper'>
+                <label>Tags</label>
+
+                <div class='tags-container tag-input wrapper-horizontal'>
+                    <span ng-repeat='tag in vm.hook.tags' class='ko-tag'>
+                        {{tag}} <i class="fa fa-times tag-delete" ng-click='vm.removeTag(tag)'></i>
+                    </span>
+                    <input list='tag-list' ng-model='vm.newTag' class='tags-input' ng-keyPress='vm.addTag($event)'></input>
+                    <datalist id='tag-list'>
+                        <option ng-repeat='tag in vm.autofillList' value='{{tag}}'></option>
+                    </datalist>
+                </div>
+
+            </div>
+        </div>
+
+        <div class='actions'>
+            <button ng-click='vm.updateWebhook()' ng-class='{"hide":vm.state!="edit"}'>Save</button>
+            <button ng-click='vm.createWebhook()' ng-class='{"hide":vm.state!="create"}'>Create</button>
+            <button ng-click='vm.state="view"'>Cancel</button>
+        </div>
+
+    </div>
+</div>
+
+<div class='instructions'>
+    <div class='i-general'>
+        *Channels with the name "general" will subscribe to all tags*
+    </div>
+    <div class='control'>
+        <div ng-class='{"hide": vm.instructions}' ng-click='vm.instructions = true' class='i-action'>
+            Show Instructions
+        </div>
+        <div ng-class='{"hide": !vm.instructions}' ng-click='vm.instructions = false' class='i-action'>
+            Hide Instructions
+        </div>
+    </div>
+    <div ng-class='{"hide": !vm.instructions}'>
+        Webhooks will send notifications to Microsoft Teams channels when questions tagged with specific tags are posted. To get a webhook URL, go to the target Teams channel, select more options (...), select Connectors. Search for Incoming Webhook and select configure. Fill out the options and then use the generated URL.
+    </div>
+</div>
+
+<table class='admin-webhook-table'>
+    <tr>
+        <th class='col-channel'>Channel Name</th>
+        <th class='col-tags'>Watched Tags</th>
+        <th></th>
+        <th></th>
+    </tr>
+    <tr ng-repeat='hook in vm.webhooks' class='content-row'>
+        <td class='col-channel'>{{hook.channel}}</td>
+        <td class='col-tags'>
+            <div ng-class="{'hide':hook.channel!='general'}">(All tags)</div>
+            <tag ng-repeat='tag in hook.tags' ng-class="{'hide':hook.channel=='general'}"></tag>
+        </td>
+        <td>
+            <div class='btn' ng-click='vm.edit(hook)'>Edit</div>
+        </td>
+        <td>
+            <div class='btn' ng-click='vm.delete(hook)'>Delete</div>
+        </td>
+    </tr>
+</table>
+<button ng-click='vm.newHook()'>New</button>

@@ -1,0 +1,11 @@
+<input placeholder='Filter tags: ' ng-model='vm.filter' class='filter-tag-input'></input>
+<div class='tag-view'>
+    <div class='topic-card' ng-repeat='tag in vm.tagList'>
+        <a ui-sref='tag({tag:"{{tag.name}}"})' class='ui-link'>
+            <div class='wrapper-horizontal'>
+                <div class='ko-tag'>{{tag.name}}</div>
+            </div>
+            <span>Questions: <span>{{tag.count}}</span></span>
+        </a>
+    </div>
+</div>

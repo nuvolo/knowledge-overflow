@@ -1,0 +1,23 @@
+{
+  "name": "knowledge-overflow",
+  "version": "1.0.0",
+  "description": "Community driven q/a board",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nicholas Durkin",
+  "license": "ISC",
+  "devDependencies": {
+    "html-loader": "^0.5.5",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6"
+  },
+  "dependencies": {
+    "angular": "^1.7.8",
+    "angular-sanitize": "^1.7.8",
+    "angular-ui-router": "^1.0.22",
+    "css-loader": "^3.2.0",
+    "style-loader": "^1.0.0"
+  }
+}

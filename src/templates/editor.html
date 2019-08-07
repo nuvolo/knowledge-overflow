@@ -1,0 +1,5 @@
+<div class='editor-container'>
+    <textarea class='editor' ng-model='vm.newQuestionDescription'></textarea>
+</div>
+<input type="file" class="input-file" multiple="true"
+    onchange="angular.element(this).scope().evm.uploadFiles(this.files)" ng-model='evm.files'></input>

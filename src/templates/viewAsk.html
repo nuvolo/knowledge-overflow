@@ -1,0 +1,99 @@
+<div class='post-review' ng-style='{"display" : vm.review ? "block" : "none"}'>
+    <div class='review-content center-width'>
+        <h2>Review Question</h2>
+        <hr>
+        </hr>
+        <div class='question-container wrapper-vertical' style='width:auto'>
+            <div>
+                <div class='title'>
+                    <h4>{{vm.newQuestionTitle}}</h4>
+                </div>
+                <div ng-bind-html='vm.editorText | renderHtml'></div>
+            </div>
+            <div>
+                <div class='tags-container wrapper-horizontal'>
+                    <span ng-repeat='tag in vm.tagList'>
+                        <span class='ko-tag'>
+                            {{tag}}
+                        </span>
+                    </span>
+                </div>
+                <div class='info wrapper-horizontal'>
+                    Asked by {{vm.author}} on&#160;<span ng-bind='vm.time | formatDate:true'></span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        </hr>
+        <div class='wrapper-horizontal'>
+            <button ng-click='vm.review = false'>Continue Editing</button>
+            <div style='flex-grow:1'></div>
+            <button ng-click='vm.postNewQuestion()'>Post Question</button>
+        </div>
+    </div>
+</div>
+<div>
+    <form ng-submit='vm.postNewQuestion()'>
+        <div>
+            <div class='title'>
+                <h3>Ask a Question</h3>
+            </div>
+            <div class='title'>
+                <h4>Title</h4>
+                <input class='title-input' name='title' rows="15" ng-model='vm.newQuestionTitle' ng-minlength='0' minlength='10' maxlength='150' required='true'></input>
+            </div>
+
+            <div class='title'>
+                <h4>Tags</h4>
+            </div>
+
+            <div class='tags-container tag-input wrapper-horizontal'>
+                <span ng-repeat='tag in vm.tagList' class='ko-tag'>
+                    {{tag}} <i class="fa fa-times tag-delete" ng-click='vm.removeTag(tag)'></i>
+                </span>
+                <input list='tag-list' ng-keyPress='vm.testAddTag($event)' ng-model='vm.addedTag' class='tags-input'></input>
+                <datalist id='tag-list'>
+                    <option ng-repeat='tag in vm.autofillList' value='{{tag}}'></option>
+                </datalist>
+            </div>
+
+            <div class='title'>
+                <h4>Description</h4>
+            </div>
+            <div class='wrapper-vertical'>
+                <editor></editor>
+            </div>
+            <div class='title'>
+                <h3>Preview</h3>
+            </div>
+            <div class='preview question-preview wrapper-vertical'>
+
+                <div class='question-container wrapper-vertical' style='width:auto'>
+                    <div>
+                        <div class='title'>
+                            <h4>{{vm.newQuestionTitle}}</h4>
+                        </div>
+                        <div ng-bind-html='vm.editorText | renderHtml'></div>
+                    </div>
+                    <div>
+                        <div class='tags-container wrapper-horizontal'>
+                            <span ng-repeat='tag in vm.tagList'>
+                                <span class='ko-tag'>
+                                    {{tag}}
+                                </span>
+                            </span>
+                        </div>
+                        <div class='info wrapper-horizontal'>
+                            Asked by {{vm.author}} on&#160;<span ng-bind='vm.time | formatDate:true'></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class='post-wrapper'>
+                <button type='submit'>Post</button>
+            </div>
+        </div>
+    </form>
+</div>

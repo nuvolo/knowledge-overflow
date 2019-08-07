@@ -1,0 +1,63 @@
+<div ng-class='{"hide":!vm.noQuestion}'>
+    No question with the id {{vm.question_id}} was found
+</div>
+<div ng-class='{"hide":vm.noQuestion}'>
+    <div class='wrapper-horizontal'>
+        <votes></votes>
+
+        <div class='question-container wrapper-vertical'>
+            <div>
+                <div class='question-title'>
+                    <h4>{{vm.question}}</h4>
+                </div>
+                <div ng-bind-html='vm.description | renderHtml'></div>
+            </div>
+            <div>
+                <div class='tags-container wrapper-horizontal'>
+                    <span ng-repeat='tag in vm.tags'>
+                        <tag></tag>
+                    </span>
+                </div>
+                <div class='info'>
+                    <span>Asked by</span>
+                    <span class='user'>{{vm.author}}</span>
+                    <span>on</span>
+                    <span class='time' ng-bind='vm.time | formatDate'></span>
+                </div>
+                <div class='info edit-button' ng-class='{"hide":!vm.isAuthor}'>
+                    <span>
+                        <a class='ui-link' ui-sref='edit({qid:"{{vm.question_id}}"})'>Edit</a>
+                    </span>
+                </div>
+            </div>
+            <comments></comments>
+
+        </div>
+    </div>
+    <div class='answers-container'>
+        <div ng-repeat='answer in vm.answers'>
+            <answer ng-attr-id="{{ 'answer-' + answer.answer_id }}"></answer>
+        </div>
+    </div>
+    <div>
+        <form ng-submit='vm.postNewAnswer()'>
+            <div class='wrapper-vertical'>
+                <div>
+                    <h3>Add an Answer</h3>
+                </div>
+                <div class='wrapper-vertical'>
+                    <editor></editor>
+                </div>
+                <div ng-class='{hide: vm.newAnswerText.length == 0}'>
+                    <div class='preview wrapper-vertical'>
+                        <div ng-bind-html='vm.editorText | renderHtml' class='question-container'></div>
+                    </div>
+
+                    <div class='post-wrapper'>
+                        <button type='submit'>Post</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

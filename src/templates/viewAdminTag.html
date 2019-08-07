@@ -1,0 +1,71 @@
+<div class='admin-modal' ng-class='{"hide":vm.state=="view"}'>
+    <div class="admin-modal-content center-width">
+        <div class='rename-container'>
+            <div ng-class='{"hide": vm.state!="rename"}'>
+                <div class='modal-text'>
+                    <div>Rename tag: <span class='ko-tag'>{{vm.editTag.name}}</span></div>
+                    <div><input ng-model='vm.updateName'></input></div>
+                </div>
+                <div>
+                    <button ng-click='vm.saveRename()'>Save</button>
+                    <button ng-click='vm.state = "view"'>Cancel</button>
+                </div>
+            </div>
+            <div ng-class='{"hide": vm.state!="remap"}'>
+                <div class='modal-text'>
+                    <div> Remap tag: <span class='ko-tag'>{{vm.editTag.name}}</span> to</div>
+                    <div>
+                        <input list='tag-list' ng-model='vm.remapVal'></input>
+                        <datalist id='tag-list'>
+                            <option ng-repeat='tag in vm.remapList' value='{{tag}}'></option>
+                        </datalist>
+                    </div>
+                </div>
+                <div>
+                    <button ng-click='vm.saveRemap()'>Remap</button>
+                    <button ng-click='vm.state = "view"'>Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input placeholder='Filter' ng-model='vm.filter' class='filter-tag-input'></input>
+<div>{{vm.results}} tags</div>
+<div ng-class='{"hide":vm.results==0}'>Page {{vm.page}} of {{vm.totalPages}}</div>
+<table class='admin-tag-table'>
+    <tr>
+        <th class='col-tag'>Tag</th>
+        <th class='col-questions'>
+            <span>Questions</span>
+            <span class='sort' ng-class='{"active":vm.sort=="number"}'>
+                <i class="fa fa-caret-down" ng-click='vm.sort="number"'></i>
+            </span>
+        </th>
+        <th class='col-date'>
+            <span>Created</span>
+            <span class='sort' ng-class='{"active":vm.sort=="newest"}'>
+                <i class="fa fa-caret-down" ng-click='vm.sort="newest"'></i>
+            </span>
+        </th>
+        <th class='col-actions'></th>
+    </tr>
+    <tr ng-repeat='item in vm.list' class='content-row'>
+        <td class='col-tag'>
+            <tag ng-init='tag = item.name'></tag>
+        </td>
+        <td class='col-questions'>{{item.count}}</td>
+        <td class='col-date' ng-bind-html='item.created | formatShortDate'></td>
+        <td class='col-actions'>
+            <div class='btn' ng-click='vm.rename(item.tid, item.name)'>Rename</div>
+            <div class='btn' ng-click='vm.remap(item.tid, item.name)'>Remap</div>
+        </td>
+    </tr>
+
+</table>
+
+<div class='wrapper-horizontal' style='margin-top:10px' ng-class='{"hide":vm.results==0}'>
+    <button ng-click='vm.lastPage()'>Last</button>
+    <div style='flex:1;'></div>
+    <button ng-click='vm.nextPage()' ng-disabled='vm.page == vm.totalPages'>Next</button>
+</div>

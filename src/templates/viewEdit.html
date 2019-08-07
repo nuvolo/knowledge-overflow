@@ -1,0 +1,69 @@
+<div ng-class='{"hide":!vm.noText}'>
+    <span>No</span>
+    <span>{{vm.type=='q'?'question':'answer'}}</span>
+    <span>was found with that id.</span>
+</div>
+<div ng-class='{"hide":vm.noText}'>
+    <form ng-submit='vm.update()'>
+        <div class='wrapper-vertical'>
+            <div ng-class='{"hide":vm.type!="q"}'>
+                <div class='title'>
+                    <h4>Title</h4>
+                    <input class='title-input' rows="15" ng-model='vm.questionTitle' ng-minlength='0' minlength='10' maxlength='150' ng-required='{{vm.type=="q"?true:false}}'></input>
+                </div>
+
+                <div class='title'>
+                    <h4>Tags</h4>
+                </div>
+
+                <div class='tags-container tag-input wrapper-horizontal'>
+                    <span ng-repeat='tag in vm.tagList' class='ko-tag'>
+                        {{tag}} <i class="fa fa-times tag-delete" ng-click='vm.removeTag(tag)'></i>
+                    </span>
+                    <input list='tag-list' ng-keyPress='vm.testAddTag($event)' ng-model='vm.addedTag' class='tags-input'></input>
+                    <datalist id='tag-list'>
+                        <option ng-repeat='tag in vm.autofillList' value='{{tag}}'></option>
+                    </datalist>
+                </div>
+
+                <div class='title'>
+                    <h4>Description</h4>
+                </div>
+            </div>
+            <div class='title' ng-class='{"hide":vm.type!="a"}'>
+                <h4>Answer</h4>
+            </div>
+            <div class='wrapper-vertical'>
+                <editor></editor>
+            </div>
+
+            <div class='title'>
+                <h4>Preview</h4>
+            </div>
+            <div class='preview question-preview wrapper-vertical'>
+
+                <div class='question-container wrapper-vertical' style='width:auto'>
+                    <div class='title' ng-class='{"hide":vm.type!="q"}'>
+                        <h4>{{vm.questionTitle}}</h4>
+                    </div>
+                    <div ng-bind-html='vm.editorText | renderHtml'></div>
+                    <div class='tags-container wrapper-horizontal' ng-class='{"hide":vm.type!="q"}'>
+                        <span ng-repeat='tag in vm.tagList'>
+                            <span class='ko-tag'>
+                                {{tag}}
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+            <div class='post-wrapper'>
+                <button type="submit">Update</button>
+            </div>
+        </div>
+    </form>
+</div>
