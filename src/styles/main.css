@@ -1,4 +1,4 @@
-:root{
+:root {
     --nuvolo-light-blue: #0cb2da;
     --nuvolo-dark-blue: #0c3561;
 }
@@ -6,6 +6,14 @@
 body {
     margin: 0px !important;
     padding: 0px !important;
+}
+
+h6.announcement {
+    background: #2c3e50;
+    padding: 16px;
+    margin: 0;
+    color: #ecf0f1;
+    text-align: center;
 }
 
 /*----------------------
@@ -92,8 +100,8 @@ body {
         display: none;
     }
 
-    .small-hide{
-        display:none !important;
+    .small-hide {
+        display: none !important;
     }
 }
 
@@ -119,8 +127,9 @@ body {
     background-color: var(--nuvolo-light-blue) !important;
     font-weight: bold;
 }
-.left-sidebar .tab.active .tab-text{
-    color:white !important;
+
+.left-sidebar .tab.active .tab-text {
+    color: white !important;
 }
 
 .left-sidebar .tab:hover {
@@ -163,18 +172,18 @@ body {
 
 .banner-btn {
     white-space: nowrap;
-    background-color:inherit !important;
+    background-color: inherit !important;
     color: var(--nuvolo-dark-blue) !important;
     padding: 7px;
-    border-radius:3px;
-    border:1px solid whitesmoke !important;
-    margin-left:10px;
-    margin-right:10px;
-    font-size:14px;
+    border-radius: 3px;
+    border: 1px solid whitesmoke !important;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 14px;
 }
 
-.banner-btn:hover{
-    border:1px solid var(--nuvolo-light-blue) !important;
+.banner-btn:hover {
+    border: 1px solid var(--nuvolo-light-blue) !important;
     box-shadow: none !important;
     user-select: none;
 }
@@ -183,11 +192,11 @@ body {
     border-radius: 20%;
     height: 30px;
     min-width: 30px;
-    border:1px solid lightgrey !important;
-    text-align:center;
-    line-height:28px;
-    padding:0px;
-    background-color:white !important;
+    border: 1px solid lightgrey !important;
+    text-align: center;
+    line-height: 28px;
+    padding: 0px;
+    background-color: white !important;
 }
 
 .notifications-num {
@@ -221,7 +230,7 @@ body {
     max-height: 500px;
     overflow: auto;
     z-index: 100;
-    border-radius:5px;
+    border-radius: 5px;
 }
 
 .ko-notification {
@@ -237,7 +246,7 @@ body {
 
 .ko-notification.unread {
     background-color: var(--nuvolo-light-blue);
-    color:white !important;
+    color: white !important;
 }
 
 .ko-notification .delete {
@@ -301,7 +310,7 @@ body {
     width: 100%;
     margin-top: 10px;
     margin-bottom: 10px;
-    min-width:200px;
+    min-width: 200px;
 }
 
 .search-input {
@@ -510,8 +519,8 @@ code {
     white-space: nowrap;
     margin: 1px;
     background: lightskyblue;
-    color:var(--nuvolo-dark-blue);
-    border-radius:11px;
+    color: var(--nuvolo-dark-blue);
+    border-radius: 11px;
     padding: 3px 8px;
 }
 
@@ -539,18 +548,18 @@ code {
 
 .preview .community-info .info-container {
     padding: 5px;
-    margin:5px;
-    border-radius:5px;
+    margin: 5px;
+    border-radius: 5px;
 }
 
-.preview .community-info .info-container.info-highlight{
-    color:#45A163;
-    border:1px solid #45A163;
+.preview .community-info .info-container.info-highlight {
+    color: #45A163;
+    border: 1px solid #45A163;
 }
 
-.preview .community-info .info-container.info-solid{
-    background-color:#45A163;
-    color:white;
+.preview .community-info .info-container.info-solid {
+    background-color: #45A163;
+    color: white;
 }
 
 .question-title {
