@@ -42,7 +42,11 @@
                 <h4>Title</h4>
                 <input class='title-input' name='title' rows="15" ng-model='vm.newQuestionTitle' ng-minlength='0' minlength='10' maxlength='150' required='true'></input>
             </div>
-
+            <div ng-class="{hide:!isInternal}" class='internal-input'>
+                <h4 class='title'>Internal</h4>
+                <span style='width:10px'></span>
+                <input type='checkbox' ng-model='vm.internal'>
+            </div>
             <div class='title'>
                 <h4>Tags</h4>
             </div>
