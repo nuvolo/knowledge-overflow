@@ -109,20 +109,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var mod = angular.module("kmapp", ['ngSanitize', 'ui.router'])
-    .config(_views_index__WEBPACK_IMPORTED_MODULE_3__["default"]);
+var mod = angular.module("kmapp", ["ngSanitize", "ui.router"]).config(_views_index__WEBPACK_IMPORTED_MODULE_3__["default"]);
 
 Object(_directives_index__WEBPACK_IMPORTED_MODULE_0__["directiveSetup"])(mod);
 Object(_services_index__WEBPACK_IMPORTED_MODULE_1__["serviceSetup"])(mod);
 Object(_filter__WEBPACK_IMPORTED_MODULE_2__["filterSetup"])(mod);
 
-mod.$inject = ['$http', '$rootScope'];
-mod.run(function($http, $rootScope) {
-    $http.defaults.headers.common["X-UserToken"] = g_ck;
-    $rootScope.isAdmin = g_user.hasRole('x_nuvo_ko.mod');
+mod.$inject = ["$http", "$rootScope"];
+mod.run(function ($http, $rootScope) {
+  $http.defaults.headers.common["X-UserToken"] = g_ck;
+  $rootScope.isAdmin = g_user.hasRole("x_nuvo_ko.mod");
+  $rootScope.isInternal = g_user.hasRole("x_nuvo_ko.internal");
 });
-
-
 
 
 
@@ -384,93 +382,113 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function editor_def() {
-    var editor = {
-        template: _templates_editor_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        controller: editor_ctrl,
-        scope: false,
-        controllerAs: 'evm'
+  var editor = {
+    template: _templates_editor_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    controller: editor_ctrl,
+    scope: false,
+    controllerAs: "evm"
+  };
+  editor_ctrl.$inject = ["$scope", "$element", "attachmentService"];
+
+  function editor_ctrl($scope, $element, attachmentService) {
+    var evm = this;
+    evm.uploadFiles = function (files) {
+      for (var i = 0; i < files.length; i++) {
+        attachmentService.upload(files.item(i)).then(insertLink);
+      }
+
+      function insertLink(data) {
+        mde.value(mde.value() + "[" + data.name + "](" + data.link + ") ");
+      }
     };
-    editor_ctrl.$inject = ["$scope", "$element", "attachmentService"];
 
-    function editor_ctrl($scope, $element, attachmentService) {
-        var evm = this;
-        evm.uploadFiles = function(files) {
-            for (var i = 0; i < files.length; i++) {
-                attachmentService.upload(files.item(i)).then(insertLink);
-            }
+    evm.selectFiles = function () {
+      document.querySelector(".input-file").click();
+    };
+    $scope.vm.editorText = "";
+    //Configured drop-in editor from simplemde markdown editor
+    var mde = new SimpleMDE({
+      element: $element[0].querySelector(".editor"),
+      parsingConfig: {
+        allowAtxHeaderWithoutSpace: false,
+        strikethrough: false
+      },
+      renderingConfig: {
+        singleLineBreaks: true,
+        codeSyntaxHighlighting: true
+      },
+      toolbar: [
+        "bold",
+        "italic",
+        "strikethrough",
+        "|",
+        "heading-1",
+        "heading-2",
+        "|",
+        "code",
+        "quote",
+        "|",
+        "table",
+        "horizontal-rule",
+        "|",
+        "link",
+        "image",
+        {
+          name: "upload",
+          action: evm.selectFiles,
+          className: "fas fa-file-upload",
+          title: "Attach Files"
+        },
+        "|",
+        "guide"
+      ],
+      shortcuts: {
+        toggleSideBySide: null,
+        toggleFullScreen: null,
+        togglePreview: null
+      },
+      spellChecker: false,
+      status: false,
+      forceSync: true
+    });
 
-            function insertLink(data) {
-                mde.value(mde.value() + '[' + data.name + '](' + data.link + ') ');
-            }
-        };
+    //Force update on the model when typing into the editor
+    mde.codemirror.on("change", function () {
+      $scope.vm.editorText = mde.value();
+      if (!$scope.$$phase) $scope.$apply();
+    });
 
-        evm.selectFiles = function() {
-            document.querySelector(".input-file").click();
-        };
-        $scope.vm.editorText = "";
-        //Configured drop-in editor from simplemde markdown editor
-        var mde = new SimpleMDE({
-            element: $element[0].querySelector('.editor'),
-            parsingConfig: {
-                allowAtxHeaderWithoutSpace: false,
-                strikethrough: false
-            },
-            renderingConfig: {
-                singleLineBreaks: true,
-                codeSyntaxHighlighting: true
-            },
-            toolbar: ["bold", "italic", "strikethrough", "|", "heading-1", "heading-2", "|", "code", "quote", "|", "table", "horizontal-rule", "|", "link", "image", {
-                name: "upload",
-                action: evm.selectFiles,
-                className: "fas fa-file-upload",
-                title: "Attach Files"
-            }, "|", "guide"],
-            shortcuts: {
-                "toggleSideBySide": null,
-                "toggleFullScreen": null,
-                "togglePreview": null
-            },
-            spellChecker: false,
-            status: false,
-            forceSync: true
-        });
+    //Handling copy paste of attachments
+    mde.codemirror.on("paste", function (el, event) {
+      var items = (event.clipboardData || event.originalEvent.clipboardData)
+        .items;
 
-        //Force update on the model when typing into the editor
-        mde.codemirror.on("change", function() {
-            $scope.vm.editorText = mde.value();
-            if (!$scope.$$phase) $scope.$apply();
-        });
+      for (var index in items) {
+        var item = items[index];
+        if (item.kind === "file") {
+          event.preventDefault();
+          var blob = item.getAsFile();
+          var reader = new FileReader();
+          reader.onload = function (event) {
+            var encoded_url = event.target.result;
+            attachmentService.uploadImage(encoded_url).then(function (url) {
+              mde.value(mde.value() + "![](" + url + ")");
+            });
+          };
+          reader.readAsDataURL(blob);
+        }
+      }
+    });
 
-        //Handling copy paste of attachments
-        mde.codemirror.on("paste", function(el, event) {
-            var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+    //Allow programatic insertion of text into the editor
+    $scope.$watch("$scope.vm.editorText", function (newVal) {
+      if (newVal == "" || mde.value() == "") mde.value(newVal);
+    });
+  }
 
-            for (var index in items) {
-                var item = items[index];
-                if (item.kind === 'file') {
-                    event.preventDefault();
-                    var blob = item.getAsFile();
-                    var reader = new FileReader();
-                    reader.onload = function(event) {
-                        console.log("success");
-                        var encoded_url = event.target.result;
-                        attachmentService.uploadImage(encoded_url).then(function(url) {
-                            mde.value(mde.value() + '![](' + url + ')');
-                        });
-                    };
-                    reader.readAsDataURL(blob);
-                }
-            }
-        });
-
-        //Allow programatic insertion of text into the editor
-        $scope.$watch('$scope.vm.editorText', function(newVal) {
-            if (newVal == "" || mde.value() == "") mde.value(newVal);
-        });
-    }
-
-    return editor;
+  return editor;
 }
+
 
 /***/ }),
 /* 11 */
@@ -532,7 +550,7 @@ function question_preview_def() {
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='wrapper-horizontal' style='align-items:center'>\n    <div class='wrapper-horizontal community-info'>\n        <div class='info-container'>\n            <div class='value'>{{vm.votes}}</div>\n            <div>votes</div>\n        </div>\n        <div class='info-container' ng-class=\"{'info-solid': vm.best_answer != null, 'info-highlight':vm.answers>0}\">\n            <div class='value'>{{vm.answers}}</div>\n            <div>answers</div>\n        </div>\n        <div class='info-container'>\n            <div class='value'>{{vm.views}}</div>\n            <div>views</div>\n        </div>\n\n    </div>\n    <div class='wrapper-vertical' style='width:100%'>\n        <div class='question'>\n            <a ui-sref='question({id:\"{{vm.id}}\"})' class='ui-link'>\n                <h4 class='question-title'>{{vm.question}}</h4>\n            </a>\n        </div>\n        <div class='wrapper-horizontal'>\n            <div ng-repeat=\"tag in vm.tags\">\n                <tag></tag>\n            </div>\n        </div>\n        <div class='info'>\n            <span>Asked by</span>\n            <span class='user'>{{vm.author}}</span>\n            <span>on</span>\n            <span class='time' ng-bind='vm.time | formatDate'></span>\n        </div>\n    </div>\n</div>";
+module.exports = "<div class=\"wrapper-horizontal\" style=\"align-items: center;\">\n  <div class=\"wrapper-horizontal community-info\">\n    <div class=\"info-container\">\n      <div class=\"value\">{{vm.votes}}</div>\n      <div>votes</div>\n    </div>\n    <div\n      class=\"info-container\"\n      ng-class=\"{'info-solid': vm.best_answer != null, 'info-highlight':vm.answers>0}\"\n    >\n      <div class=\"value\">{{vm.answers}}</div>\n      <div>answers</div>\n    </div>\n    <div class=\"info-container\">\n      <div class=\"value\">{{vm.views}}</div>\n      <div>views</div>\n    </div>\n  </div>\n  <div class=\"wrapper-vertical\" style=\"width: 100%;\">\n    <div class=\"question\">\n      <a ui-sref='question({id:\"{{vm.id}}\"})' class=\"ui-link\">\n        <h4 class=\"question-title\">{{vm.question}}</h4>\n      </a>\n    </div>\n    <div class=\"wrapper-horizontal\">\n      <div ng-repeat=\"tag in vm.tags\">\n        <tag></tag>\n      </div>\n    </div>\n    <div style=\"display: flex;\">\n      <span ng-class=\"{hide:!vm.internal}\" style=\"color: #ea940f;\"\n        >Internal Question</span\n      >\n      <span style=\"flex: 1;\"></span>\n      <div class=\"info\">\n        <span style=\"flex: 1;\"></span>\n        <span>Asked by</span>\n        <span class=\"user\">{{vm.author}}</span>\n        <span>on</span>\n        <span class=\"time\" ng-bind=\"vm.time | formatDate\"></span>\n      </div>\n    </div>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 16 */
@@ -809,39 +827,42 @@ function notification_service_def($http) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "path", function() { return path; });
 var path = {
-    searchQuestion: '/api/x_nuvo_ko/portal/search_question',
-    searchTag: '/api/x_nuvo_ko/portal/search_tag',
-    getTopTags: '/api/x_nuvo_ko/portal/get_top_tags',
-    autofillTags: '/api/x_nuvo_ko/portal/autofill_tags',
-    getQuestion: '/api/x_nuvo_ko/portal/get_question',
-    vote: '/api/x_nuvo_ko/portal/vote',
-    toggleStarred: '/api/x_nuvo_ko/portal/toggle_starred',
-    createAnswer: '/api/x_nuvo_ko/portal/create_answer',
-    createQuestion: '/api/x_nuvo_ko/portal/create_question',
-    createComment: '/api/x_nuvo_ko/portal/create_comment',
-    markBestAnswer: '/api/x_nuvo_ko/portal/mark_best_answer',
-    getRecentQuestions: '/api/x_nuvo_ko/portal/get_recent_questions',
-    getProfile: '/api/x_nuvo_ko/portal/get_profile',
-    watchTag: '/api/x_nuvo_ko/portal/watch_tag',
-    queryQuestions: '/api/x_nuvo_ko/portal/query_questions',
-    tagIsWatched: '/api/x_nuvo_ko/portal/tag_is_watched',
-    updateQuestion: '/api/x_nuvo_ko/portal/update_question',
-    updateAnswer: '/api/x_nuvo_ko/portal/update_answer',
-    adminGetTags: '/api/x_nuvo_ko/portal/admin_get_tags',
-    adminRenameTag: '/api/x_nuvo_ko/portal/rename_tag',
-    adminRemapTag: '/api/x_nuvo_ko/portal/remap_tag',
-    adminGetWebhooks: '/api/x_nuvo_ko/portal/admin_get_webhooks',
-    deleteWebhook: '/api/x_nuvo_ko/portal/delete_webhook',
-    updateWebhook: '/api/x_nuvo_ko/portal/update_webhook',
-    createWebhook: '/api/x_nuvo_ko/portal/create_webhook',
-    createAttachment: '/api/now/table/x_nuvo_ko_attachments',
-    eccQueue: '/api/now/table/ecc_queue',
-    attachmentApi: '/api/now/v1/attachment',
-    fileApi: '/api/now/v1/attachment/file',
-    getNotifications: '/api/x_nuvo_ko/portal/get_notifications',
-    markNotifications: '/api/x_nuvo_ko/portal/mark_notifications_read',
-    deleteNotification: '/api/x_nuvo_ko/portal/delete_notification'
+  searchQuestion: "/api/x_nuvo_ko/portal/search_question",
+  searchTag: "/api/x_nuvo_ko/portal/search_tag",
+  getTopTags: "/api/x_nuvo_ko/portal/get_top_tags",
+  autofillTags: "/api/x_nuvo_ko/portal/autofill_tags",
+  getQuestion: "/api/x_nuvo_ko/portal/get_question",
+  vote: "/api/x_nuvo_ko/portal/vote",
+  toggleStarred: "/api/x_nuvo_ko/portal/toggle_starred",
+  createAnswer: "/api/x_nuvo_ko/portal/create_answer",
+  createQuestion: "/api/x_nuvo_ko/portal/create_question",
+  createComment: "/api/x_nuvo_ko/portal/create_comment",
+  markBestAnswer: "/api/x_nuvo_ko/portal/mark_best_answer",
+  getRecentQuestions: "/api/x_nuvo_ko/portal/get_recent_questions",
+  getProfile: "/api/x_nuvo_ko/portal/get_profile",
+  watchTag: "/api/x_nuvo_ko/portal/watch_tag",
+  queryQuestions: "/api/x_nuvo_ko/portal/query_questions",
+  tagIsWatched: "/api/x_nuvo_ko/portal/tag_is_watched",
+  updateQuestion: "/api/x_nuvo_ko/portal/update_question",
+  updateAnswer: "/api/x_nuvo_ko/portal/update_answer",
+  adminGetTags: "/api/x_nuvo_ko/portal/admin_get_tags",
+  adminRenameTag: "/api/x_nuvo_ko/portal/rename_tag",
+  adminRemapTag: "/api/x_nuvo_ko/portal/remap_tag",
+  adminGetWebhooks: "/api/x_nuvo_ko/portal/admin_get_webhooks",
+  deleteWebhook: "/api/x_nuvo_ko/portal/delete_webhook",
+  updateWebhook: "/api/x_nuvo_ko/portal/update_webhook",
+  createWebhook: "/api/x_nuvo_ko/portal/create_webhook",
+  createAttachment: "/api/now/table/x_nuvo_ko_attachments",
+  eccQueue: "/api/now/table/ecc_queue",
+  attachmentApi: "/api/now/v1/attachment",
+  fileApi: "/api/now/v1/attachment/file",
+  getNotifications: "/api/x_nuvo_ko/portal/get_notifications",
+  markNotifications: "/api/x_nuvo_ko/portal/mark_notifications_read",
+  deleteNotification: "/api/x_nuvo_ko/portal/delete_notification",
+  adminMakeInternal: "/api/x_nuvo_ko/portal/admin_make_internal",
+  adminDeleteQuestion: "/api/x_nuvo_ko/portal/admin_delete_question"
 };
+
 
 /***/ }),
 /* 27 */
@@ -1050,63 +1071,69 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function create_service_def($http) {
-    var publicApi = {
-        createAnswer: createAnswer,
-        createQuestion: createQuestion,
-        createComment: createComment,
-        updateQuestion: updateQuestion,
-        updateAnswer: updateAnswer
-    };
+  var publicApi = {
+    createAnswer: createAnswer,
+    createQuestion: createQuestion,
+    createComment: createComment,
+    updateQuestion: updateQuestion,
+    updateAnswer: updateAnswer
+  };
 
-    function createAnswer(answer, question_id) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            qid: question_id,
-            answer: answer
-        });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createAnswer + queryString)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
+  function createAnswer(answer, question_id) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      qid: question_id,
+      answer: answer
+    });
+    return $http
+      .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createAnswer + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
 
-    function createQuestion(question, description, tags) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            question: question,
-            description: description,
-            tags: tags
-        });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createQuestion + queryString)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
+  function createQuestion(question, description, tags, internal) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      question: question,
+      description: description,
+      tags: tags,
+      internal: internal
+    });
+    return $http
+      .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createQuestion + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
 
-    function createComment(param, id, comment) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            param: param,
-            id: id,
-            comment: comment
-        });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createComment + queryString)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
+  function createComment(param, id, comment) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      param: param,
+      id: id,
+      comment: comment
+    });
+    return $http
+      .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createComment + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
 
-    function updateQuestion(qid, question, description, tags) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            qid: qid,
-            question: question,
-            description: description,
-            tags: tags
-        });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].updateQuestion + queryString);
-    }
+  function updateQuestion(qid, question, description, tags, internal) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      qid: qid,
+      question: question,
+      description: description,
+      tags: tags,
+      internal: internal
+    });
+    return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].updateQuestion + queryString);
+  }
 
-    function updateAnswer(aid, answer) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            aid: aid,
-            answer: answer
-        });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].updateAnswer + queryString);
-    }
+  function updateAnswer(aid, answer) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      aid: aid,
+      answer: answer
+    });
+    return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].updateAnswer + queryString);
+  }
 
-    return publicApi;
+  return publicApi;
 }
+
 
 /***/ }),
 /* 32 */
@@ -1159,92 +1186,119 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function admin_service_def($http) {
-    var publicApi = {
-        getTags: getTags,
-        subscribe: subscribe,
-        renameTag: renameTag,
-        remapTag: remapTag,
-        getWebhooks: getWebhooks,
-        deleteWebhook: deleteWebhook,
-        createWebhook: createWebhook,
-        updateWebhook: updateWebhook
-    };
+  var publicApi = {
+    getTags: getTags,
+    subscribe: subscribe,
+    renameTag: renameTag,
+    remapTag: remapTag,
+    getWebhooks: getWebhooks,
+    deleteWebhook: deleteWebhook,
+    createWebhook: createWebhook,
+    updateWebhook: updateWebhook,
+    makeInternal: makeInternal,
+    deleteQuestion: deleteQuestion
+  };
 
-    function deleteWebhook(hid) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            hid: hid
+  function deleteWebhook(hid) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      hid: hid
+    });
+    return $http
+      .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].deleteWebhook + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
+
+  function createWebhook(channel, url, tags) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      channel: channel,
+      url: url,
+      tags: tags
+    });
+    return $http
+      .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createWebhook + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
+
+  function updateWebhook(hid, channel, url, tags) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      hid: hid,
+      channel: channel,
+      url: url,
+      tags: tags
+    });
+    return $http
+      .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].updateWebhook + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
+
+  var subscribers = [];
+
+  function subscribe(callback) {
+    subscribers.push(callback);
+  }
+
+  function getTags(sort, page, search) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      sort: sort,
+      page: page,
+      search: search
+    });
+
+    $http
+      .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].adminGetTags + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
+      .then(function (result) {
+        subscribers.forEach(function (callback) {
+          callback(result);
         });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].deleteWebhook + queryString)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
+      });
+  }
 
-    function createWebhook(channel, url, tags) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            channel: channel,
-            url: url,
-            tags: tags
-        });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createWebhook + queryString)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
+  function renameTag(tid, newName) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      tid: tid,
+      newName: newName
+    });
+    return $http
+      .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].adminRenameTag + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
 
-    function updateWebhook(hid, channel, url, tags) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            hid: hid,
-            channel: channel,
-            url: url,
-            tags: tags
-        });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].updateWebhook + queryString)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
+  function remapTag(tid, mapTag) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      tid: tid,
+      mapTag: mapTag
+    });
+    return $http
+      .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].adminRemapTag + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
 
-    var subscribers = [];
+  function getWebhooks() {
+    return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].adminGetWebhooks).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
 
-    function subscribe(callback) {
-        subscribers.push(callback);
-    }
+  function makeInternal(qid) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      qid: qid
+    });
+    return $http
+      .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].adminMakeInternal + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
 
-    function getTags(sort, page, search) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            sort: sort,
-            page: page,
-            search: search
-        });
+  function deleteQuestion(qid) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      qid: qid
+    });
+    return $http
+      .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].adminDeleteQuestion + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
 
-        $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].adminGetTags + queryString)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
-            .then(function (result) {
-                subscribers.forEach(function (callback) {
-                    callback(result);
-                });
-            });
-    }
-
-    function renameTag(tid, newName) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            tid: tid,
-            newName: newName
-        });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].adminRenameTag + queryString)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
-
-    function remapTag(tid, mapTag) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            tid: tid,
-            mapTag: mapTag
-        });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].adminRemapTag + queryString)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
-
-    function getWebhooks() {
-        return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].adminGetWebhooks).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
-
-    return publicApi;
+  return publicApi;
 }
+
 
 /***/ }),
 /* 34 */
@@ -1691,97 +1745,135 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function ask_view_def() {
-    var ask = {
-        template: _templates_viewAsk_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        controller: ask_ctrl,
-        controllerAs: "vm",
-        scope: false,
-        url: '/ask'
-    };
-    ask_ctrl.$inject = ['$transitions', '$state', '$element', '$scope', 'createService', 'tagsService'];
-    function ask_ctrl($transitions, $state, $element, $scope, createService, tagsService) {
-        var vm = this;
-        vm.tagList = [];
-        vm.addedTag = "";
-        vm.author = g_user.getFullName();
-        vm.time = new Date();
-        vm.review = false;
+  var ask = {
+    template: _templates_viewAsk_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    controller: ask_ctrl,
+    controllerAs: "vm",
+    scope: false,
+    url: "/ask"
+  };
+  ask_ctrl.$inject = [
+    "$transitions",
+    "$state",
+    "$element",
+    "$scope",
+    "createService",
+    "tagsService"
+  ];
+  function ask_ctrl(
+    $transitions,
+    $state,
+    $element,
+    $scope,
+    createService,
+    tagsService
+  ) {
+    var vm = this;
+    vm.tagList = [];
+    vm.addedTag = "";
+    vm.author = g_user.getFullName();
+    vm.time = new Date();
+    vm.review = false;
 
-        var questionLoad = false;
-        $transitions.onStart({
-            from: 'ask'
-        }, function () {
-            if (!questionLoad && (vm.editorText != '' || vm.newQuestionTitle != undefined)) {
-                return confirm("Are you sure you would like to leave? Changes will not be saved");
-            }
-        });
+    var questionLoad = false;
+    $transitions.onStart(
+      {
+        from: "ask"
+      },
+      function () {
+        if (
+          !questionLoad &&
+          (vm.editorText != "" || vm.newQuestionTitle != undefined)
+        ) {
+          return confirm(
+            "Are you sure you would like to leave? Changes will not be saved"
+          );
+        }
+      }
+    );
 
-        //Post logic, go into review mode before posting to table
-        vm.postNewQuestion = function () {
-            if (vm.editorText.length < 10) alert("Description length must be at least 10 characters");
-            else if (vm.editorText.length > 5000) alert("Description length must be less than 5000 characters. Current length is " + vm.editorText.length + " characters");
-            else {
-                if (vm.review) {
-                    createService.createQuestion(vm.newQuestionTitle, vm.editorText, vm.tagList)
-                        .then(function (id) {
-                            questionLoad = true;
-                            $state.go('question', {
-                                id: id
-                            });
-                        });
-                }
-                vm.review = true;
-            }
-        };
-
-        //All of the below functions are for the tag input box. Autofill list
-        //and logic to finish the tag when you click out or enter
-        vm.autofillList = [];
-        tagsService.autoSubscribe(function (tags) {
-            tags.forEach(function (tag) {
-                if (vm.autofillList.indexOf(tag.name) == -1) vm.autofillList.push(tag.name);
+    //Post logic, go into review mode before posting to table
+    vm.postNewQuestion = function () {
+      if (vm.editorText.length < 10)
+        alert("Description length must be at least 10 characters");
+      else if (vm.editorText.length > 5000)
+        alert(
+          "Description length must be less than 5000 characters. Current length is " +
+            vm.editorText.length +
+            " characters"
+        );
+      else {
+        if (vm.review) {
+          let makeInternal = false;
+          if (vm.internal && vm.internal) makeInternal = true;
+          createService
+            .createQuestion(
+              vm.newQuestionTitle,
+              vm.editorText,
+              vm.tagList,
+              makeInternal
+            )
+            .then(function (id) {
+              questionLoad = true;
+              $state.go("question", {
+                id: id
+              });
             });
+        }
+        vm.review = true;
+      }
+    };
+
+    //All of the below functions are for the tag input box. Autofill list
+    //and logic to finish the tag when you click out or enter
+    vm.autofillList = [];
+    tagsService.autoSubscribe(function (tags) {
+      tags.forEach(function (tag) {
+        if (vm.autofillList.indexOf(tag.name) == -1)
+          vm.autofillList.push(tag.name);
+      });
+    });
+
+    $scope.$watch("vm.addedTag", function (newVal) {
+      if (newVal != "") tagsService.autofillTags(newVal);
+    });
+
+    $element[0].querySelector(".tags-input").on("blur", function () {
+      vm.addTag();
+    });
+
+    vm.addTag = function () {
+      if (vm.addedTag.length > 0) {
+        vm.tagList.push(vm.addedTag);
+        vm.tagList = vm.tagList.filter(function (item, pos) {
+          return vm.tagList.indexOf(item) == pos;
         });
+        vm.addedTag = "";
+        vm.autofillList = [];
+      }
+    };
 
-        $scope.$watch('vm.addedTag', function (newVal) {
-            if (newVal != '') tagsService.autofillTags(newVal);
-        });
+    vm.testAddTag = function (e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        vm.addTag();
+      }
+    };
 
-        $element[0].querySelector('.tags-input').on('blur', function () {
-            vm.addTag();
-        });
+    vm.removeTag = function (tag) {
+      vm.tagList.splice(vm.tagList.indexOf(tag), 1);
+    };
+  }
 
-        vm.addTag = function () {
-            if (vm.addedTag.length > 0) {
-                vm.tagList.push(vm.addedTag);
-                vm.tagList = vm.tagList.filter(function (item, pos) {
-                    return vm.tagList.indexOf(item) == pos;
-                });
-                vm.addedTag = "";
-                vm.autofillList = [];
-            }
-        };
-
-        vm.testAddTag = function (e) {
-            if (e.keyCode == 13) {
-                e.preventDefault();
-                vm.addTag();
-            }
-        };
-
-        vm.removeTag = function (tag) {
-            vm.tagList.splice(vm.tagList.indexOf(tag), 1);
-        };
-    }
-
-    return ask;
+  return ask;
 }
+
 
 /***/ }),
 /* 43 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='post-review' ng-style='{\"display\" : vm.review ? \"block\" : \"none\"}'>\n    <div class='review-content center-width'>\n        <h2>Review Question</h2>\n        <hr>\n        </hr>\n        <div class='question-container wrapper-vertical' style='width:auto'>\n            <div>\n                <div class='title'>\n                    <h4>{{vm.newQuestionTitle}}</h4>\n                </div>\n                <div ng-bind-html='vm.editorText | renderHtml'></div>\n            </div>\n            <div>\n                <div class='tags-container wrapper-horizontal'>\n                    <span ng-repeat='tag in vm.tagList'>\n                        <span class='ko-tag'>\n                            {{tag}}\n                        </span>\n                    </span>\n                </div>\n                <div class='info wrapper-horizontal'>\n                    Asked by {{vm.author}} on&#160;<span ng-bind='vm.time | formatDate:true'></span>\n                </div>\n            </div>\n        </div>\n        <hr>\n        </hr>\n        <div class='wrapper-horizontal'>\n            <button ng-click='vm.review = false'>Continue Editing</button>\n            <div style='flex-grow:1'></div>\n            <button ng-click='vm.postNewQuestion()'>Post Question</button>\n        </div>\n    </div>\n</div>\n<div>\n    <form ng-submit='vm.postNewQuestion()'>\n        <div>\n            <div class='title'>\n                <h3>Ask a Question</h3>\n            </div>\n            <div class='title'>\n                <h4>Title</h4>\n                <input class='title-input' name='title' rows=\"15\" ng-model='vm.newQuestionTitle' ng-minlength='0' minlength='10' maxlength='150' required='true'></input>\n            </div>\n\n            <div class='title'>\n                <h4>Tags</h4>\n            </div>\n\n            <div class='tags-container tag-input wrapper-horizontal'>\n                <span ng-repeat='tag in vm.tagList' class='ko-tag'>\n                    {{tag}} <i class=\"fa fa-times tag-delete\" ng-click='vm.removeTag(tag)'></i>\n                </span>\n                <input list='tag-list' ng-keyPress='vm.testAddTag($event)' ng-model='vm.addedTag' class='tags-input'></input>\n                <datalist id='tag-list'>\n                    <option ng-repeat='tag in vm.autofillList' value='{{tag}}'></option>\n                </datalist>\n            </div>\n\n            <div class='title'>\n                <h4>Description</h4>\n            </div>\n            <div class='wrapper-vertical'>\n                <editor></editor>\n            </div>\n            <div class='title'>\n                <h3>Preview</h3>\n            </div>\n            <div class='preview question-preview wrapper-vertical'>\n\n                <div class='question-container wrapper-vertical' style='width:auto'>\n                    <div>\n                        <div class='title'>\n                            <h4>{{vm.newQuestionTitle}}</h4>\n                        </div>\n                        <div ng-bind-html='vm.editorText | renderHtml'></div>\n                    </div>\n                    <div>\n                        <div class='tags-container wrapper-horizontal'>\n                            <span ng-repeat='tag in vm.tagList'>\n                                <span class='ko-tag'>\n                                    {{tag}}\n                                </span>\n                            </span>\n                        </div>\n                        <div class='info wrapper-horizontal'>\n                            Asked by {{vm.author}} on&#160;<span ng-bind='vm.time | formatDate:true'></span>\n                        </div>\n                    </div>\n                </div>\n\n            </div>\n\n            <div class='post-wrapper'>\n                <button type='submit'>Post</button>\n            </div>\n        </div>\n    </form>\n</div>";
+module.exports = "<div class='post-review' ng-style='{\"display\" : vm.review ? \"block\" : \"none\"}'>\n    <div class='review-content center-width'>\n        <h2>Review Question</h2>\n        <hr>\n        </hr>\n        <div class='question-container wrapper-vertical' style='width:auto'>\n            <div>\n                <div class='title'>\n                    <h4>{{vm.newQuestionTitle}}</h4>\n                </div>\n                <div ng-bind-html='vm.editorText | renderHtml'></div>\n            </div>\n            <div>\n                <div class='tags-container wrapper-horizontal'>\n                    <span ng-repeat='tag in vm.tagList'>\n                        <span class='ko-tag'>\n                            {{tag}}\n                        </span>\n                    </span>\n                </div>\n                <div class='info wrapper-horizontal'>\n                    Asked by {{vm.author}} on&#160;<span ng-bind='vm.time | formatDate:true'></span>\n                </div>\n            </div>\n        </div>\n        <hr>\n        </hr>\n        <div class='wrapper-horizontal'>\n            <button ng-click='vm.review = false'>Continue Editing</button>\n            <div style='flex-grow:1'></div>\n            <button ng-click='vm.postNewQuestion()'>Post Question</button>\n        </div>\n    </div>\n</div>\n<div>\n    <form ng-submit='vm.postNewQuestion()'>\n        <div>\n            <div class='title'>\n                <h3>Ask a Question</h3>\n            </div>\n            <div class='title'>\n                <h4>Title</h4>\n                <input class='title-input' name='title' rows=\"15\" ng-model='vm.newQuestionTitle' ng-minlength='0' minlength='10' maxlength='150' required='true'></input>\n            </div>\n            <div ng-class=\"{hide:!isInternal}\" class='internal-input'>\n                <h4 class='title'>Internal</h4>\n                <span style='width:10px'></span>\n                <input type='checkbox' ng-model='vm.internal'>\n            </div>\n            <div class='title'>\n                <h4>Tags</h4>\n            </div>\n\n            <div class='tags-container tag-input wrapper-horizontal'>\n                <span ng-repeat='tag in vm.tagList' class='ko-tag'>\n                    {{tag}} <i class=\"fa fa-times tag-delete\" ng-click='vm.removeTag(tag)'></i>\n                </span>\n                <input list='tag-list' ng-keyPress='vm.testAddTag($event)' ng-model='vm.addedTag' class='tags-input'></input>\n                <datalist id='tag-list'>\n                    <option ng-repeat='tag in vm.autofillList' value='{{tag}}'></option>\n                </datalist>\n            </div>\n\n            <div class='title'>\n                <h4>Description</h4>\n            </div>\n            <div class='wrapper-vertical'>\n                <editor></editor>\n            </div>\n            <div class='title'>\n                <h3>Preview</h3>\n            </div>\n            <div class='preview question-preview wrapper-vertical'>\n\n                <div class='question-container wrapper-vertical' style='width:auto'>\n                    <div>\n                        <div class='title'>\n                            <h4>{{vm.newQuestionTitle}}</h4>\n                        </div>\n                        <div ng-bind-html='vm.editorText | renderHtml'></div>\n                    </div>\n                    <div>\n                        <div class='tags-container wrapper-horizontal'>\n                            <span ng-repeat='tag in vm.tagList'>\n                                <span class='ko-tag'>\n                                    {{tag}}\n                                </span>\n                            </span>\n                        </div>\n                        <div class='info wrapper-horizontal'>\n                            Asked by {{vm.author}} on&#160;<span ng-bind='vm.time | formatDate:true'></span>\n                        </div>\n                    </div>\n                </div>\n\n            </div>\n\n            <div class='post-wrapper'>\n                <button type='submit'>Post</button>\n            </div>\n        </div>\n    </form>\n</div>";
 
 /***/ }),
 /* 44 */
@@ -1794,100 +1886,139 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_viewEdit_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_viewEdit_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function edit_view_def() {
+  var edit = {
+    template: _templates_viewEdit_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    controller: edit_ctrl,
+    controllerAs: "vm",
+    scope: true,
+    url: "/questions/{qid}/edit?aid"
+  };
+  edit_ctrl.$inject = [
+    "$stateParams",
+    "$scope",
+    "$element",
+    "$state",
+    "questionService",
+    "createService",
+    "tagsService"
+  ];
+  function edit_ctrl(
+    $stateParams,
+    $scope,
+    $element,
+    $state,
+    questionService,
+    createService,
+    tagsService
+  ) {
+    var vm = this;
+    vm.aid = $stateParams.aid;
+    vm.qid = $stateParams.qid;
+    vm.type = vm.aid === undefined ? "q" : "a";
+    vm.noText = false;
 
-    var edit = {
-        template: _templates_viewEdit_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        controller: edit_ctrl,
-        controllerAs: "vm",
-        scope: true,
-        url: '/questions/{qid}/edit?aid'
+    //Load the question or answer data
+    questionService.get(vm.qid).then(function (data) {
+      if (!data) vm.noText = true;
+      else if (vm.type == "a") {
+        for (var i = 0; i < data.answers.length; i++) {
+          if (data.answers[i].answer_id == vm.aid)
+            vm.editorText = data.answers[i].answer;
+        }
+      } else if (vm.type == "q" && data.question) {
+        vm.questionTitle = data.question;
+        vm.tagList = data.tags;
+        vm.editorText = data.description;
+        vm.internal = data.internal;
+      }
+      if (!vm.editorText) vm.noText = true;
+    });
+
+    //Post new data to tables, reload question page
+    vm.update = function () {
+      function reload() {
+        $state.go("question", {
+          id: vm.qid
+        });
+      }
+      if (vm.editorText.length < 10)
+        alert(
+          (vm.type == "q" ? "Description" : "Answer") +
+            " length must be at least 10 characters"
+        );
+      else if (vm.editorText.length > 5000)
+        alert(
+          (vm.type == "q" ? "Description" : "Answer") +
+            " length must be less than 5000 characters. Current length is " +
+            vm.editorText.length +
+            " characters"
+        );
+      else {
+        if (vm.type == "q") {
+          let makeInternal = false;
+          if (vm.internal && vm.internal) makeInternal = true;
+          createService
+            .updateQuestion(
+              vm.qid,
+              vm.questionTitle,
+              vm.editorText,
+              vm.tagList,
+              makeInternal
+            )
+            .then(reload);
+        } else createService.updateAnswer(vm.aid, vm.editorText).then(reload);
+      }
     };
-    edit_ctrl.$inject = ['$stateParams', '$scope', '$element', '$state', 'questionService', 'createService', 'tagsService'];
-    function edit_ctrl($stateParams, $scope, $element, $state, questionService, createService, tagsService) {
-        var vm = this;
-        vm.aid = $stateParams.aid;
-        vm.qid = $stateParams.qid;
-        vm.type = vm.aid === undefined ? 'q' : 'a';
-        vm.noText = false;
 
-        //Load the question or answer data
-        questionService.get(vm.qid)
-            .then(function (data) {
-                if (!data) vm.noText = true;
-                else if (vm.type == 'a') {
-                    for (var i = 0; i < data.answers.length; i++) {
-                        if (data.answers[i].answer_id == vm.aid) vm.editorText = data.answers[i].answer;
-                    }
-                } else if (vm.type == 'q' && data.question) {
-                    vm.questionTitle = data.question;
-                    vm.tagList = data.tags;
-                    vm.editorText = data.description;
-                }
-                if (!vm.editorText) vm.noText = true;
-            });
+    //Again, logic for a tag input
+    vm.autofillList = [];
+    tagsService.autoSubscribe(function (tags) {
+      tags.forEach(function (tag) {
+        if (vm.autofillList.indexOf(tag.name) == -1)
+          vm.autofillList.push(tag.name);
+      });
+    });
 
-        //Post new data to tables, reload question page
-        vm.update = function () {
-            function reload() {
-                $state.go('question', {
-                    id: vm.qid
-                });
-            }
-            if (vm.editorText.length < 10) alert((vm.type == 'q' ? 'Description' : 'Answer') + " length must be at least 10 characters");
-            else if (vm.editorText.length > 5000) alert((vm.type == 'q' ? 'Description' : 'Answer') + " length must be less than 5000 characters. Current length is " + vm.editorText.length + " characters");
-            else {
-                if (vm.type == 'q') createService.updateQuestion(vm.qid, vm.questionTitle, vm.editorText, vm.tagList).then(reload);
-                else createService.updateAnswer(vm.aid, vm.editorText).then(reload);
-            }
-        };
+    $scope.$watch("vm.addedTag", function (newVal) {
+      if (newVal != "") tagsService.autofillTags(newVal);
+    });
 
-        //Again, logic for a tag input
+    $element[0].querySelector(".tags-input").on("blur", function () {
+      vm.addTag();
+    });
+
+    vm.addTag = function () {
+      if (vm.addedTag.length > 0) {
+        vm.tagList.push(vm.addedTag);
+        vm.tagList = vm.tagList.filter(function (item, pos) {
+          return vm.tagList.indexOf(item) == pos;
+        });
+        vm.addedTag = "";
         vm.autofillList = [];
-        tagsService.autoSubscribe(function (tags) {
-            tags.forEach(function (tag) {
-                if (vm.autofillList.indexOf(tag.name) == -1) vm.autofillList.push(tag.name);
-            });
-        });
+      }
+    };
 
-        $scope.$watch('vm.addedTag', function (newVal) {
-            if (newVal != '') tagsService.autofillTags(newVal);
-        });
+    vm.testAddTag = function (e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        vm.addTag();
+      }
+    };
 
-        $element[0].querySelector('.tags-input').on('blur', function () {
-            vm.addTag();
-        });
+    vm.removeTag = function (tag) {
+      vm.tagList.splice(vm.tagList.indexOf(tag), 1);
+    };
+  }
 
-        vm.addTag = function () {
-            if (vm.addedTag.length > 0) {
-                vm.tagList.push(vm.addedTag);
-                vm.tagList = vm.tagList.filter(function (item, pos) {
-                    return vm.tagList.indexOf(item) == pos;
-                });
-                vm.addedTag = "";
-                vm.autofillList = [];
-            }
-        };
-
-        vm.testAddTag = function (e) {
-            if (e.keyCode == 13) {
-                e.preventDefault();
-                vm.addTag();
-            }
-        };
-
-        vm.removeTag = function (tag) {
-            vm.tagList.splice(vm.tagList.indexOf(tag), 1);
-        };
-    }
-
-    return edit;
+  return edit;
 }
+
 
 /***/ }),
 /* 45 */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-class='{\"hide\":!vm.noText}'>\n    <span>No</span>\n    <span>{{vm.type=='q'?'question':'answer'}}</span>\n    <span>was found with that id.</span>\n</div>\n<div ng-class='{\"hide\":vm.noText}'>\n    <form ng-submit='vm.update()'>\n        <div class='wrapper-vertical'>\n            <div ng-class='{\"hide\":vm.type!=\"q\"}'>\n                <div class='title'>\n                    <h4>Title</h4>\n                    <input class='title-input' rows=\"15\" ng-model='vm.questionTitle' ng-minlength='0' minlength='10' maxlength='150' ng-required='{{vm.type==\"q\"?true:false}}'></input>\n                </div>\n\n                <div class='title'>\n                    <h4>Tags</h4>\n                </div>\n\n                <div class='tags-container tag-input wrapper-horizontal'>\n                    <span ng-repeat='tag in vm.tagList' class='ko-tag'>\n                        {{tag}} <i class=\"fa fa-times tag-delete\" ng-click='vm.removeTag(tag)'></i>\n                    </span>\n                    <input list='tag-list' ng-keyPress='vm.testAddTag($event)' ng-model='vm.addedTag' class='tags-input'></input>\n                    <datalist id='tag-list'>\n                        <option ng-repeat='tag in vm.autofillList' value='{{tag}}'></option>\n                    </datalist>\n                </div>\n\n                <div class='title'>\n                    <h4>Description</h4>\n                </div>\n            </div>\n            <div class='title' ng-class='{\"hide\":vm.type!=\"a\"}'>\n                <h4>Answer</h4>\n            </div>\n            <div class='wrapper-vertical'>\n                <editor></editor>\n            </div>\n\n            <div class='title'>\n                <h4>Preview</h4>\n            </div>\n            <div class='preview question-preview wrapper-vertical'>\n\n                <div class='question-container wrapper-vertical' style='width:auto'>\n                    <div class='title' ng-class='{\"hide\":vm.type!=\"q\"}'>\n                        <h4>{{vm.questionTitle}}</h4>\n                    </div>\n                    <div ng-bind-html='vm.editorText | renderHtml'></div>\n                    <div class='tags-container wrapper-horizontal' ng-class='{\"hide\":vm.type!=\"q\"}'>\n                        <span ng-repeat='tag in vm.tagList'>\n                            <span class='ko-tag'>\n                                {{tag}}\n                            </span>\n                        </span>\n                    </div>\n                </div>\n\n            </div>\n\n\n\n\n            <div class='post-wrapper'>\n                <button type=\"submit\">Update</button>\n            </div>\n        </div>\n    </form>\n</div>";
+module.exports = "<div ng-class='{\"hide\":!vm.noText}'>\n    <span>No</span>\n    <span>{{vm.type=='q'?'question':'answer'}}</span>\n    <span>was found with that id.</span>\n</div>\n<div ng-class='{\"hide\":vm.noText}'>\n    <form ng-submit='vm.update()'>\n        <div class='wrapper-vertical'>\n            <div ng-class='{\"hide\":vm.type!=\"q\"}'>\n                <div class='title'>\n                    <h4>Title</h4>\n                    <input class='title-input' rows=\"15\" ng-model='vm.questionTitle' ng-minlength='0' minlength='10' maxlength='150' ng-required='{{vm.type==\"q\"?true:false}}'></input>\n                </div>\n\n                <div class='title'>\n                    <h4>Tags</h4>\n                </div>\n\n                <div ng-class=\"{hide:!isInternal}\" class='internal-input'>\n                    <h4 class='title'>Internal</h4>\n                    <span style='width:10px'></span>\n                    <input type='checkbox' ng-model='vm.internal'>\n                </div>\n\n                <div class='tags-container tag-input wrapper-horizontal'>\n                    <span ng-repeat='tag in vm.tagList' class='ko-tag'>\n                        {{tag}} <i class=\"fa fa-times tag-delete\" ng-click='vm.removeTag(tag)'></i>\n                    </span>\n                    <input list='tag-list' ng-keyPress='vm.testAddTag($event)' ng-model='vm.addedTag' class='tags-input'></input>\n                    <datalist id='tag-list'>\n                        <option ng-repeat='tag in vm.autofillList' value='{{tag}}'></option>\n                    </datalist>\n                </div>\n\n                <div class='title'>\n                    <h4>Description</h4>\n                </div>\n            </div>\n            <div class='title' ng-class='{\"hide\":vm.type!=\"a\"}'>\n                <h4>Answer</h4>\n            </div>\n            <div class='wrapper-vertical'>\n                <editor></editor>\n            </div>\n\n            <div class='title'>\n                <h4>Preview</h4>\n            </div>\n            <div class='preview question-preview wrapper-vertical'>\n\n                <div class='question-container wrapper-vertical' style='width:auto'>\n                    <div class='title' ng-class='{\"hide\":vm.type!=\"q\"}'>\n                        <h4>{{vm.questionTitle}}</h4>\n                    </div>\n                    <div ng-bind-html='vm.editorText | renderHtml'></div>\n                    <div class='tags-container wrapper-horizontal' ng-class='{\"hide\":vm.type!=\"q\"}'>\n                        <span ng-repeat='tag in vm.tagList'>\n                            <span class='ko-tag'>\n                                {{tag}}\n                            </span>\n                        </span>\n                    </div>\n                </div>\n\n            </div>\n\n\n\n\n            <div class='post-wrapper'>\n                <button type=\"submit\">Update</button>\n            </div>\n        </div>\n    </form>\n</div>";
 
 /***/ }),
 /* 46 */
@@ -1900,31 +2031,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_viewHome_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_viewHome_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function home_view_def() {
-    var summary = {
-        template: _templates_viewHome_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        controller: summary_ctrl,
-        controllerAs: "vm",
-        scope: true,
-        url: '/home'
-    };
-    summary_ctrl.$inject = ["tagsService", "resultsService"];
-    function summary_ctrl(tagsService, resultsService) {
-        var vm = this;
+  var summary = {
+    template: _templates_viewHome_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    controller: summary_ctrl,
+    controllerAs: "vm",
+    scope: true,
+    url: "/home"
+  };
+  summary_ctrl.$inject = ["tagsService", "resultsService"];
+  function summary_ctrl(tagsService, resultsService) {
+    var vm = this;
 
-        //Most popular tags (top 1/2 of page)
-        tagsService.getTopTags()
-            .then(function(data) {
-                vm.allTags = data;
-            });
+    //Most popular tags (top 1/2 of page)
+    tagsService.getTopTags().then(function (data) {
+      vm.allTags = data;
+    });
 
-        //recent questions (bottom 1/2 of page)
-        resultsService.query('all', 'newest', '1', {})
-            .then(function(data) {
-                vm.recents = data.previews;
-            });
-    }
-    return summary;
+    //recent questions (bottom 1/2 of page)
+    resultsService.query("all", "newest", "1", {}).then(function (data) {
+      vm.recents = data.previews;
+    });
+  }
+  return summary;
 }
+
 
 /***/ }),
 /* 47 */
@@ -1982,71 +2112,108 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_viewQuestion_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_viewQuestion_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function question_view_def() {
-    var summary = {
-        template: _templates_viewQuestion_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        controller: summary_ctrl,
-        controllerAs: "vm",
-        scope: true,
-        url: '/questions/{id}'
-    };
-    summary_ctrl.$inject = ["$transitions", "$stateParams", "questionService", "createService"];
-    function summary_ctrl($transitions, $stateParams, questionService, createService) {
-        var vm = this;
-        vm.question_id = $stateParams.id;
-        vm.noQuestion = false;
+  var summary = {
+    template: _templates_viewQuestion_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    controller: summary_ctrl,
+    controllerAs: "vm",
+    scope: true,
+    url: "/questions/{id}"
+  };
+  summary_ctrl.$inject = [
+    "$transitions",
+    "$stateParams",
+    "questionService",
+    "createService",
+    "adminService"
+  ];
+  function summary_ctrl(
+    $transitions,
+    $stateParams,
+    questionService,
+    createService,
+    adminService
+  ) {
+    var vm = this;
+    vm.question_id = $stateParams.id;
+    vm.noQuestion = false;
 
-
-        $transitions.onStart({
-            from: 'question'
-        }, function () {
-            if (vm.editorText != '') {
-                return confirm("Are you sure you would like to leave? Changes will not be saved");
-            }
-        });
-
-
-        questionService.get(vm.question_id);
-        questionService.subscribe(function (data) {
-            if (data === undefined) vm.noQuestion = true;
-            else {
-                Object.assign(vm, data);
-                sortAnswers();
-                vm.editorText = "";
-            }
-        });
-
-        vm.postNewAnswer = function () {
-            if (vm.editorText.length < 10) alert("Answer length must be at least 10 characters");
-            else if (vm.editorText.length > 5000) alert("Answer length must be less than 5000 characters. Current length is " + vm.editorText.length + " characters");
-            else {
-                createService.createAnswer(vm.editorText, vm.question_id)
-                    .then(function (data) {
-                        vm.editorText = "";
-                        vm.answers = data.answers;
-                        sortAnswers();
-                    });
-            }
-        };
-
-        function sortAnswers() {
-            //Answer sort hierarchy: best answer => votes => oldest
-            vm.answers.sort(function (a, b) {
-                if (a.answer_id == vm.best_answer) return -1;
-                if (b.answer_id == vm.best_answer) return 1;
-                if (a.votes !== b.votes) return b.votes - a.votes;
-                return new Date(a.time) - new Date(b.time);
-            });
+    $transitions.onStart(
+      {
+        from: "question"
+      },
+      function () {
+        if (vm.editorText != "") {
+          return confirm(
+            "Are you sure you would like to leave? Changes will not be saved"
+          );
         }
-    }
+      }
+    );
 
-    return summary;
+    questionService.get(vm.question_id);
+    questionService.subscribe(function (data) {
+      if (data === undefined) vm.noQuestion = true;
+      else {
+        Object.assign(vm, data);
+        sortAnswers();
+        vm.editorText = "";
+      }
+    });
+
+    vm.postNewAnswer = function () {
+      if (vm.editorText.length < 10)
+        alert("Answer length must be at least 10 characters");
+      else if (vm.editorText.length > 5000)
+        alert(
+          "Answer length must be less than 5000 characters. Current length is " +
+            vm.editorText.length +
+            " characters"
+        );
+      else {
+        createService
+          .createAnswer(vm.editorText, vm.question_id)
+          .then(function (data) {
+            vm.editorText = "";
+            vm.answers = data.answers;
+            sortAnswers();
+          });
+      }
+    };
+
+    vm.makeInternal = function () {
+      adminService.makeInternal(vm.question_id).then(() => {
+        window.location.reload();
+      });
+    };
+
+    vm.deleteQuestion = function () {
+      if (confirm("Are you sure you would like to delete this question?")) {
+        adminService.deleteQuestion(vm.question_id).then(() => {
+          alert("Question deleted");
+        });
+      }
+    };
+
+    function sortAnswers() {
+      //Answer sort hierarchy: best answer => votes => oldest
+      vm.answers.sort(function (a, b) {
+        if (a.answer_id == vm.best_answer) return -1;
+        if (b.answer_id == vm.best_answer) return 1;
+        if (a.votes !== b.votes) return b.votes - a.votes;
+        return new Date(a.time) - new Date(b.time);
+      });
+    }
+  }
+
+  return summary;
 }
+
 
 /***/ }),
 /* 51 */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-class='{\"hide\":!vm.noQuestion}'>\n    No question with the id {{vm.question_id}} was found\n</div>\n<div ng-class='{\"hide\":vm.noQuestion}'>\n    <div class='wrapper-horizontal'>\n        <votes></votes>\n\n        <div class='question-container wrapper-vertical'>\n            <div>\n                <div class='question-title'>\n                    <h4>{{vm.question}}</h4>\n                </div>\n                <div ng-bind-html='vm.description | renderHtml'></div>\n            </div>\n            <div>\n                <div class='tags-container wrapper-horizontal'>\n                    <span ng-repeat='tag in vm.tags'>\n                        <tag></tag>\n                    </span>\n                </div>\n                <div class='info'>\n                    <span>Asked by</span>\n                    <span class='user'>{{vm.author}}</span>\n                    <span>on</span>\n                    <span class='time' ng-bind='vm.time | formatDate'></span>\n                </div>\n                <div class='info edit-button' ng-class='{\"hide\":!vm.isAuthor}'>\n                    <span>\n                        <a class='ui-link' ui-sref='edit({qid:\"{{vm.question_id}}\"})'>Edit</a>\n                    </span>\n                </div>\n            </div>\n            <comments></comments>\n\n        </div>\n    </div>\n    <div class='answers-container'>\n        <div ng-repeat='answer in vm.answers'>\n            <answer ng-attr-id=\"{{ 'answer-' + answer.answer_id }}\"></answer>\n        </div>\n    </div>\n    <div>\n        <form ng-submit='vm.postNewAnswer()'>\n            <div class='wrapper-vertical'>\n                <div>\n                    <h3>Add an Answer</h3>\n                </div>\n                <div class='wrapper-vertical'>\n                    <editor></editor>\n                </div>\n                <div ng-class='{hide: vm.newAnswerText.length == 0}'>\n                    <div class='preview wrapper-vertical'>\n                        <div ng-bind-html='vm.editorText | renderHtml' class='question-container'></div>\n                    </div>\n\n                    <div class='post-wrapper'>\n                        <button type='submit'>Post</button>\n                    </div>\n                </div>\n            </div>\n        </form>\n    </div>\n</div>";
+module.exports = "<div ng-class='{\"hide\":!vm.noQuestion}'>\n  No question with the id {{vm.question_id}} was found\n</div>\n<div ng-class='{\"hide\":vm.noQuestion}'>\n  <div class=\"wrapper-horizontal\">\n    <votes></votes>\n\n    <div class=\"question-container wrapper-vertical\">\n      <div>\n        <div class=\"question-title\">\n          <h4>{{vm.question}}</h4>\n        </div>\n        <div ng-bind-html=\"vm.description | renderHtml\"></div>\n      </div>\n      <div>\n        <div class=\"tags-container wrapper-horizontal\">\n          <span ng-repeat=\"tag in vm.tags\">\n            <tag></tag>\n          </span>\n        </div>\n        <div style=\"display: flex;\">\n          <span\n            ng-class=\"{hide:!vm.internal}\"\n            style=\"color: #ea940f; margin-right: 5px;\"\n            >Internal Question</span\n          >\n          <span\n            ng-class=\"{hide:vm.internal || !isAdmin}\"\n            ng-click=\"vm.makeInternal()\"\n            class=\"internalize\"\n            >Make Internal</span\n          >\n          <span\n            ng-class=\"{hide:!isAdmin}\"\n            ng-click=\"vm.deleteQuestion()\"\n            class=\"internalize\"\n            >Delete Question</span\n          >\n          <span style=\"flex: 1;\"></span>\n          <div class=\"info\">\n            <span>Asked by</span>\n            <span class=\"user\">{{vm.author}}</span>\n            <span>on</span>\n            <span class=\"time\" ng-bind=\"vm.time | formatDate\"></span>\n          </div>\n        </div>\n        <div class=\"info edit-button\" ng-class='{\"hide\":!vm.isAuthor}'>\n          <span>\n            <a class=\"ui-link\" ui-sref='edit({qid:\"{{vm.question_id}}\"})'\n              >Edit</a\n            >\n          </span>\n        </div>\n      </div>\n      <comments></comments>\n    </div>\n  </div>\n  <div class=\"answers-container\">\n    <div ng-repeat=\"answer in vm.answers\">\n      <answer ng-attr-id=\"{{ 'answer-' + answer.answer_id }}\"></answer>\n    </div>\n  </div>\n  <div>\n    <form ng-submit=\"vm.postNewAnswer()\">\n      <div class=\"wrapper-vertical\">\n        <div>\n          <h3>Add an Answer</h3>\n        </div>\n        <div class=\"wrapper-vertical\">\n          <editor></editor>\n        </div>\n        <div ng-class=\"{hide: vm.newAnswerText.length == 0}\">\n          <div class=\"preview wrapper-vertical\">\n            <div\n              ng-bind-html=\"vm.editorText | renderHtml\"\n              class=\"question-container\"\n            ></div>\n          </div>\n\n          <div class=\"post-wrapper\">\n            <button type=\"submit\">Post</button>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 52 */
@@ -2653,7 +2820,7 @@ if (content.locals) {
 
 exports = module.exports = __webpack_require__(61)(false);
 // Module
-exports.push([module.i, ":root{\n    --nuvolo-light-blue: #0cb2da;\n    --nuvolo-dark-blue: #0c3561;\n}\n\nbody {\n    margin: 0px !important;\n    padding: 0px !important;\n}\n\n/*----------------------\n---Overall Format CSS---\n----------------------*/\n\n.mobile {\n    display: none;\n}\n\n.centered {\n    justify-content: center;\n    align-items: center;\n}\n\n.center-width {\n    max-width: 800px;\n    min-width: 400px;\n    width: 100%;\n}\n\n.hide {\n    display: none !important;\n}\n\n.wrapper-horizontal {\n    display: flex;\n    flex-direction: row;\n}\n\n.wrapper-vertical {\n    display: flex;\n    flex-direction: column;\n}\n\n.ui-link {\n    color: inherit;\n    text-decoration: none !important;\n}\n\n.ui-link:hover {\n    color: inherit;\n    text-decoration: none !important;\n    cursor: pointer;\n}\n\n.post-wrapper {\n    margin-left: 5px;\n    margin-top: 3px;\n    width: 80px;\n    display: flex;\n    flex-direction: row;\n}\n\n.post-wrapper button {\n    flex: 1;\n}\n\n.user {\n    color: mediumblue;\n}\n\n.time {\n    color: grey;\n}\n\n/*MAIN PAGE CSS*/\n@media (max-width:750px) {\n    .left-sidebar {\n        display: none;\n    }\n\n    .right-sidebar {\n        display: none;\n    }\n}\n\n@media (max-width:950px) {\n    .left-sidbar {\n        max-width: 150px;\n    }\n\n    .right-sidebar {\n        display: none;\n    }\n\n    .small-hide{\n        display:none !important;\n    }\n}\n\n.left-sidebar {\n    width: calc(50% - 400px - 50px);\n    margin-right: 50px;\n    margin-left: 10px;\n    padding-top: 50px;\n    border-right: 1px solid var(--nuvolo-light-blue);\n    min-width: 150px;\n}\n\n.right-sidebar {\n    width: calc(50% - 400px);\n    min-width: 150px;\n}\n\n.left-sidebar .tab {\n    font-size: 15px;\n}\n\n.left-sidebar .tab.active {\n    background-color: var(--nuvolo-light-blue) !important;\n    font-weight: bold;\n}\n.left-sidebar .tab.active .tab-text{\n    color:white !important;\n}\n\n.left-sidebar .tab:hover {\n    background-color: whitesmoke;\n    cursor: pointer;\n}\n\n.left-sidebar .tab-text {\n    color: black;\n    text-decoration: none !important;\n    padding: 5px;\n}\n\n\n/*Banner CSS */\n.banner {\n    background: whitesmoke;\n    flex-wrap: nowrap;\n    width: 100%;\n    padding: 10px;\n}\n\n.search-container {\n    width: 100%;\n    margin: auto;\n}\n\n.search {\n    width: 100%;\n}\n\n.banner .menu-btn:hover {\n    cursor: pointer;\n}\n\n.banner .menu-btn {\n    position: relative;\n    color: var(--nuvolo-dark-blue);\n}\n\n.banner-btn {\n    white-space: nowrap;\n    background-color:inherit !important;\n    color: var(--nuvolo-dark-blue) !important;\n    padding: 7px;\n    border-radius:3px;\n    border:1px solid whitesmoke !important;\n    margin-left:10px;\n    margin-right:10px;\n    font-size:14px;\n}\n\n.banner-btn:hover{\n    border:1px solid var(--nuvolo-light-blue) !important;\n    box-shadow: none !important;\n    user-select: none;\n}\n\n.profile-btn {\n    border-radius: 20%;\n    height: 30px;\n    min-width: 30px;\n    border:1px solid lightgrey !important;\n    text-align:center;\n    line-height:28px;\n    padding:0px;\n    background-color:white !important;\n}\n\n.notifications-num {\n    position: absolute;\n    right: -7px;\n    top: -6px;\n    width: 14px;\n    height: 14px;\n    background-color: red;\n    border-radius: 50%;\n    font-size: 10px;\n    font-weight: 400;\n    text-align: center;\n    color: white;\n    font-family: Arial, Helvetica, sans-serif;\n    font-weight: 900;\n    line-height: 1.3;\n    user-select: none;\n}\n\n.notifications-container {\n    position: absolute;\n    top: 30px;\n    right: 0px;\n    background-color: var(--nuvolo-light-blue);\n    border: 1px solid var(--nuvolo-dark-blue);\n    font-family: SourceSansPro, \"Helvetica Neue\", Arial;\n    font-size: 13px;\n    width: 400px;\n    min-height: 300px;\n    max-height: 500px;\n    overflow: auto;\n    z-index: 100;\n    border-radius:5px;\n}\n\n.ko-notification {\n    padding: 8px;\n    background-color: whitesmoke;\n    min-height: 50px;\n    border-bottom: 1px solid var(--nuvolo-dark-blue);\n    position: relative;\n    user-select: none;\n    color: black !important;\n    font-family: Gilroy, sans-serif;\n}\n\n.ko-notification.unread {\n    background-color: var(--nuvolo-light-blue);\n    color:white !important;\n}\n\n.ko-notification .delete {\n    display: none;\n    position: absolute;\n    top: 2px;\n    right: 2px;\n    color: grey;\n}\n\n.ko-notification:hover .delete {\n    display: block;\n}\n\n.ko-notification .delete:hover {\n    cursor: pointer !important;\n    color: black !important;\n}\n\n.notification-title {\n    font-weight: 600;\n}\n\n.notification-content {\n    width: 100%;\n    max-width: 300px;\n    white-space: normal;\n    padding-top: 3px;\n    padding-bottom: 3px;\n    font-weight: 100;\n}\n\n.notification-time {\n    text-align: right;\n    font-weight: 100;\n    color: var(--nuvolo-dark-blue);\n    font-family: SourceSansPro, \"Helvetica Neue\", Arial;\n}\n\n/*------------------\n---Tag Card CSS---\n------------------*/\n.topic-card {\n    border-bottom: 4px dotted var(--nuvolo-light-blue);\n    margin: 15px;\n    padding: 10px;\n}\n\n#topic-overview {\n    display: grid;\n    grid-gap: 15px;\n    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));\n    justify-content: space-around;\n}\n\n\n/*------------------ \n---Search Box CSS---\n------------------*/\n.search-container {\n    width: 100%;\n    margin-top: 10px;\n    margin-bottom: 10px;\n    min-width:200px;\n}\n\n.search-input {\n    flex-grow: 1;\n    height: 30px;\n    padding: 5px;\n}\n\n\n/*--------------------- \n---Question Page CSS---\n---------------------*/\n\n/* Sidebar upvote/downvote css */\n.vote-container {\n    margin: 10px;\n}\n\n.arrow {\n    color: lightgrey;\n    text-align: center;\n}\n\n.vote-clickable:hover {\n    color: lightgreen;\n    cursor: pointer;\n}\n\n.vote-active {\n    color: var(--nuvolo-light-blue);\n}\n\n.star {\n    margin-top: 10px;\n    text-align: center;\n    font-size: 25px;\n    color: lightgrey;\n}\n\n.star.active {\n    color: #FCDC3B;\n}\n\n.best-answer {\n    margin-top: 10px;\n    color: #45A163;\n}\n\n.best-answer .select-answer {\n    color: gainsboro;\n}\n\n/*Other stuff on question page */\n.answers-container {\n    border-top: 1px solid lightgrey;\n}\n\n.question-container,\n.answer-container {\n    margin: 20px;\n    width: 100%;\n}\n\ncode {\n    background-color: #eff0f1;\n}\n\n.question-container img {\n    max-width: 100%;\n}\n\n.info {\n    text-align: right;\n}\n\n\n/* Comment CSS - container, color, author info */\n.comment-input {\n    resize: none;\n    margin: 5px;\n    flex: 1;\n    padding: 5px;\n    height: 200px !important;\n    border-radius: 4px;\n    border-color: #ccc;\n}\n\n.comments-actions {\n    padding: 5px;\n\n}\n\n.comments-actions div {\n    color: #989898;\n    display: inline;\n}\n\n.comments-actions div:hover {\n    color: deepskyblue;\n    cursor: pointer;\n}\n\n.comment {\n    padding: 3px 15px 3px 30px;\n    border-top: 1px solid lightgray;\n    display: block;\n}\n\n.comment p {\n    display: inline;\n}\n\n.comment-container {\n    margin-top: 20px;\n}\n\n/*------------------------\n------NEW QUESTION CSS----\n------------------------*/\n.tags-container.tag-input,\n.title-input {\n    border: 1px solid #ddd;\n    min-height: 40px;\n}\n\n.title-input {\n    padding: 4px;\n    width: 100%;\n}\n\n.tags-container {\n    padding: 0px 4px;\n    flex-wrap: wrap;\n    align-items: center;\n}\n\n.tags-input {\n    flex: 1;\n    border: none;\n    outline: none;\n    margin-left: 10px;\n    height: 35px;\n}\n\n/* ----------------------\n-Question, Answer editor-\n------------------------*/\n.editor-container {\n    display: block;\n}\n\n.editor-container .CodeMirror,\n.editor-container .CodeMirror-scroll {\n    min-height: 250px;\n    max-height: 250px;\n}\n\n.question-preview {\n    border: 1px solid #ddd;\n}\n\n.input-file {\n    width: 0.1px;\n    height: 0.1px;\n    opacity: 0;\n    overflow: hidden;\n    position: absolute;\n    z-index: -1;\n}\n\n/* ----------------------\n---Review New Question---\n------------------------*/\n.post-review {\n    position: fixed;\n    z-index: 2;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%;\n    overflow: auto;\n    background-color: rgb(0, 0, 0);\n    background-color: rgba(0, 0, 0, 0.4);\n}\n\n.review-content {\n    background-color: #fefefe;\n    margin: auto;\n    padding: 20px;\n    border: 1px solid #888;\n    width: 80%;\n}\n\n.question-preview .preview {\n    flex: 1;\n    border: 1px solid black;\n    border-radius: 5px;\n    padding: 10px;\n    min-height: 100px;\n}\n\n/* -------------------------\n-------Blue Tag Style-------\n--------------------------*/\n.ko-tag {\n    white-space: nowrap;\n    margin: 1px;\n    background: lightskyblue;\n    color:var(--nuvolo-dark-blue);\n    border-radius:11px;\n    padding: 3px 8px;\n}\n\n.tag-delete:hover {\n    color: red;\n}\n\n\n/* -------------------------\n---Question Preview Style---\n--------------------------*/\n.preview .community-info {\n    color: gray;\n    text-align: center;\n    padding: 5px;\n}\n\n.preview {\n    border-bottom: 1px solid #eff0f1;\n}\n\n.preview .community-info .value {\n    font-size: 18px;\n}\n\n.preview .community-info .info-container {\n    padding: 5px;\n    margin:5px;\n    border-radius:5px;\n}\n\n.preview .community-info .info-container.info-highlight{\n    color:#45A163;\n    border:1px solid #45A163;\n}\n\n.preview .community-info .info-container.info-solid{\n    background-color:#45A163;\n    color:white;\n}\n\n.question-title {\n    color: #07C;\n}\n\n/* -------------------------\n--------Profile Style-------\n--------------------------*/\n.profile-tabs {\n    margin-top: 10px;\n}\n\n.profile-tabs .btn {\n    margin: 0px;\n    border: 0px;\n    border-radius: 3px 3px 0px 0px;\n    border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n.profile-tabs .active {\n    border-style: solid;\n    border-color: var(--nuvolo-light-blue);\n    border-width: 1px 1px 0px 1px;\n    box-shadow: none;\n}\n\n.profile-tabs .tab-spacer {\n    flex: 1;\n    border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n/* -------------------------\n--------Results Styling-------\n--------------------------*/\n.filter-tabs {\n    margin-top: 10px;\n}\n\n.filter-tabs .btn {\n    margin: 0px;\n    border: 0px;\n    border-radius: 3px 3px 0px 0px;\n    border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n.filter-tabs .active {\n    border-style: solid;\n    border-color: var(--nuvolo-light-blue);\n    border-width: 1px 1px 0px 1px;\n    box-shadow: none;\n}\n\n.filter-tabs .tab-spacer {\n    flex: 1;\n    border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n\n/*----------------------\n----Filter all Tags-----\n----------------------*/\n\n.tag-view {\n    display: grid;\n    grid-gap: 15px;\n    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));\n    justify-content: space-around;\n}\n\n.filter-tag-input {\n    border: 1px solid #ddd;\n    min-height: 30px;\n    margin: 15px;\n    width: 30%;\n    min-width: 250px;\n    padding-left: 10px;\n}\n\n\n.edit-button {\n    padding: 3px;\n    color: #989898;\n}\n\n.edit-button span:hover {\n    cursor: pointer;\n    color: deepskyblue;\n}\n\n\n/*--------------------------\n-----Admin Styling----\n----------------------------*/\n.sort {\n    color: lightgrey;\n}\n\n.sort:hover {\n    cursor: pointer;\n}\n\n.sort.active {\n    color: black;\n}\n\n.admin-tag-table .btn {\n    padding: 3px 8px;\n    border-radius: 5px;\n    min-height: 20px;\n    border: 1px solid #bdc0c4;\n}\n\n.admin-tag-table {\n    table-layout: fixed;\n    width: 100%;\n}\n\n.admin-tag-table tr {\n    height: 35px;\n    width: 100%;\n}\n\n.admin-tag-table .content-row {\n    border-top: 1px solid lightgrey;\n}\n\n.admin-tag-table td {\n    align-items: center;\n    display: flex;\n}\n\n.admin-tag-table .col-tag,\n.admin-tag-table .col-date,\n.admin-tag-table .col-questions {\n    max-width: 33%;\n}\n\n.admin-tag-table .col-actions {\n    min-width: 150px !important;\n}\n\n.admin-modal {\n    position: fixed;\n    z-index: 1;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%;\n    overflow: auto;\n    background-color: rgb(0, 0, 0);\n    background-color: rgba(0, 0, 0, 0.4);\n}\n\n.admin-modal-content {\n    background-color: #fefefe;\n    margin: 15% auto;\n    padding: 20px;\n    border: 1px solid #888;\n    width: 80%;\n}\n\n.rename-container {\n    margin-bottom: 10px;\n}\n\n.rename-container .modal-text div {\n    height: 30px;\n}\n\n.admin-webhook-table .col-channel,\n.admin-webhook-table .col-tags {\n    padding: 5px;\n}\n\n.admin-webhook-table .content-row {\n    border-top: 1px solid lightgrey;\n    height: 30px;\n}\n\n.admin-webhook-table .btn {\n    padding: 3px 8px;\n    border-radius: 5px;\n    min-height: 20px;\n    border: 1px solid #bdc0c4;\n}\n\n\n\n.webhook-edit {\n    display: flex;\n    flex-direction: column;\n}\n\n.url-input {\n    resize: none;\n    border: 1px solid #ccc;\n    ;\n    padding: 10px;\n}\n\n.admin-modal .input-wrapper {\n    margin-bottom: 15px;\n    display: inherit;\n    flex-direction: inherit;\n}\n\n.admin-modal .input-wrapper input {\n    padding: 10px;\n}\n\n.instructions .i-general {\n    color: #D32905;\n}\n\n.instructions {\n    margin-bottom: 20px;\n}\n\n.i-action {\n    color: #989898;\n}\n\n.i-action:hover {\n    color: deepskyblue;\n    cursor: pointer;\n}\n\n.col-tags a {\n    line-height: 25px;\n}\n", ""]);
+exports.push([module.i, ":root {\n  --nuvolo-light-blue: #0cb2da;\n  --nuvolo-dark-blue: #0c3561;\n}\n\nbody {\n  margin: 0px !important;\n  padding: 0px !important;\n}\n\n/*----------------------\n---Overall Format CSS---\n----------------------*/\n\n.mobile {\n  display: none;\n}\n\n.centered {\n  justify-content: center;\n  align-items: center;\n}\n\n.center-width {\n  max-width: 800px;\n  min-width: 400px;\n  width: 100%;\n}\n\n.hide {\n  display: none !important;\n}\n\n.wrapper-horizontal {\n  display: flex;\n  flex-direction: row;\n}\n\n.wrapper-vertical {\n  display: flex;\n  flex-direction: column;\n}\n\n.ui-link {\n  color: inherit;\n  text-decoration: none !important;\n}\n\n.ui-link:hover {\n  color: inherit;\n  text-decoration: none !important;\n  cursor: pointer;\n}\n\n.post-wrapper {\n  margin-left: 5px;\n  margin-top: 3px;\n  width: 80px;\n  display: flex;\n  flex-direction: row;\n}\n\n.post-wrapper button {\n  flex: 1;\n}\n\n.user {\n  color: mediumblue;\n}\n\n.time {\n  color: grey;\n}\n\n/*MAIN PAGE CSS*/\n@media (max-width: 750px) {\n  .left-sidebar {\n    display: none;\n  }\n\n  .right-sidebar {\n    display: none;\n  }\n}\n\n@media (max-width: 950px) {\n  .left-sidbar {\n    max-width: 150px;\n  }\n\n  .right-sidebar {\n    display: none;\n  }\n\n  .small-hide {\n    display: none !important;\n  }\n}\n\n.left-sidebar {\n  width: calc(50% - 400px - 50px);\n  margin-right: 50px;\n  margin-left: 10px;\n  padding-top: 50px;\n  border-right: 1px solid var(--nuvolo-light-blue);\n  min-width: 150px;\n}\n\n.right-sidebar {\n  width: calc(50% - 400px);\n  min-width: 150px;\n}\n\n.left-sidebar .tab {\n  font-size: 15px;\n}\n\n.left-sidebar .tab.active {\n  background-color: var(--nuvolo-light-blue) !important;\n  font-weight: bold;\n}\n.left-sidebar .tab.active .tab-text {\n  color: white !important;\n}\n\n.left-sidebar .tab:hover {\n  background-color: whitesmoke;\n  cursor: pointer;\n}\n\n.left-sidebar .tab-text {\n  color: black;\n  text-decoration: none !important;\n  padding: 5px;\n}\n\n/*Banner CSS */\n.banner {\n  background: whitesmoke;\n  flex-wrap: nowrap;\n  width: 100%;\n  padding: 10px;\n}\n\n.search-container {\n  width: 100%;\n  margin: auto;\n}\n\n.search {\n  width: 100%;\n}\n\n.banner .menu-btn:hover {\n  cursor: pointer;\n}\n\n.banner .menu-btn {\n  position: relative;\n  color: var(--nuvolo-dark-blue);\n}\n\n.banner-btn {\n  white-space: nowrap;\n  background-color: inherit !important;\n  color: var(--nuvolo-dark-blue) !important;\n  padding: 7px;\n  border-radius: 3px;\n  border: 1px solid whitesmoke !important;\n  margin-left: 10px;\n  margin-right: 10px;\n  font-size: 14px;\n}\n\n.banner-btn:hover {\n  border: 1px solid var(--nuvolo-light-blue) !important;\n  box-shadow: none !important;\n  user-select: none;\n}\n\n.profile-btn {\n  border-radius: 20%;\n  height: 30px;\n  min-width: 30px;\n  border: 1px solid lightgrey !important;\n  text-align: center;\n  line-height: 28px;\n  padding: 0px;\n  background-color: white !important;\n}\n\n.notifications-num {\n  position: absolute;\n  right: -7px;\n  top: -6px;\n  width: 14px;\n  height: 14px;\n  background-color: red;\n  border-radius: 50%;\n  font-size: 10px;\n  font-weight: 400;\n  text-align: center;\n  color: white;\n  font-family: Arial, Helvetica, sans-serif;\n  font-weight: 900;\n  line-height: 1.3;\n  user-select: none;\n}\n\n.notifications-container {\n  position: absolute;\n  top: 30px;\n  right: 0px;\n  background-color: var(--nuvolo-light-blue);\n  border: 1px solid var(--nuvolo-dark-blue);\n  font-family: SourceSansPro, \"Helvetica Neue\", Arial;\n  font-size: 13px;\n  width: 400px;\n  min-height: 300px;\n  max-height: 500px;\n  overflow: auto;\n  z-index: 100;\n  border-radius: 5px;\n}\n\n.ko-notification {\n  padding: 8px;\n  background-color: whitesmoke;\n  min-height: 50px;\n  border-bottom: 1px solid var(--nuvolo-dark-blue);\n  position: relative;\n  user-select: none;\n  color: black !important;\n  font-family: Gilroy, sans-serif;\n}\n\n.ko-notification.unread {\n  background-color: var(--nuvolo-light-blue);\n  color: white !important;\n}\n\n.ko-notification .delete {\n  display: none;\n  position: absolute;\n  top: 2px;\n  right: 2px;\n  color: grey;\n}\n\n.ko-notification:hover .delete {\n  display: block;\n}\n\n.ko-notification .delete:hover {\n  cursor: pointer !important;\n  color: black !important;\n}\n\n.notification-title {\n  font-weight: 600;\n}\n\n.notification-content {\n  width: 100%;\n  max-width: 300px;\n  white-space: normal;\n  padding-top: 3px;\n  padding-bottom: 3px;\n  font-weight: 100;\n}\n\n.notification-time {\n  text-align: right;\n  font-weight: 100;\n  color: var(--nuvolo-dark-blue);\n  font-family: SourceSansPro, \"Helvetica Neue\", Arial;\n}\n\n/*------------------\n---Tag Card CSS---\n------------------*/\n.topic-card {\n  border-bottom: 4px dotted var(--nuvolo-light-blue);\n  margin: 15px;\n  padding: 10px;\n}\n\n#topic-overview {\n  display: grid;\n  grid-gap: 15px;\n  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));\n  justify-content: space-around;\n}\n\n/*------------------ \n---Search Box CSS---\n------------------*/\n.search-container {\n  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 10px;\n  min-width: 200px;\n}\n\n.search-input {\n  flex-grow: 1;\n  height: 30px;\n  padding: 5px;\n}\n\n/*--------------------- \n---Question Page CSS---\n---------------------*/\n\n/* Sidebar upvote/downvote css */\n.vote-container {\n  margin: 10px;\n}\n\n.arrow {\n  color: lightgrey;\n  text-align: center;\n}\n\n.vote-clickable:hover {\n  color: lightgreen;\n  cursor: pointer;\n}\n\n.vote-active {\n  color: var(--nuvolo-light-blue);\n}\n\n.star {\n  margin-top: 10px;\n  text-align: center;\n  font-size: 25px;\n  color: lightgrey;\n}\n\n.star.active {\n  color: #fcdc3b;\n}\n\n.best-answer {\n  margin-top: 10px;\n  color: #45a163;\n}\n\n.best-answer .select-answer {\n  color: gainsboro;\n}\n\n/*Other stuff on question page */\n.answers-container {\n  border-top: 1px solid lightgrey;\n}\n\n.question-container,\n.answer-container {\n  margin: 20px;\n  width: 100%;\n}\n\ncode {\n  background-color: #eff0f1;\n}\n\n.question-container img {\n  max-width: 100%;\n}\n\n.info {\n  text-align: right;\n}\n\n.internalize {\n  color: var(--nuvolo-light-blue);\n  margin-right: 5px;\n}\n.internalize:hover {\n  color: var(--nuvolo-dark-blue);\n  cursor: pointer;\n}\n\n/* Comment CSS - container, color, author info */\n.comment-input {\n  resize: none;\n  margin: 5px;\n  flex: 1;\n  padding: 5px;\n  height: 200px !important;\n  border-radius: 4px;\n  border-color: #ccc;\n}\n\n.comments-actions {\n  padding: 5px;\n}\n\n.comments-actions div {\n  color: #989898;\n  display: inline;\n}\n\n.comments-actions div:hover {\n  color: deepskyblue;\n  cursor: pointer;\n}\n\n.comment {\n  padding: 3px 15px 3px 30px;\n  border-top: 1px solid lightgray;\n  display: block;\n}\n\n.comment p {\n  display: inline;\n}\n\n.comment-container {\n  margin-top: 20px;\n}\n\n/*------------------------\n------NEW QUESTION CSS----\n------------------------*/\n.tags-container.tag-input,\n.title-input {\n  border: 1px solid #ddd;\n  min-height: 40px;\n}\n\n.title-input {\n  padding: 4px;\n  width: 100%;\n}\n\n.tags-container {\n  padding: 0px 4px;\n  flex-wrap: wrap;\n  align-items: center;\n}\n\n.tags-input {\n  flex: 1;\n  border: none;\n  outline: none;\n  margin-left: 10px;\n  height: 35px;\n}\n\n.internal-input {\n  display: flex;\n  align-items: center;\n}\n\n/* ----------------------\n-Question, Answer editor-\n------------------------*/\n.editor-container {\n  display: block;\n}\n\n.editor-container .CodeMirror,\n.editor-container .CodeMirror-scroll {\n  min-height: 250px;\n  max-height: 250px;\n}\n\n.question-preview {\n  border: 1px solid #ddd;\n}\n\n.input-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1;\n}\n\n/* ----------------------\n---Review New Question---\n------------------------*/\n.post-review {\n  position: fixed;\n  z-index: 2;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n  background-color: rgb(0, 0, 0);\n  background-color: rgba(0, 0, 0, 0.4);\n}\n\n.review-content {\n  background-color: #fefefe;\n  margin: auto;\n  padding: 20px;\n  border: 1px solid #888;\n  width: 80%;\n}\n\n.question-preview .preview {\n  flex: 1;\n  border: 1px solid black;\n  border-radius: 5px;\n  padding: 10px;\n  min-height: 100px;\n}\n\n/* -------------------------\n-------Blue Tag Style-------\n--------------------------*/\n.ko-tag {\n  white-space: nowrap;\n  margin: 1px;\n  background: lightskyblue;\n  color: var(--nuvolo-dark-blue);\n  border-radius: 11px;\n  padding: 3px 8px;\n}\n\n.tag-delete:hover {\n  color: red;\n}\n\n/* -------------------------\n---Question Preview Style---\n--------------------------*/\n.preview .community-info {\n  color: gray;\n  text-align: center;\n  padding: 5px;\n}\n\n.preview {\n  border-bottom: 1px solid #eff0f1;\n}\n\n.preview .community-info .value {\n  font-size: 18px;\n}\n\n.preview .community-info .info-container {\n  padding: 5px;\n  margin: 5px;\n  border-radius: 5px;\n}\n\n.preview .community-info .info-container.info-highlight {\n  color: #45a163;\n  border: 1px solid #45a163;\n}\n\n.preview .community-info .info-container.info-solid {\n  background-color: #45a163;\n  color: white;\n}\n\n.question-title {\n  color: #07c;\n}\n\n/* -------------------------\n--------Profile Style-------\n--------------------------*/\n.profile-tabs {\n  margin-top: 10px;\n}\n\n.profile-tabs .btn {\n  margin: 0px;\n  border: 0px;\n  border-radius: 3px 3px 0px 0px;\n  border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n.profile-tabs .active {\n  border-style: solid;\n  border-color: var(--nuvolo-light-blue);\n  border-width: 1px 1px 0px 1px;\n  box-shadow: none;\n}\n\n.profile-tabs .tab-spacer {\n  flex: 1;\n  border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n/* -------------------------\n--------Results Styling-------\n--------------------------*/\n.filter-tabs {\n  margin-top: 10px;\n}\n\n.filter-tabs .btn {\n  margin: 0px;\n  border: 0px;\n  border-radius: 3px 3px 0px 0px;\n  border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n.filter-tabs .active {\n  border-style: solid;\n  border-color: var(--nuvolo-light-blue);\n  border-width: 1px 1px 0px 1px;\n  box-shadow: none;\n}\n\n.filter-tabs .tab-spacer {\n  flex: 1;\n  border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n/*----------------------\n----Filter all Tags-----\n----------------------*/\n\n.tag-view {\n  display: grid;\n  grid-gap: 15px;\n  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));\n  justify-content: space-around;\n}\n\n.filter-tag-input {\n  border: 1px solid #ddd;\n  min-height: 30px;\n  margin: 15px;\n  width: 30%;\n  min-width: 250px;\n  padding-left: 10px;\n}\n\n.edit-button {\n  padding: 3px;\n  color: #989898;\n}\n\n.edit-button span:hover {\n  cursor: pointer;\n  color: deepskyblue;\n}\n\n/*--------------------------\n-----Admin Styling----\n----------------------------*/\n.sort {\n  color: lightgrey;\n}\n\n.sort:hover {\n  cursor: pointer;\n}\n\n.sort.active {\n  color: black;\n}\n\n.admin-tag-table .btn {\n  padding: 3px 8px;\n  border-radius: 5px;\n  min-height: 20px;\n  border: 1px solid #bdc0c4;\n}\n\n.admin-tag-table {\n  table-layout: fixed;\n  width: 100%;\n}\n\n.admin-tag-table tr {\n  height: 35px;\n  width: 100%;\n}\n\n.admin-tag-table .content-row {\n  border-top: 1px solid lightgrey;\n}\n\n.admin-tag-table td {\n  align-items: center;\n  display: flex;\n}\n\n.admin-tag-table .col-tag,\n.admin-tag-table .col-date,\n.admin-tag-table .col-questions {\n  max-width: 33%;\n}\n\n.admin-tag-table .col-actions {\n  min-width: 150px !important;\n}\n\n.admin-modal {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n  background-color: rgb(0, 0, 0);\n  background-color: rgba(0, 0, 0, 0.4);\n}\n\n.admin-modal-content {\n  background-color: #fefefe;\n  margin: 15% auto;\n  padding: 20px;\n  border: 1px solid #888;\n  width: 80%;\n}\n\n.rename-container {\n  margin-bottom: 10px;\n}\n\n.rename-container .modal-text div {\n  height: 30px;\n}\n\n.admin-webhook-table .col-channel,\n.admin-webhook-table .col-tags {\n  padding: 5px;\n}\n\n.admin-webhook-table .content-row {\n  border-top: 1px solid lightgrey;\n  height: 30px;\n}\n\n.admin-webhook-table .btn {\n  padding: 3px 8px;\n  border-radius: 5px;\n  min-height: 20px;\n  border: 1px solid #bdc0c4;\n}\n\n.webhook-edit {\n  display: flex;\n  flex-direction: column;\n}\n\n.url-input {\n  resize: none;\n  border: 1px solid #ccc;\n  padding: 10px;\n}\n\n.admin-modal .input-wrapper {\n  margin-bottom: 15px;\n  display: inherit;\n  flex-direction: inherit;\n}\n\n.admin-modal .input-wrapper input {\n  padding: 10px;\n}\n\n.instructions .i-general {\n  color: #d32905;\n}\n\n.instructions {\n  margin-bottom: 20px;\n}\n\n.i-action {\n  color: #989898;\n}\n\n.i-action:hover {\n  color: deepskyblue;\n  cursor: pointer;\n}\n\n.col-tags a {\n  line-height: 25px;\n}\n", ""]);
 
 
 /***/ }),
