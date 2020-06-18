@@ -1,35 +1,44 @@
-<div class='wrapper-horizontal' style='align-items:center'>
-    <div class='wrapper-horizontal community-info'>
-        <div class='info-container'>
-            <div class='value'>{{vm.votes}}</div>
-            <div>votes</div>
-        </div>
-        <div class='info-container' ng-class="{'info-solid': vm.best_answer != null, 'info-highlight':vm.answers>0}">
-            <div class='value'>{{vm.answers}}</div>
-            <div>answers</div>
-        </div>
-        <div class='info-container'>
-            <div class='value'>{{vm.views}}</div>
-            <div>views</div>
-        </div>
-
+<div class="wrapper-horizontal" style="align-items: center;">
+  <div class="wrapper-horizontal community-info">
+    <div class="info-container">
+      <div class="value">{{vm.votes}}</div>
+      <div>votes</div>
     </div>
-    <div class='wrapper-vertical' style='width:100%'>
-        <div class='question'>
-            <a ui-sref='question({id:"{{vm.id}}"})' class='ui-link'>
-                <h4 class='question-title'>{{vm.question}}</h4>
-            </a>
-        </div>
-        <div class='wrapper-horizontal'>
-            <div ng-repeat="tag in vm.tags">
-                <tag></tag>
-            </div>
-        </div>
-        <div class='info'>
-            <span>Asked by</span>
-            <span class='user'>{{vm.author}}</span>
-            <span>on</span>
-            <span class='time' ng-bind='vm.time | formatDate'></span>
-        </div>
+    <div
+      class="info-container"
+      ng-class="{'info-solid': vm.best_answer != null, 'info-highlight':vm.answers>0}"
+    >
+      <div class="value">{{vm.answers}}</div>
+      <div>answers</div>
     </div>
+    <div class="info-container">
+      <div class="value">{{vm.views}}</div>
+      <div>views</div>
+    </div>
+  </div>
+  <div class="wrapper-vertical" style="width: 100%;">
+    <div class="question">
+      <a ui-sref='question({id:"{{vm.id}}"})' class="ui-link">
+        <h4 class="question-title">{{vm.question}}</h4>
+      </a>
+    </div>
+    <div class="wrapper-horizontal">
+      <div ng-repeat="tag in vm.tags">
+        <tag></tag>
+      </div>
+    </div>
+    <div style="display: flex;">
+      <span ng-class="{hide:!vm.internal}" style="color: #ea940f;"
+        >Internal Question</span
+      >
+      <span style="flex: 1;"></span>
+      <div class="info">
+        <span style="flex: 1;"></span>
+        <span>Asked by</span>
+        <span class="user">{{vm.author}}</span>
+        <span>on</span>
+        <span class="time" ng-bind="vm.time | formatDate"></span>
+      </div>
+    </div>
+  </div>
 </div>

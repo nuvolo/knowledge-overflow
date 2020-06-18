@@ -1,11 +1,11 @@
 :root {
-    --nuvolo-light-blue: #0cb2da;
-    --nuvolo-dark-blue: #0c3561;
+  --nuvolo-light-blue: #0cb2da;
+  --nuvolo-dark-blue: #0c3561;
 }
 
 body {
-    margin: 0px !important;
-    padding: 0px !important;
+  margin: 0px !important;
+  padding: 0px !important;
 }
 
 h6.announcement {
@@ -21,84 +21,84 @@ h6.announcement {
 ----------------------*/
 
 .mobile {
-    display: none;
+  display: none;
 }
 
 .centered {
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .center-width {
-    max-width: 800px;
-    min-width: 400px;
-    width: 100%;
+  max-width: 800px;
+  min-width: 400px;
+  width: 100%;
 }
 
 .hide {
-    display: none !important;
+  display: none !important;
 }
 
 .wrapper-horizontal {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .wrapper-vertical {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .ui-link {
-    color: inherit;
-    text-decoration: none !important;
+  color: inherit;
+  text-decoration: none !important;
 }
 
 .ui-link:hover {
-    color: inherit;
-    text-decoration: none !important;
-    cursor: pointer;
+  color: inherit;
+  text-decoration: none !important;
+  cursor: pointer;
 }
 
 .post-wrapper {
-    margin-left: 5px;
-    margin-top: 3px;
-    width: 80px;
-    display: flex;
-    flex-direction: row;
+  margin-left: 5px;
+  margin-top: 3px;
+  width: 80px;
+  display: flex;
+  flex-direction: row;
 }
 
 .post-wrapper button {
-    flex: 1;
+  flex: 1;
 }
 
 .user {
-    color: mediumblue;
+  color: mediumblue;
 }
 
 .time {
-    color: grey;
+  color: grey;
 }
 
 /*MAIN PAGE CSS*/
-@media (max-width:750px) {
-    .left-sidebar {
-        display: none;
-    }
+@media (max-width: 750px) {
+  .left-sidebar {
+    display: none;
+  }
 
-    .right-sidebar {
-        display: none;
-    }
+  .right-sidebar {
+    display: none;
+  }
 }
 
-@media (max-width:950px) {
-    .left-sidbar {
-        max-width: 150px;
-    }
+@media (max-width: 950px) {
+  .left-sidbar {
+    max-width: 150px;
+  }
 
-    .right-sidebar {
-        display: none;
-    }
+  .right-sidebar {
+    display: none;
+  }
 
     .small-hide {
         display: none !important;
@@ -106,219 +106,215 @@ h6.announcement {
 }
 
 .left-sidebar {
-    width: calc(50% - 400px - 50px);
-    margin-right: 50px;
-    margin-left: 10px;
-    padding-top: 50px;
-    border-right: 1px solid var(--nuvolo-light-blue);
-    min-width: 150px;
+  width: calc(50% - 400px - 50px);
+  margin-right: 50px;
+  margin-left: 10px;
+  padding-top: 50px;
+  border-right: 1px solid var(--nuvolo-light-blue);
+  min-width: 150px;
 }
 
 .right-sidebar {
-    width: calc(50% - 400px);
-    min-width: 150px;
+  width: calc(50% - 400px);
+  min-width: 150px;
 }
 
 .left-sidebar .tab {
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .left-sidebar .tab.active {
-    background-color: var(--nuvolo-light-blue) !important;
-    font-weight: bold;
+  background-color: var(--nuvolo-light-blue) !important;
+  font-weight: bold;
 }
 
 .left-sidebar .tab.active .tab-text {
-    color: white !important;
-}
+  color: white !important;
 
 .left-sidebar .tab:hover {
-    background-color: whitesmoke;
-    cursor: pointer;
+  background-color: whitesmoke;
+  cursor: pointer;
 }
 
 .left-sidebar .tab-text {
-    color: black;
-    text-decoration: none !important;
-    padding: 5px;
+  color: black;
+  text-decoration: none !important;
+  padding: 5px;
 }
-
 
 /*Banner CSS */
 .banner {
-    background: whitesmoke;
-    flex-wrap: nowrap;
-    width: 100%;
-    padding: 10px;
+  background: whitesmoke;
+  flex-wrap: nowrap;
+  width: 100%;
+  padding: 10px;
 }
 
 .search-container {
-    width: 100%;
-    margin: auto;
+  width: 100%;
+  margin: auto;
 }
 
 .search {
-    width: 100%;
+  width: 100%;
 }
 
 .banner .menu-btn:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .banner .menu-btn {
-    position: relative;
-    color: var(--nuvolo-dark-blue);
+  position: relative;
+  color: var(--nuvolo-dark-blue);
 }
 
 .banner-btn {
-    white-space: nowrap;
-    background-color: inherit !important;
-    color: var(--nuvolo-dark-blue) !important;
-    padding: 7px;
-    border-radius: 3px;
-    border: 1px solid whitesmoke !important;
-    margin-left: 10px;
-    margin-right: 10px;
-    font-size: 14px;
+  white-space: nowrap;
+  background-color: inherit !important;
+  color: var(--nuvolo-dark-blue) !important;
+  padding: 7px;
+  border-radius: 3px;
+  border: 1px solid whitesmoke !important;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 14px;
 }
 
 .banner-btn:hover {
-    border: 1px solid var(--nuvolo-light-blue) !important;
-    box-shadow: none !important;
-    user-select: none;
+  border: 1px solid var(--nuvolo-light-blue) !important;
+  box-shadow: none !important;
+  user-select: none;
 }
 
 .profile-btn {
-    border-radius: 20%;
-    height: 30px;
-    min-width: 30px;
-    border: 1px solid lightgrey !important;
-    text-align: center;
-    line-height: 28px;
-    padding: 0px;
-    background-color: white !important;
+  border-radius: 20%;
+  height: 30px;
+  min-width: 30px;
+  border: 1px solid lightgrey !important;
+  text-align: center;
+  line-height: 28px;
+  padding: 0px;
+  background-color: white !important;
 }
 
 .notifications-num {
-    position: absolute;
-    right: -7px;
-    top: -6px;
-    width: 14px;
-    height: 14px;
-    background-color: red;
-    border-radius: 50%;
-    font-size: 10px;
-    font-weight: 400;
-    text-align: center;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 900;
-    line-height: 1.3;
-    user-select: none;
+  position: absolute;
+  right: -7px;
+  top: -6px;
+  width: 14px;
+  height: 14px;
+  background-color: red;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 400;
+  text-align: center;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 900;
+  line-height: 1.3;
+  user-select: none;
 }
 
 .notifications-container {
-    position: absolute;
-    top: 30px;
-    right: 0px;
-    background-color: var(--nuvolo-light-blue);
-    border: 1px solid var(--nuvolo-dark-blue);
-    font-family: SourceSansPro, "Helvetica Neue", Arial;
-    font-size: 13px;
-    width: 400px;
-    min-height: 300px;
-    max-height: 500px;
-    overflow: auto;
-    z-index: 100;
-    border-radius: 5px;
+  position: absolute;
+  top: 30px;
+  right: 0px;
+  background-color: var(--nuvolo-light-blue);
+  border: 1px solid var(--nuvolo-dark-blue);
+  font-family: SourceSansPro, "Helvetica Neue", Arial;
+  font-size: 13px;
+  width: 400px;
+  min-height: 300px;
+  max-height: 500px;
+  overflow: auto;
+  z-index: 100;
+  border-radius: 5px;
 }
 
 .ko-notification {
-    padding: 8px;
-    background-color: whitesmoke;
-    min-height: 50px;
-    border-bottom: 1px solid var(--nuvolo-dark-blue);
-    position: relative;
-    user-select: none;
-    color: black !important;
-    font-family: Gilroy, sans-serif;
+  padding: 8px;
+  background-color: whitesmoke;
+  min-height: 50px;
+  border-bottom: 1px solid var(--nuvolo-dark-blue);
+  position: relative;
+  user-select: none;
+  color: black !important;
+  font-family: Gilroy, sans-serif;
 }
 
 .ko-notification.unread {
-    background-color: var(--nuvolo-light-blue);
-    color: white !important;
+  background-color: var(--nuvolo-light-blue);
+  color: white !important;
 }
 
 .ko-notification .delete {
-    display: none;
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    color: grey;
+  display: none;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  color: grey;
 }
 
 .ko-notification:hover .delete {
-    display: block;
+  display: block;
 }
 
 .ko-notification .delete:hover {
-    cursor: pointer !important;
-    color: black !important;
+  cursor: pointer !important;
+  color: black !important;
 }
 
 .notification-title {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .notification-content {
-    width: 100%;
-    max-width: 300px;
-    white-space: normal;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    font-weight: 100;
+  width: 100%;
+  max-width: 300px;
+  white-space: normal;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-weight: 100;
 }
 
 .notification-time {
-    text-align: right;
-    font-weight: 100;
-    color: var(--nuvolo-dark-blue);
-    font-family: SourceSansPro, "Helvetica Neue", Arial;
+  text-align: right;
+  font-weight: 100;
+  color: var(--nuvolo-dark-blue);
+  font-family: SourceSansPro, "Helvetica Neue", Arial;
 }
 
 /*------------------
 ---Tag Card CSS---
 ------------------*/
 .topic-card {
-    border-bottom: 4px dotted var(--nuvolo-light-blue);
-    margin: 15px;
-    padding: 10px;
+  border-bottom: 4px dotted var(--nuvolo-light-blue);
+  margin: 15px;
+  padding: 10px;
 }
 
 #topic-overview {
-    display: grid;
-    grid-gap: 15px;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    justify-content: space-around;
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  justify-content: space-around;
 }
-
 
 /*------------------ 
 ---Search Box CSS---
 ------------------*/
 .search-container {
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    min-width: 200px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  min-width: 200px;
 }
 
 .search-input {
-    flex-grow: 1;
-    height: 30px;
-    padding: 5px;
+  flex-grow: 1;
+  height: 30px;
+  padding: 5px;
 }
-
 
 /*--------------------- 
 ---Question Page CSS---
@@ -326,105 +322,112 @@ h6.announcement {
 
 /* Sidebar upvote/downvote css */
 .vote-container {
-    margin: 10px;
+  margin: 10px;
 }
 
 .arrow {
-    color: lightgrey;
-    text-align: center;
+  color: lightgrey;
+  text-align: center;
 }
 
 .vote-clickable:hover {
-    color: lightgreen;
-    cursor: pointer;
+  color: lightgreen;
+  cursor: pointer;
 }
 
 .vote-active {
-    color: var(--nuvolo-light-blue);
+  color: var(--nuvolo-light-blue);
 }
 
 .star {
-    margin-top: 10px;
-    text-align: center;
-    font-size: 25px;
-    color: lightgrey;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 25px;
+  color: lightgrey;
 }
 
 .star.active {
-    color: #FCDC3B;
+  color: #fcdc3b;
 }
 
 .best-answer {
-    margin-top: 10px;
-    color: #45A163;
+  margin-top: 10px;
+  color: #45a163;
 }
 
 .best-answer .select-answer {
-    color: gainsboro;
+  color: gainsboro;
 }
 
 /*Other stuff on question page */
 .answers-container {
-    border-top: 1px solid lightgrey;
+  border-top: 1px solid lightgrey;
 }
 
 .question-container,
 .answer-container {
-    margin: 20px;
-    width: 100%;
+  margin: 20px;
+  width: 100%;
 }
 
 code {
-    background-color: #eff0f1;
+  background-color: #eff0f1;
 }
 
 .question-container img {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .info {
-    text-align: right;
+  text-align: right;
 }
 
+.internalize {
+  color: var(--nuvolo-light-blue);
+  margin-right: 5px;
+}
+.internalize:hover {
+  color: var(--nuvolo-dark-blue);
+  cursor: pointer;
+}
 
 /* Comment CSS - container, color, author info */
 .comment-input {
-    resize: none;
-    margin: 5px;
-    flex: 1;
-    padding: 5px;
-    height: 200px !important;
-    border-radius: 4px;
-    border-color: #ccc;
+  resize: none;
+  margin: 5px;
+  flex: 1;
+  padding: 5px;
+  height: 200px !important;
+  border-radius: 4px;
+  border-color: #ccc;
 }
 
 .comments-actions {
-    padding: 5px;
-
+  padding: 5px;
 }
 
 .comments-actions div {
-    color: #989898;
-    display: inline;
+  color: #989898;
+  display: inline;
 }
 
 .comments-actions div:hover {
-    color: deepskyblue;
-    cursor: pointer;
+  color: deepskyblue;
+  cursor: pointer;
 }
 
 .comment {
-    padding: 3px 15px 3px 30px;
-    border-top: 1px solid lightgray;
-    display: block;
+  padding: 3px 15px 3px 30px;
+  border-top: 1px solid lightgray;
+  display: block;
 }
 
 .comment p {
-    display: inline;
+  display: inline;
 }
 
 .comment-container {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 /*------------------------
@@ -432,362 +435,360 @@ code {
 ------------------------*/
 .tags-container.tag-input,
 .title-input {
-    border: 1px solid #ddd;
-    min-height: 40px;
+  border: 1px solid #ddd;
+  min-height: 40px;
 }
 
 .title-input {
-    padding: 4px;
-    width: 100%;
+  padding: 4px;
+  width: 100%;
 }
 
 .tags-container {
-    padding: 0px 4px;
-    flex-wrap: wrap;
-    align-items: center;
+  padding: 0px 4px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .tags-input {
-    flex: 1;
-    border: none;
-    outline: none;
-    margin-left: 10px;
-    height: 35px;
+  flex: 1;
+  border: none;
+  outline: none;
+  margin-left: 10px;
+  height: 35px;
+}
+
+.internal-input {
+  display: flex;
+  align-items: center;
 }
 
 /* ----------------------
 -Question, Answer editor-
 ------------------------*/
 .editor-container {
-    display: block;
+  display: block;
 }
 
 .editor-container .CodeMirror,
 .editor-container .CodeMirror-scroll {
-    min-height: 250px;
-    max-height: 250px;
+  min-height: 250px;
+  max-height: 250px;
 }
 
 .question-preview {
-    border: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 
 .input-file {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
 /* ----------------------
 ---Review New Question---
 ------------------------*/
 .post-review {
-    position: fixed;
-    z-index: 2;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .review-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
 }
 
 .question-preview .preview {
-    flex: 1;
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 10px;
-    min-height: 100px;
+  flex: 1;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  min-height: 100px;
 }
 
 /* -------------------------
 -------Blue Tag Style-------
 --------------------------*/
 .ko-tag {
-    white-space: nowrap;
-    margin: 1px;
-    background: lightskyblue;
-    color: var(--nuvolo-dark-blue);
-    border-radius: 11px;
-    padding: 3px 8px;
+  white-space: nowrap;
+  margin: 1px;
+  background: lightskyblue;
+  color: var(--nuvolo-dark-blue);
+  border-radius: 11px;
+  padding: 3px 8px;
 }
 
 .tag-delete:hover {
-    color: red;
+  color: red;
 }
-
 
 /* -------------------------
 ---Question Preview Style---
 --------------------------*/
 .preview .community-info {
-    color: gray;
-    text-align: center;
-    padding: 5px;
+  color: gray;
+  text-align: center;
+  padding: 5px;
 }
 
 .preview {
-    border-bottom: 1px solid #eff0f1;
+  border-bottom: 1px solid #eff0f1;
 }
 
 .preview .community-info .value {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 .preview .community-info .info-container {
-    padding: 5px;
-    margin: 5px;
-    border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
 }
 
 .preview .community-info .info-container.info-highlight {
-    color: #45A163;
-    border: 1px solid #45A163;
+  color: #45a163;
+  border: 1px solid #45a163;
 }
 
 .preview .community-info .info-container.info-solid {
-    background-color: #45A163;
-    color: white;
+  background-color: #45a163;
+  color: white;
 }
 
 .question-title {
-    color: #07C;
+  color: #07c;
 }
 
 /* -------------------------
 --------Profile Style-------
 --------------------------*/
 .profile-tabs {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .profile-tabs .btn {
-    margin: 0px;
-    border: 0px;
-    border-radius: 3px 3px 0px 0px;
-    border-bottom: 1px solid var(--nuvolo-light-blue);
+  margin: 0px;
+  border: 0px;
+  border-radius: 3px 3px 0px 0px;
+  border-bottom: 1px solid var(--nuvolo-light-blue);
 }
 
 .profile-tabs .active {
-    border-style: solid;
-    border-color: var(--nuvolo-light-blue);
-    border-width: 1px 1px 0px 1px;
-    box-shadow: none;
+  border-style: solid;
+  border-color: var(--nuvolo-light-blue);
+  border-width: 1px 1px 0px 1px;
+  box-shadow: none;
 }
 
 .profile-tabs .tab-spacer {
-    flex: 1;
-    border-bottom: 1px solid var(--nuvolo-light-blue);
+  flex: 1;
+  border-bottom: 1px solid var(--nuvolo-light-blue);
 }
 
 /* -------------------------
 --------Results Styling-------
 --------------------------*/
 .filter-tabs {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .filter-tabs .btn {
-    margin: 0px;
-    border: 0px;
-    border-radius: 3px 3px 0px 0px;
-    border-bottom: 1px solid var(--nuvolo-light-blue);
+  margin: 0px;
+  border: 0px;
+  border-radius: 3px 3px 0px 0px;
+  border-bottom: 1px solid var(--nuvolo-light-blue);
 }
 
 .filter-tabs .active {
-    border-style: solid;
-    border-color: var(--nuvolo-light-blue);
-    border-width: 1px 1px 0px 1px;
-    box-shadow: none;
+  border-style: solid;
+  border-color: var(--nuvolo-light-blue);
+  border-width: 1px 1px 0px 1px;
+  box-shadow: none;
 }
 
 .filter-tabs .tab-spacer {
-    flex: 1;
-    border-bottom: 1px solid var(--nuvolo-light-blue);
+  flex: 1;
+  border-bottom: 1px solid var(--nuvolo-light-blue);
 }
-
 
 /*----------------------
 ----Filter all Tags-----
 ----------------------*/
 
 .tag-view {
-    display: grid;
-    grid-gap: 15px;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    justify-content: space-around;
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  justify-content: space-around;
 }
 
 .filter-tag-input {
-    border: 1px solid #ddd;
-    min-height: 30px;
-    margin: 15px;
-    width: 30%;
-    min-width: 250px;
-    padding-left: 10px;
+  border: 1px solid #ddd;
+  min-height: 30px;
+  margin: 15px;
+  width: 30%;
+  min-width: 250px;
+  padding-left: 10px;
 }
 
-
 .edit-button {
-    padding: 3px;
-    color: #989898;
+  padding: 3px;
+  color: #989898;
 }
 
 .edit-button span:hover {
-    cursor: pointer;
-    color: deepskyblue;
+  cursor: pointer;
+  color: deepskyblue;
 }
-
 
 /*--------------------------
 -----Admin Styling----
 ----------------------------*/
 .sort {
-    color: lightgrey;
+  color: lightgrey;
 }
 
 .sort:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .sort.active {
-    color: black;
+  color: black;
 }
 
 .admin-tag-table .btn {
-    padding: 3px 8px;
-    border-radius: 5px;
-    min-height: 20px;
-    border: 1px solid #bdc0c4;
+  padding: 3px 8px;
+  border-radius: 5px;
+  min-height: 20px;
+  border: 1px solid #bdc0c4;
 }
 
 .admin-tag-table {
-    table-layout: fixed;
-    width: 100%;
+  table-layout: fixed;
+  width: 100%;
 }
 
 .admin-tag-table tr {
-    height: 35px;
-    width: 100%;
+  height: 35px;
+  width: 100%;
 }
 
 .admin-tag-table .content-row {
-    border-top: 1px solid lightgrey;
+  border-top: 1px solid lightgrey;
 }
 
 .admin-tag-table td {
-    align-items: center;
-    display: flex;
+  align-items: center;
+  display: flex;
 }
 
 .admin-tag-table .col-tag,
 .admin-tag-table .col-date,
 .admin-tag-table .col-questions {
-    max-width: 33%;
+  max-width: 33%;
 }
 
 .admin-tag-table .col-actions {
-    min-width: 150px !important;
+  min-width: 150px !important;
 }
 
 .admin-modal {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .admin-modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
 }
 
 .rename-container {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .rename-container .modal-text div {
-    height: 30px;
+  height: 30px;
 }
 
 .admin-webhook-table .col-channel,
 .admin-webhook-table .col-tags {
-    padding: 5px;
+  padding: 5px;
 }
 
 .admin-webhook-table .content-row {
-    border-top: 1px solid lightgrey;
-    height: 30px;
+  border-top: 1px solid lightgrey;
+  height: 30px;
 }
 
 .admin-webhook-table .btn {
-    padding: 3px 8px;
-    border-radius: 5px;
-    min-height: 20px;
-    border: 1px solid #bdc0c4;
+  padding: 3px 8px;
+  border-radius: 5px;
+  min-height: 20px;
+  border: 1px solid #bdc0c4;
 }
 
-
-
 .webhook-edit {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .url-input {
-    resize: none;
-    border: 1px solid #ccc;
-    ;
-    padding: 10px;
+  resize: none;
+  border: 1px solid #ccc;
+  padding: 10px;
 }
 
 .admin-modal .input-wrapper {
-    margin-bottom: 15px;
-    display: inherit;
-    flex-direction: inherit;
+  margin-bottom: 15px;
+  display: inherit;
+  flex-direction: inherit;
 }
 
 .admin-modal .input-wrapper input {
-    padding: 10px;
+  padding: 10px;
 }
 
 .instructions .i-general {
-    color: #D32905;
+  color: #d32905;
 }
 
 .instructions {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .i-action {
-    color: #989898;
+  color: #989898;
 }
 
 .i-action:hover {
-    color: deepskyblue;
-    cursor: pointer;
+  color: deepskyblue;
+  cursor: pointer;
 }
 
 .col-tags a {
-    line-height: 25px;
+  line-height: 25px;
 }

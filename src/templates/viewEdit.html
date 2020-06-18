@@ -16,6 +16,12 @@
                     <h4>Tags</h4>
                 </div>
 
+                <div ng-class="{hide:!isInternal}" class='internal-input'>
+                    <h4 class='title'>Internal</h4>
+                    <span style='width:10px'></span>
+                    <input type='checkbox' ng-model='vm.internal'>
+                </div>
+
                 <div class='tags-container tag-input wrapper-horizontal'>
                     <span ng-repeat='tag in vm.tagList' class='ko-tag'>
                         {{tag}} <i class="fa fa-times tag-delete" ng-click='vm.removeTag(tag)'></i>
