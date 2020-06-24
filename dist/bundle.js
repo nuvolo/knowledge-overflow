@@ -1380,65 +1380,156 @@ function attachment_service_def($http) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filterSetup", function() { return filterSetup; });
+function filterSetup(mod) {
+  marked.setOptions({
+    breaks: true
+  });
 
-function filterSetup(mod){
+  mod.filter("renderHtml", function () {
+    return function (val) {
+      if (val) {
+        var div = document.createElement("div");
+        div.innerHTML = marked(val);
+        var list = div.getElementsByTagName("code");
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].parentNode.nodeName === "PRE") {
+            list[i].innerHTML = PR.prettyPrintOne(
+              list[i].innerHTML,
+              null,
+              true
+            );
+          } else {
+            list[i].innerHTML = PR.prettyPrintOne(list[i].innerHTML);
+          }
+        }
+        return div.innerHTML;
+      }
+      return "";
+    };
+  });
 
-    marked.setOptions({
-        breaks: true
-    });
-    
-    mod.filter('renderHtml', function() {
-        return function(val) {
-            if (val) {
-                var div = document.createElement('div');
-                div.innerHTML = marked(val);
-                var list = div.getElementsByTagName('code');
-                for (var i = 0; i < list.length; i++) {
-                    if (list[i].parentNode.nodeName === 'PRE') {
-                        list[i].innerHTML = PR.prettyPrintOne(list[i].innerHTML, null, true);
-                    } else {
-                        list[i].innerHTML = PR.prettyPrintOne(list[i].innerHTML);
-                    }
-                }
-                return div.innerHTML;
-            }
-            return "";
-        };
-    });
+  mod.filter("fixAttachments", [
+    "$sce",
+    function ($sce) {
+      let download = function (url) {
+        let meta_url = url.slice(0, -5); //url without /file suffix
+        let meta_request = new Request(meta_url, {
+          method: "GET",
+          headers: new Headers({
+            "X-UserToken": window.g_ck,
+            accept: "application/json"
+          })
+        });
+        let file_request = new Request(url, {
+          method: "GET",
+          headers: new Headers({
+            "X-UserToken": window.g_ck,
+            accept: "application/json"
+          })
+        });
+        fetch(meta_request)
+          .then((res) => res.json())
+          .then((d) => d.result.file_name)
+          .then((file_name) => {
+            fetch(file_request)
+              .then((res) => res.blob())
+              .then((blob) => {
+                const dl = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.style.display = "none";
+                a.href = dl;
+                a.download = file_name;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(dl);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
 
-    mod.filter('formatDate', function() {
-        return function(d, local) {
-            if (d) {
-                if (!local) {
-                    d = d.replace(' ', 'T') + 'Z';
-                    d = new Date(d);
-                }
-                var hr = d.getHours();
-                var min = d.getMinutes();
-                min = ("0" + min).slice(-2);
-                var mo = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][d.getMonth()];
-                var yr = d.getFullYear().toString().slice(2);
-                var date = d.getDate();
-                return (mo + " " + date + ", '" + yr + " at " + hr + ":" + min);
-            }
-        };
-    });
-    
-    mod.filter('formatShortDate', function() {
-        return function(d, local) {
-            if (d) {
-                if (!local) {
-                    d = d.replace(' ', 'T') + 'Z';
-                    d = new Date(d);
-                }
-                var mo = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][d.getMonth()];
-                var yr = d.getFullYear().toString().slice(2);
-                var date = d.getDate();
-                return (mo + " " + date + ", " + yr);
-            }
-        };
-    });
+      return function (val) {
+        let div = document.createElement("div");
+        div.innerHTML = val;
+        for (let el of div.getElementsByTagName("a")) {
+          if (
+            el.href.slice(0, 55) ===
+            "https://nuvolodev.service-now.com/api/now/v1/attachment"
+          ) {
+            let url = el.href;
+            el.removeAttribute("href");
+            el.setAttribute("onClick", `(${download.toString()})('${url}')`);
+          }
+        }
+        return $sce.trustAsHtml(div.innerHTML);
+      };
+    }
+  ]);
+
+  mod.filter("formatDate", function () {
+    return function (d, local) {
+      if (d) {
+        if (!local) {
+          d = d.replace(" ", "T") + "Z";
+          d = new Date(d);
+        }
+        var hr = d.getHours();
+        var min = d.getMinutes();
+        min = ("0" + min).slice(-2);
+        var mo = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ][d.getMonth()];
+        var yr = d.getFullYear().toString().slice(2);
+        var date = d.getDate();
+        return mo + " " + date + ", '" + yr + " at " + hr + ":" + min;
+      }
+    };
+  });
+
+  mod.filter("formatShortDate", function () {
+    return function (d, local) {
+      if (d) {
+        if (!local) {
+          d = d.replace(" ", "T") + "Z";
+          d = new Date(d);
+        }
+        var mo = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ][d.getMonth()];
+        var yr = d.getFullYear().toString().slice(2);
+        var date = d.getDate();
+        return mo + " " + date + ", " + yr;
+      }
+    };
+  });
 }
+
 
 /***/ }),
 /* 36 */
@@ -2213,7 +2304,7 @@ function question_view_def() {
 /* 51 */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-class='{\"hide\":!vm.noQuestion}'>\n  No question with the id {{vm.question_id}} was found\n</div>\n<div ng-class='{\"hide\":vm.noQuestion}'>\n  <div class=\"wrapper-horizontal\">\n    <votes></votes>\n\n    <div class=\"question-container wrapper-vertical\">\n      <div>\n        <div class=\"question-title\">\n          <h4>{{vm.question}}</h4>\n        </div>\n        <div ng-bind-html=\"vm.description | renderHtml\"></div>\n      </div>\n      <div>\n        <div class=\"tags-container wrapper-horizontal\">\n          <span ng-repeat=\"tag in vm.tags\">\n            <tag></tag>\n          </span>\n        </div>\n        <div style=\"display: flex;\">\n          <span\n            ng-class=\"{hide:!vm.internal}\"\n            style=\"color: #ea940f; margin-right: 5px;\"\n            >Internal Question</span\n          >\n          <span\n            ng-class=\"{hide:vm.internal || !isAdmin}\"\n            ng-click=\"vm.makeInternal()\"\n            class=\"internalize\"\n            >Make Internal</span\n          >\n          <span\n            ng-class=\"{hide:!isAdmin}\"\n            ng-click=\"vm.deleteQuestion()\"\n            class=\"internalize\"\n            >Delete Question</span\n          >\n          <span style=\"flex: 1;\"></span>\n          <div class=\"info\">\n            <span>Asked by</span>\n            <span class=\"user\">{{vm.author}}</span>\n            <span>on</span>\n            <span class=\"time\" ng-bind=\"vm.time | formatDate\"></span>\n          </div>\n        </div>\n        <div class=\"info edit-button\" ng-class='{\"hide\":!vm.isAuthor}'>\n          <span>\n            <a class=\"ui-link\" ui-sref='edit({qid:\"{{vm.question_id}}\"})'\n              >Edit</a\n            >\n          </span>\n        </div>\n      </div>\n      <comments></comments>\n    </div>\n  </div>\n  <div class=\"answers-container\">\n    <div ng-repeat=\"answer in vm.answers\">\n      <answer ng-attr-id=\"{{ 'answer-' + answer.answer_id }}\"></answer>\n    </div>\n  </div>\n  <div>\n    <form ng-submit=\"vm.postNewAnswer()\">\n      <div class=\"wrapper-vertical\">\n        <div>\n          <h3>Add an Answer</h3>\n        </div>\n        <div class=\"wrapper-vertical\">\n          <editor></editor>\n        </div>\n        <div ng-class=\"{hide: vm.newAnswerText.length == 0}\">\n          <div class=\"preview wrapper-vertical\">\n            <div\n              ng-bind-html=\"vm.editorText | renderHtml\"\n              class=\"question-container\"\n            ></div>\n          </div>\n\n          <div class=\"post-wrapper\">\n            <button type=\"submit\">Post</button>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n";
+module.exports = "<div ng-class='{\"hide\":!vm.noQuestion}'>\n  No question with the id {{vm.question_id}} was found\n</div>\n<div ng-class='{\"hide\":vm.noQuestion}'>\n  <div class=\"wrapper-horizontal\">\n    <votes></votes>\n\n    <div class=\"question-container wrapper-vertical\">\n      <div>\n        <div class=\"question-title\">\n          <h4>{{vm.question}}</h4>\n        </div>\n        <div ng-bind-html=\"vm.description | renderHtml | fixAttachments\"></div>\n      </div>\n      <div>\n        <div class=\"tags-container wrapper-horizontal\">\n          <span ng-repeat=\"tag in vm.tags\">\n            <tag></tag>\n          </span>\n        </div>\n        <div style=\"display: flex;\">\n          <span\n            ng-class=\"{hide:!vm.internal}\"\n            style=\"color: #ea940f; margin-right: 5px;\"\n            >Internal Question</span\n          >\n          <span\n            ng-class=\"{hide:vm.internal || !isAdmin}\"\n            ng-click=\"vm.makeInternal()\"\n            class=\"internalize\"\n            >Make Internal</span\n          >\n          <span\n            ng-class=\"{hide:!isAdmin}\"\n            ng-click=\"vm.deleteQuestion()\"\n            class=\"internalize\"\n            >Delete Question</span\n          >\n          <span style=\"flex: 1;\"></span>\n          <div class=\"info\">\n            <span>Asked by</span>\n            <span class=\"user\">{{vm.author}}</span>\n            <span>on</span>\n            <span class=\"time\" ng-bind=\"vm.time | formatDate\"></span>\n          </div>\n        </div>\n        <div class=\"info edit-button\" ng-class='{\"hide\":!vm.isAuthor}'>\n          <span>\n            <a class=\"ui-link\" ui-sref='edit({qid:\"{{vm.question_id}}\"})'\n              >Edit</a\n            >\n          </span>\n        </div>\n      </div>\n      <comments></comments>\n    </div>\n  </div>\n  <div class=\"answers-container\">\n    <div ng-repeat=\"answer in vm.answers\">\n      <answer ng-attr-id=\"{{ 'answer-' + answer.answer_id }}\"></answer>\n    </div>\n  </div>\n  <div>\n    <form ng-submit=\"vm.postNewAnswer()\">\n      <div class=\"wrapper-vertical\">\n        <div>\n          <h3>Add an Answer</h3>\n        </div>\n        <div class=\"wrapper-vertical\">\n          <editor></editor>\n        </div>\n        <div ng-class=\"{hide: vm.newAnswerText.length == 0}\">\n          <div class=\"preview wrapper-vertical\">\n            <div\n              ng-bind-html=\"vm.editorText | renderHtml\"\n              class=\"question-container\"\n            ></div>\n          </div>\n\n          <div class=\"post-wrapper\">\n            <button type=\"submit\">Post</button>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 52 */

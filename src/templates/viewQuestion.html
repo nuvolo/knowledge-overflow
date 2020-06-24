@@ -10,7 +10,7 @@
         <div class="question-title">
           <h4>{{vm.question}}</h4>
         </div>
-        <div ng-bind-html="vm.description | renderHtml"></div>
+        <div ng-bind-html="vm.description | renderHtml | fixAttachments"></div>
       </div>
       <div>
         <div class="tags-container wrapper-horizontal">
