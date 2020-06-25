@@ -1509,7 +1509,10 @@ function filterSetup(mod) {
           ) {
             let url = el.href;
             el.removeAttribute("href");
-            el.setAttribute("onClick", `(${download.toString()})('${url}')`);
+            el.setAttribute(
+              "onClick",
+              "(" + download.toString() + ")('" + url + "')"
+            );
           }
         }
         return $sce.trustAsHtml(div.innerHTML);
