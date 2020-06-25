@@ -205,7 +205,7 @@ function answer_def() {
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"wrapper-horizontal answer\">\n  <votes></votes>\n\n  <div class=\"answer-container wrapper-vertical\">\n    <div ng-bind-html=\"vm.answer | renderHtml\"></div>\n    <div class=\"info\">\n      <span>Answered by</span>\n      <span class=\"user\">{{vm.author}}</span>\n      <span>on</span>\n      <span class=\"time\" ng-bind=\"vm.time | formatDate\"></span>\n    </div>\n\n    <div class=\"info edit-button\" ng-class='{\"hide\":!vm.isAuthor}'>\n      <span>\n        <a\n          class=\"ui-link\"\n          ui-sref='edit({qid:\"{{vm.question_id}}\",aid:\"{{vm.answer_id}}\"})'\n          >Edit</a\n        >\n      </span>\n    </div>\n\n    <comments></comments>\n  </div>\n</div>\n";
+module.exports = "<div class=\"wrapper-horizontal answer\">\n  <votes></votes>\n\n  <div class=\"answer-container wrapper-vertical\">\n    <div ng-bind-html=\"vm.answer | renderHtml |fixAttachments\"></div>\n    <div class=\"info\">\n      <span>Answered by</span>\n      <span class=\"user\">{{vm.author}}</span>\n      <span>on</span>\n      <span class=\"time\" ng-bind=\"vm.time | formatDate\"></span>\n    </div>\n\n    <div class=\"info edit-button\" ng-class='{\"hide\":!vm.isAuthor}'>\n      <span>\n        <a\n          class=\"ui-link\"\n          ui-sref='edit({qid:\"{{vm.question_id}}\",aid:\"{{vm.answer_id}}\"})'\n          >Edit</a\n        >\n      </span>\n    </div>\n\n    <comments></comments>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 4 */
