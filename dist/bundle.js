@@ -414,6 +414,7 @@ function editor_def() {
     evm.selectFiles = function () {
       document.querySelector(".input-file").click();
     };
+
     $scope.vm.editorText = "";
     //Configured drop-in editor from simplemde markdown editor
     var mde = new SimpleMDE({
@@ -460,7 +461,7 @@ function editor_def() {
       status: false,
       forceSync: true
     });
-
+    $scope.vm.mde = mde;
     //Force update on the model when typing into the editor
     mde.codemirror.on("change", function () {
       $scope.vm.editorText = mde.value();
@@ -2089,11 +2090,13 @@ function edit_view_def() {
         for (var i = 0; i < data.answers.length; i++) {
           if (data.answers[i].answer_id == vm.aid)
             vm.editorText = data.answers[i].answer;
+          vm.mde.value(vm.editorText);
         }
       } else if (vm.type == "q" && data.question) {
         vm.questionTitle = data.question;
         vm.tagList = data.tags;
         vm.editorText = data.description;
+        vm.mde.value(vm.editorText);
         vm.internal = data.internal;
       }
       if (!vm.editorText) vm.noText = true;
@@ -2340,6 +2343,7 @@ function question_view_def() {
           .createAnswer(vm.editorText, vm.question_id)
           .then(function (data) {
             vm.editorText = "";
+            vm.mde.value("");
             vm.answers = data.answers;
             sortAnswers();
           });

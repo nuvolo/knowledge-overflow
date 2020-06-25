@@ -24,6 +24,7 @@ export function editor_def() {
     evm.selectFiles = function () {
       document.querySelector(".input-file").click();
     };
+
     $scope.vm.editorText = "";
     //Configured drop-in editor from simplemde markdown editor
     var mde = new SimpleMDE({
@@ -70,7 +71,7 @@ export function editor_def() {
       status: false,
       forceSync: true
     });
-
+    $scope.vm.mde = mde;
     //Force update on the model when typing into the editor
     mde.codemirror.on("change", function () {
       $scope.vm.editorText = mde.value();
