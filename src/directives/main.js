@@ -1,7 +1,7 @@
-import template from '../templates/main.html';
+import template from "../templates/main.html";
 
 export function main_def() {
-    return {
-        template: template
-    };
+  return {
+    template: template
+  };
 }

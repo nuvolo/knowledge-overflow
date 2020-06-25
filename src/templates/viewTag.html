@@ -1,4 +1,8 @@
 <h3>Questions tagged "{{vm.tag}}"</h3>
-<button ng-class='{hide: vm.watched == true}' ng-click='vm.watch(true)'><i class="fa fa-eye"></i> Watch Tag</button>
-<button ng-class='{hide: vm.watched == false}' ng-click='vm.watch(false)'><i class="fa fa-eye-slash"></i> Unwatch Tag</button>
+<button ng-class="{hide: vm.watched == true}" ng-click="vm.watch(true)">
+  <i class="fa fa-eye"></i> Watch Tag
+</button>
+<button ng-class="{hide: vm.watched == false}" ng-click="vm.watch(false)">
+  <i class="fa fa-eye-slash"></i> Unwatch Tag
+</button>
 <results></results>

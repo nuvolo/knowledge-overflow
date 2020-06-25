@@ -62,6 +62,7 @@ export function question_view_def() {
           .createAnswer(vm.editorText, vm.question_id)
           .then(function (data) {
             vm.editorText = "";
+            vm.mde.value("");
             vm.answers = data.answers;
             sortAnswers();
           });

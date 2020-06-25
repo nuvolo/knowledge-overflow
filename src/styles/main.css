@@ -9,11 +9,11 @@ body {
 }
 
 h6.announcement {
-    background: #2c3e50;
-    padding: 16px;
-    margin: 0;
-    color: #ecf0f1;
-    text-align: center;
+  background: #2c3e50;
+  padding: 16px;
+  margin: 0;
+  color: #ecf0f1;
+  text-align: center;
 }
 
 /*----------------------
@@ -100,9 +100,9 @@ h6.announcement {
     display: none;
   }
 
-    .small-hide {
-        display: none !important;
-    }
+  .small-hide {
+    display: none !important;
+  }
 }
 
 .left-sidebar {
@@ -130,6 +130,7 @@ h6.announcement {
 
 .left-sidebar .tab.active .tab-text {
   color: white !important;
+}
 
 .left-sidebar .tab:hover {
   background-color: whitesmoke;

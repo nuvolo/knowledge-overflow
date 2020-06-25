@@ -1,38 +1,62 @@
-<div class='vote-container wrapper-vertical'>
-    <div class='arrow'>
-        <i class="fa fa-2x fa-chevron-up vote-clickable" ng-click='vvm.vote(vvm.direction==1?0:1)'
-            ng-class='{"vote-active": vvm.direction == 1}'></i>
+<div class="vote-container wrapper-vertical">
+  <div class="arrow">
+    <i
+      class="fa fa-2x fa-chevron-up vote-clickable"
+      ng-click="vvm.vote(vvm.direction==1?0:1)"
+      ng-class='{"vote-active": vvm.direction == 1}'
+    ></i>
+  </div>
+
+  <div style="text-align: center;">{{vvm.votes}}</div>
+
+  <div class="arrow">
+    <i
+      class="fa fa-2x fa-chevron-down vote-clickable"
+      ng-click="vvm.vote(vvm.direction==-1?0:-1)"
+      ng-class='{"vote-active": vvm.direction == -1}'
+    ></i>
+  </div>
+
+  <div
+    class="best-answer wrapper-vertical centered"
+    ng-class='{"hide": vvm.type !== "answer"}'
+  >
+    <i
+      class="fa fa-2x fa-check"
+      title="The question owner accepted this as the best answer"
+      ng-class="{hide : vvm.best_answer_type !== 'accepted' || !vvm.best_answer}"
+    ></i>
+    <i
+      class="fa fa-2x fa-check-circle"
+      title="A moderator marked this as the best answer"
+      ng-class="{hide : vvm.best_answer_type !== 'moderator' || !vvm.best_answer}"
+    ></i>
+    <i
+      class="fa fa-2x fa-users"
+      title="The community has voted this as the best answer"
+      ng-class="{hide : vvm.best_answer_type !== 'community' || !vvm.best_answer}"
+    ></i>
+
+    <div class="select-answer wrapper-horizontal">
+      <i
+        class="fa fa-2x fa-check"
+        title="Accept this answer"
+        ng-class="{hide : (vvm.best_answer_type === 'moderator' || vvm.best_answer_type === 'community' || vvm.best_answer || !vvm.question_author) }"
+        ng-click="vvm.markBestAnswer('accepted')"
+      ></i>
+      <i
+        class="fa fa-2x fa-check-circle"
+        title="Mark this as best answer as moderator"
+        ng-class="{hide : !isAdmin || (vvm.best_answer_type == 'moderator' &amp;&amp; vvm.best_answer)}"
+        ng-click="vvm.markBestAnswer('moderator')"
+      ></i>
     </div>
+  </div>
 
-    <div style='text-align:center'>{{vvm.votes}}</div>
-
-    <div class='arrow'>
-        <i class="fa fa-2x fa-chevron-down vote-clickable" ng-click='vvm.vote(vvm.direction==-1?0:-1)'
-            ng-class='{"vote-active": vvm.direction == -1}'></i>
-    </div>
-
-    <div class='best-answer wrapper-vertical centered' ng-class='{"hide": vvm.type !== "answer"}'>
-        <i class="fa fa-2x fa-check" title="The question owner accepted this as the best answer"
-            ng-class="{hide : vvm.best_answer_type !== 'accepted' || !vvm.best_answer}"></i>
-        <i class="fa fa-2x fa-check-circle" title="A moderator marked this as the best answer"
-            ng-class="{hide : vvm.best_answer_type !== 'moderator' || !vvm.best_answer}"></i>
-        <i class="fa fa-2x fa-users" title="The community has voted this as the best answer"
-            ng-class="{hide : vvm.best_answer_type !== 'community' || !vvm.best_answer}"></i>
-
-
-        <div class='select-answer wrapper-horizontal'>
-            <i class="fa fa-2x fa-check" title="Accept this answer"
-                ng-class="{hide : (vvm.best_answer_type === 'moderator' || vvm.best_answer_type === 'community' || vvm.best_answer || !vvm.question_author) }"
-                ng-click="vvm.markBestAnswer('accepted')"></i>
-            <i class="fa fa-2x fa-check-circle" title="Mark this as best answer as moderator"
-                ng-class="{hide : !isAdmin || (vvm.best_answer_type == 'moderator' &amp;&amp; vvm.best_answer)}"
-                ng-click="vvm.markBestAnswer('moderator')"></i>
-        </div>
-
-
-    </div>
-
-    <div class='star vote-clickable' ng-class='{"active": vvm.starred, "hide": vvm.type != "question"}'>
-        <i ng-click='vvm.toggleStarred()' class="fa fa-star"></i>
-    </div>
+  <div
+    class="star vote-clickable"
+    ng-class='{"active": vvm.starred, "hide": vvm.type != "question"}'
+  >
+    <i ng-click="vvm.toggleStarred()" class="fa fa-star"></i>
+  </div>
 </div>

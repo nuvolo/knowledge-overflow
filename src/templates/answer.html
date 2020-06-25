@@ -1,22 +1,25 @@
-<div class='wrapper-horizontal answer'>
-    <votes></votes>
+<div class="wrapper-horizontal answer">
+  <votes></votes>
 
-    <div class='answer-container wrapper-vertical'>
-        <div ng-bind-html='vm.answer | renderHtml'></div>
-        <div class='info'>
-            <span>Answered by</span>
-            <span class='user'>{{vm.author}}</span>
-            <span>on</span>
-            <span class='time' ng-bind='vm.time | formatDate'></span>
-        </div>
-
-        <div class='info edit-button' ng-class='{"hide":!vm.isAuthor}'>
-            <span>
-                <a class='ui-link' ui-sref='edit({qid:"{{vm.question_id}}",aid:"{{vm.answer_id}}"})'>Edit</a>
-            </span>
-        </div>
-
-        <comments></comments>
-
+  <div class="answer-container wrapper-vertical">
+    <div ng-bind-html="vm.answer | renderHtml |fixAttachments"></div>
+    <div class="info">
+      <span>Answered by</span>
+      <span class="user">{{vm.author}}</span>
+      <span>on</span>
+      <span class="time" ng-bind="vm.time | formatDate"></span>
     </div>
+
+    <div class="info edit-button" ng-class='{"hide":!vm.isAuthor}'>
+      <span>
+        <a
+          class="ui-link"
+          ui-sref='edit({qid:"{{vm.question_id}}",aid:"{{vm.answer_id}}"})'
+          >Edit</a
+        >
+      </span>
+    </div>
+
+    <comments></comments>
+  </div>
 </div>

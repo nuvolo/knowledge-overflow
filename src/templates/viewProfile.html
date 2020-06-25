@@ -1,9 +1,33 @@
-<div class='profile-tabs wrapper-horizontal'>
-    <div class='tab-spacer' style='max-width:20px'></div>
-    <button ui-sref = 'profile({tab:"questions"})' class = 'btn' ng-class='{active: vm.tab == "questions"}'>Questions</button>
-    <button ui-sref = 'profile({tab:"answers"})' class = 'btn' ng-class='{active: vm.tab == "answers"}'>Answers</button>
-    <button ui-sref = 'profile({tab:"starred"})' class = 'btn' ng-class='{active: vm.tab == "starred"}'>Starred</button>
-    <button ui-sref = 'profile({tab:"tags"})' class = 'btn' ng-class='{active: vm.tab == "tags"}'>Watched Tags</button>
-    <div class='tab-spacer'></div>
+<div class="profile-tabs wrapper-horizontal">
+  <div class="tab-spacer" style="max-width: 20px;"></div>
+  <button
+    ui-sref='profile({tab:"questions"})'
+    class="btn"
+    ng-class='{active: vm.tab == "questions"}'
+  >
+    Questions
+  </button>
+  <button
+    ui-sref='profile({tab:"answers"})'
+    class="btn"
+    ng-class='{active: vm.tab == "answers"}'
+  >
+    Answers
+  </button>
+  <button
+    ui-sref='profile({tab:"starred"})'
+    class="btn"
+    ng-class='{active: vm.tab == "starred"}'
+  >
+    Starred
+  </button>
+  <button
+    ui-sref='profile({tab:"tags"})'
+    class="btn"
+    ng-class='{active: vm.tab == "tags"}'
+  >
+    Watched Tags
+  </button>
+  <div class="tab-spacer"></div>
 </div>
 <results></results>

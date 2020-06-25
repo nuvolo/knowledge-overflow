@@ -38,11 +38,13 @@ export function edit_view_def() {
         for (var i = 0; i < data.answers.length; i++) {
           if (data.answers[i].answer_id == vm.aid)
             vm.editorText = data.answers[i].answer;
+          vm.mde.value(vm.editorText);
         }
       } else if (vm.type == "q" && data.question) {
         vm.questionTitle = data.question;
         vm.tagList = data.tags;
         vm.editorText = data.description;
+        vm.mde.value(vm.editorText);
         vm.internal = data.internal;
       }
       if (!vm.editorText) vm.noText = true;
