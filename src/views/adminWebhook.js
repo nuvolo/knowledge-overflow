@@ -9,8 +9,14 @@ export function admin_webhook_view_def() {
     url: "/admin/webhooks"
   };
 
-  view_ctrl.$inject = ["$scope", "adminService", "tagsService"];
-  function view_ctrl($scope, adminService, tagsService) {
+  view_ctrl.$inject = [
+    "$scope",
+    "adminService",
+    "tagsService",
+    "$element",
+    "$timeout"
+  ];
+  function view_ctrl($scope, adminService, tagsService, $element, $timeout) {
     var vm = this;
     vm.state = "view";
     vm.instructions = false;
@@ -76,9 +82,13 @@ export function admin_webhook_view_def() {
       if (newVal != "") tagsService.autofillTags(newVal);
     });
 
-    vm.addTag = function (e) {
-      if (e.keyCode == 13) {
-        e.preventDefault();
+    $element[0].querySelector(".tags-input").on("blur", function () {
+      vm.addTag(undefined, true);
+    });
+
+    vm.addTag = function (e, force) {
+      if (force || e.keyCode == 13) {
+        if (e) e.preventDefault();
 
         if (vm.newTag.length > 0) {
           vm.hook.tags.push(vm.newTag);
@@ -88,6 +98,10 @@ export function admin_webhook_view_def() {
           vm.newTag = "";
           vm.autofillList = [];
         }
+        //need to force update to make sure new tags are rendered
+        $timeout(function () {
+          $scope.$apply();
+        });
       }
     };
   }
