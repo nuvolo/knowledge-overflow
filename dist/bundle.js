@@ -156,18 +156,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function directiveSetup(mod) {
-    mod.directive("answer", _answer__WEBPACK_IMPORTED_MODULE_0__["answer_def"]);
-    mod.directive('answerpreview', _answerPreview__WEBPACK_IMPORTED_MODULE_1__["answer_preview_def"]);
-    mod.directive("banner", _banner__WEBPACK_IMPORTED_MODULE_2__["banner_def"]);
-    mod.directive('comments', _comments__WEBPACK_IMPORTED_MODULE_3__["comments_def"]);
-    mod.directive('editor', _editor__WEBPACK_IMPORTED_MODULE_4__["editor_def"]);
-    mod.directive('main', _main__WEBPACK_IMPORTED_MODULE_5__["main_def"]);
-    mod.directive('questionpreview', _questionPreview__WEBPACK_IMPORTED_MODULE_6__["question_preview_def"]);
-    mod.directive('results', _results__WEBPACK_IMPORTED_MODULE_7__["results_def"]);
-    mod.directive("search", _search__WEBPACK_IMPORTED_MODULE_8__["search_def"]);
-    mod.directive('tag', _tag__WEBPACK_IMPORTED_MODULE_9__["tag_def"]);
-    mod.directive('votes', _votes__WEBPACK_IMPORTED_MODULE_10__["votes_def"]);
+  mod.directive("answer", _answer__WEBPACK_IMPORTED_MODULE_0__["answer_def"]);
+  mod.directive("answerpreview", _answerPreview__WEBPACK_IMPORTED_MODULE_1__["answer_preview_def"]);
+  mod.directive("banner", _banner__WEBPACK_IMPORTED_MODULE_2__["banner_def"]);
+  mod.directive("comments", _comments__WEBPACK_IMPORTED_MODULE_3__["comments_def"]);
+  mod.directive("editor", _editor__WEBPACK_IMPORTED_MODULE_4__["editor_def"]);
+  mod.directive("main", _main__WEBPACK_IMPORTED_MODULE_5__["main_def"]);
+  mod.directive("questionpreview", _questionPreview__WEBPACK_IMPORTED_MODULE_6__["question_preview_def"]);
+  mod.directive("results", _results__WEBPACK_IMPORTED_MODULE_7__["results_def"]);
+  mod.directive("search", _search__WEBPACK_IMPORTED_MODULE_8__["search_def"]);
+  mod.directive("tag", _tag__WEBPACK_IMPORTED_MODULE_9__["tag_def"]);
+  mod.directive("votes", _votes__WEBPACK_IMPORTED_MODULE_10__["votes_def"]);
 }
+
 
 /***/ }),
 /* 2 */
@@ -181,29 +182,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function answer_def() {
-    var answer = {
-        template: _templates_answer_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        controller: answer_ctrl,
-        controllerAs: "vm",
-        scope: false
-    };
-    answer_ctrl.$inject = ["$scope"];
+  var answer = {
+    template: _templates_answer_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    controller: answer_ctrl,
+    controllerAs: "vm",
+    scope: false
+  };
+  answer_ctrl.$inject = ["$scope"];
 
-    function answer_ctrl($scope) {
-        //Extract answer data and question ID from parent question
-        var vm = this;
-        for (var param in $scope.answer) vm[param] = $scope.answer[param];
-        vm.question_id = $scope.$parent.vm.question_id;
-    }
+  function answer_ctrl($scope) {
+    //Extract answer data and question ID from parent question
+    var vm = this;
+    for (var param in $scope.answer) vm[param] = $scope.answer[param];
+    vm.question_id = $scope.$parent.vm.question_id;
+  }
 
-    return answer;
+  return answer;
 }
+
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='wrapper-horizontal answer'>\n    <votes></votes>\n\n    <div class='answer-container wrapper-vertical'>\n        <div ng-bind-html='vm.answer | renderHtml'></div>\n        <div class='info'>\n            <span>Answered by</span>\n            <span class='user'>{{vm.author}}</span>\n            <span>on</span>\n            <span class='time' ng-bind='vm.time | formatDate'></span>\n        </div>\n\n        <div class='info edit-button' ng-class='{\"hide\":!vm.isAuthor}'>\n            <span>\n                <a class='ui-link' ui-sref='edit({qid:\"{{vm.question_id}}\",aid:\"{{vm.answer_id}}\"})'>Edit</a>\n            </span>\n        </div>\n\n        <comments></comments>\n\n    </div>\n</div>";
+module.exports = "<div class=\"wrapper-horizontal answer\">\n  <votes></votes>\n\n  <div class=\"answer-container wrapper-vertical\">\n    <div ng-bind-html=\"vm.answer | renderHtml\"></div>\n    <div class=\"info\">\n      <span>Answered by</span>\n      <span class=\"user\">{{vm.author}}</span>\n      <span>on</span>\n      <span class=\"time\" ng-bind=\"vm.time | formatDate\"></span>\n    </div>\n\n    <div class=\"info edit-button\" ng-class='{\"hide\":!vm.isAuthor}'>\n      <span>\n        <a\n          class=\"ui-link\"\n          ui-sref='edit({qid:\"{{vm.question_id}}\",aid:\"{{vm.answer_id}}\"})'\n          >Edit</a\n        >\n      </span>\n    </div>\n\n    <comments></comments>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 4 */
@@ -216,26 +218,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_answerPreview_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_answerPreview_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function answer_preview_def() {
-    var preview = {
-        controller: preview_ctrl,
-        controllerAs: 'vm',
-        scope: false,
-        template: _templates_answerPreview_html__WEBPACK_IMPORTED_MODULE_0___default.a
-    };
-    preview_ctrl.$inject = ['$scope'];
-    function preview_ctrl($scope) {
-        var vm = this;
-        for (var param in $scope.preview) vm[param] = $scope.preview[param];
-    }
+  var preview = {
+    controller: preview_ctrl,
+    controllerAs: "vm",
+    scope: false,
+    template: _templates_answerPreview_html__WEBPACK_IMPORTED_MODULE_0___default.a
+  };
+  preview_ctrl.$inject = ["$scope"];
+  function preview_ctrl($scope) {
+    var vm = this;
+    for (var param in $scope.preview) vm[param] = $scope.preview[param];
+  }
 
-    return preview;
+  return preview;
 }
+
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='wrapper-horizontal' style='align-items:center'>\n    <div class='wrapper-vertical'>\n        <div class='question'>\n            <a ui-sref='question({id:\"{{vm.question_id}}\"})' class='ui-link'>\n                <h4 class='question-title'>Q: {{vm.question}}</h4>\n            </a>\n        </div>\n        <div class='wrapper-horizontal'>\n            <div ng-repeat=\"tag in vm.tags\">\n                <tag></tag>\n            </div>\n        </div>\n\n        <div class='wrapper-horizontal'>\n            <div class='community-info'>\n                <div class='info-container'>\n                    <div class='value'>{{vm.votes}}</div>\n                    <div>votes</div>\n                </div>\n            </div>\n            <div class='wrapper-vertical' style='justify-content:center'>\n                <div>\n                    <div ng-bind-html='vm.answer | renderHtml'></div>\n                </div>\n                <div>\n                    <span>You answered: </span>\n                    <span class='time' ng-bind='vm.time | formatDate'></span>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
+module.exports = "<div class=\"wrapper-horizontal\" style=\"align-items: center;\">\n  <div class=\"wrapper-vertical\">\n    <div class=\"question\">\n      <a ui-sref='question({id:\"{{vm.question_id}}\"})' class=\"ui-link\">\n        <h4 class=\"question-title\">Q: {{vm.question}}</h4>\n      </a>\n    </div>\n    <div class=\"wrapper-horizontal\">\n      <div ng-repeat=\"tag in vm.tags\">\n        <tag></tag>\n      </div>\n    </div>\n\n    <div class=\"wrapper-horizontal\">\n      <div class=\"community-info\">\n        <div class=\"info-container\">\n          <div class=\"value\">{{vm.votes}}</div>\n          <div>votes</div>\n        </div>\n      </div>\n      <div class=\"wrapper-vertical\" style=\"justify-content: center;\">\n        <div>\n          <div ng-bind-html=\"vm.answer | renderHtml\"></div>\n        </div>\n        <div>\n          <span>You answered: </span>\n          <span class=\"time\" ng-bind=\"vm.time | formatDate\"></span>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 6 */
@@ -248,62 +251,62 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_banner_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_banner_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function banner_def() {
-    var banner = {
-        template: _templates_banner_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        scope: true,
-        controller: banner_ctrl,
-        controllerAs: 'vm'
-    };
-    banner_ctrl.$inject = ["$scope", "$state", "notificationService"];
-    function banner_ctrl($scope, $state, notificationService) {
-        var vm = this;
-        vm.initials = g_user.firstName.slice(0, 1) + g_user.lastName.slice(0, 1);
-        vm.unread = 0;
+  var banner = {
+    template: _templates_banner_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    scope: true,
+    controller: banner_ctrl,
+    controllerAs: "vm"
+  };
+  banner_ctrl.$inject = ["$scope", "$state", "notificationService"];
+  function banner_ctrl($scope, $state, notificationService) {
+    var vm = this;
+    vm.initials = g_user.firstName.slice(0, 1) + g_user.lastName.slice(0, 1);
+    vm.unread = 0;
+    vm.showNotifications = false;
+
+    //Bring you to the originating question when you click on a notification
+    vm.clickNotification = function (event, id) {
+      if (!event.target.parentNode.classList.contains("delete")) {
         vm.showNotifications = false;
-
-        //Bring you to the originating question when you click on a notification
-        vm.clickNotification = function (event, id) {
-            if (!event.target.parentNode.classList.contains('delete')) {
-                vm.showNotifications = false;
-                $state.go('question', {
-                    id: id
-                });
-            }
-        };
-
-        notificationService.get().then(function (data) {
-            vm.unread = 0;
-            data.forEach(function (notification) {
-                if (!notification.read) vm.unread++;
-            });
-            vm.notifications = data;
+        $state.go("question", {
+          id: id
         });
+      }
+    };
 
-        vm.deleteNotification = function (id) {
-            for (var i = 0; i < vm.notifications.length; i++) {
-                notificationService.remove(id);
-                if(vm.notifications[i].id == id) vm.notifications.splice(i,1);
-            }
-        };
+    notificationService.get().then(function (data) {
+      vm.unread = 0;
+      data.forEach(function (notification) {
+        if (!notification.read) vm.unread++;
+      });
+      vm.notifications = data;
+    });
 
-        vm.openNotifications = function () {
-            vm.showNotifications = !vm.showNotifications;
-            if (vm.unread > 0) {
-                notificationService.markRead();
-                vm.unread = 0;
-            }
-        };
+    vm.deleteNotification = function (id) {
+      for (var i = 0; i < vm.notifications.length; i++) {
+        notificationService.remove(id);
+        if (vm.notifications[i].id == id) vm.notifications.splice(i, 1);
+      }
+    };
 
-        //If you click outside the notification box, close the window. 
-        window.onclick = function (event) {
-            if (vm.showNotifications && event.srcElement.id != 'notification-bell') {
-                vm.showNotifications = false;
-                $scope.$apply();
-            }
-        };
-    }
+    vm.openNotifications = function () {
+      vm.showNotifications = !vm.showNotifications;
+      if (vm.unread > 0) {
+        notificationService.markRead();
+        vm.unread = 0;
+      }
+    };
 
-    return banner;
+    //If you click outside the notification box, close the window.
+    window.onclick = function (event) {
+      if (vm.showNotifications && event.srcElement.id != "notification-bell") {
+        vm.showNotifications = false;
+        $scope.$apply();
+      }
+    };
+  }
+
+  return banner;
 }
 
 
@@ -311,7 +314,7 @@ function banner_def() {
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='mobile-menu' ng-class='{\"hide\":!mobile.menu}' ng-click='mobile.menu = false'>\n    <div class='mobile-menu-item'>\n        <a ui-sref='home' class='ui-link'>\n            <div>Home</div>\n        </a>\n    </div>\n    <div class='mobile-menu-item'>\n        <a ui-sref='ask' class='ui-link'>\n            <div>New Question</div>\n        </a>\n    </div>\n    <div class='mobile-menu-item'>\n        <a ui-sref='questions' class='ui-link'>\n            <div>Questions</div>\n        </a>\n    </div>\n    <div class='mobile-menu-item'>\n        <a ui-sref='tags' class='ui-link'>\n            <div>Tags</div>\n        </a>\n    </div>\n    <div class='mobile-menu-item'>\n        <a ui-sref='profile' class='ui-link'>\n            <div>Profile</div>\n        </a>\n    </div>\n</div>\n<div class='banner wrapper-horizontal centered'>\n    <div class='menu mobile'>\n        <button ng-click='mobile.menu = mobile.menu == true? false:true'><i class=\"fa fa-bars\"></i></button>\n    </div>\n    <a ui-sref=\"home\" class='ui-link banner-btn  mobile-hide'>\n        <i class=\"fa fa-lg fa-home\"></i>\n    </a>\n    <a ui-sref=\"ask\" class='ui-link banner-btn  mobile-hide'>\n        <span><i class=\"fa fa-pen\"></i></span>\n        <span class='small-hide'>Ask a Question</span>\n    </a>\n\n    <div class='center-width wrapper-horizontal centered search-container'>\n        <search class='search'></search>\n    </div>\n    <a ui-sref=\"profile\" class='ui-link banner-btn profile-btn mobile-hide'>\n        <div>{{vm.initials}}</div>\n    </a>\n    <i class=\"fa fa-bell menu-btn mobile-hide\" style='font-size:1.7em' ng-click='vm.openNotifications()' id='notification-bell'>\n        <div class='notifications-num' ng-show='vm.unread&gt;0'>{{vm.unread}}</div>\n        <div class='notifications-container' ng-click=\"$event.stopPropagation()\" ng-show='vm.showNotifications'>\n            <div class='ko-notification' ng-class='{\"unread\": !notification.read}' ng-click='vm.clickNotification($event, notification.qid)' ng-repeat=\"notification in vm.notifications\">\n                <div class='notification-title'>{{notification.title}}</div>\n                <div class='notification-content'>{{notification.question}}</div>\n                <div class='notification-time' ng-bind-html='notification.time | formatDate'></div>\n                <div class='delete' ng-click='vm.deleteNotification(notification.id)'>\n                    <i class=\"fa fa-times\"></i>\n                </div>\n            </div>\n        </div>\n    </i>\n    <span style='width:40px'></span>\n</div>";
+module.exports = "<div\n  class=\"mobile-menu\"\n  ng-class='{\"hide\":!mobile.menu}'\n  ng-click=\"mobile.menu = false\"\n>\n  <div class=\"mobile-menu-item\">\n    <a ui-sref=\"home\" class=\"ui-link\">\n      <div>Home</div>\n    </a>\n  </div>\n  <div class=\"mobile-menu-item\">\n    <a ui-sref=\"ask\" class=\"ui-link\">\n      <div>New Question</div>\n    </a>\n  </div>\n  <div class=\"mobile-menu-item\">\n    <a ui-sref=\"questions\" class=\"ui-link\">\n      <div>Questions</div>\n    </a>\n  </div>\n  <div class=\"mobile-menu-item\">\n    <a ui-sref=\"tags\" class=\"ui-link\">\n      <div>Tags</div>\n    </a>\n  </div>\n  <div class=\"mobile-menu-item\">\n    <a ui-sref=\"profile\" class=\"ui-link\">\n      <div>Profile</div>\n    </a>\n  </div>\n</div>\n<div class=\"banner wrapper-horizontal centered\">\n  <div class=\"menu mobile\">\n    <button ng-click=\"mobile.menu = mobile.menu == true? false:true\">\n      <i class=\"fa fa-bars\"></i>\n    </button>\n  </div>\n  <a ui-sref=\"home\" class=\"ui-link banner-btn mobile-hide\">\n    <i class=\"fa fa-lg fa-home\"></i>\n  </a>\n  <a ui-sref=\"ask\" class=\"ui-link banner-btn mobile-hide\">\n    <span><i class=\"fa fa-pen\"></i></span>\n    <span class=\"small-hide\">Ask a Question</span>\n  </a>\n\n  <div class=\"center-width wrapper-horizontal centered search-container\">\n    <search class=\"search\"></search>\n  </div>\n  <a ui-sref=\"profile\" class=\"ui-link banner-btn profile-btn mobile-hide\">\n    <div>{{vm.initials}}</div>\n  </a>\n  <i\n    class=\"fa fa-bell menu-btn mobile-hide\"\n    style=\"font-size: 1.7em;\"\n    ng-click=\"vm.openNotifications()\"\n    id=\"notification-bell\"\n  >\n    <div class=\"notifications-num\" ng-show=\"vm.unread&gt;0\">{{vm.unread}}</div>\n    <div\n      class=\"notifications-container\"\n      ng-click=\"$event.stopPropagation()\"\n      ng-show=\"vm.showNotifications\"\n    >\n      <div\n        class=\"ko-notification\"\n        ng-class='{\"unread\": !notification.read}'\n        ng-click=\"vm.clickNotification($event, notification.qid)\"\n        ng-repeat=\"notification in vm.notifications\"\n      >\n        <div class=\"notification-title\">{{notification.title}}</div>\n        <div class=\"notification-content\">{{notification.question}}</div>\n        <div\n          class=\"notification-time\"\n          ng-bind-html=\"notification.time | formatDate\"\n        ></div>\n        <div class=\"delete\" ng-click=\"vm.deleteNotification(notification.id)\">\n          <i class=\"fa fa-times\"></i>\n        </div>\n      </div>\n    </div>\n  </i>\n  <span style=\"width: 40px;\"></span>\n</div>\n";
 
 /***/ }),
 /* 8 */
@@ -324,51 +327,57 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_comments_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_comments_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function comments_def() {
-    var comments = {
-        controller: comments_ctrl,
-        controllerAs: 'cvm',
-        scope: false,
-        template: _templates_comments_html__WEBPACK_IMPORTED_MODULE_0___default.a
-    };
-    comments_ctrl.$inject = ["$scope", "questionService", "createService"];
-    function comments_ctrl($scope, questionService, createService) {
-        var cvm = this;
-        //Options toggled on various actions
-        cvm.expand = false;
-        cvm.minifiedResults = 4;
-        cvm.commenting = false;
-        cvm.commentText = "";
-        //Directive data
-        cvm.comments = $scope.vm.comments;
-        cvm.type = $scope.vm.answer_id ? 'answer' : 'question';
-        cvm.id = (cvm.type === 'question' ? $scope.vm.question_id : $scope.vm.answer_id);
+  var comments = {
+    controller: comments_ctrl,
+    controllerAs: "cvm",
+    scope: false,
+    template: _templates_comments_html__WEBPACK_IMPORTED_MODULE_0___default.a
+  };
+  comments_ctrl.$inject = ["$scope", "questionService", "createService"];
+  function comments_ctrl($scope, questionService, createService) {
+    var cvm = this;
+    //Options toggled on various actions
+    cvm.expand = false;
+    cvm.minifiedResults = 4;
+    cvm.commenting = false;
+    cvm.commentText = "";
+    //Directive data
+    cvm.comments = $scope.vm.comments;
+    cvm.type = $scope.vm.answer_id ? "answer" : "question";
+    cvm.id =
+      cvm.type === "question" ? $scope.vm.question_id : $scope.vm.answer_id;
 
-        //On Question update save data to view
-        if (cvm.type === 'question') questionService.subscribe(function (data) {
-            if (data) {
-                cvm.comments = data.comments;
-                cvm.commenting = false;
-                cvm.commentText = "";
-            }
+    //On Question update save data to view
+    if (cvm.type === "question")
+      questionService.subscribe(function (data) {
+        if (data) {
+          cvm.comments = data.comments;
+          cvm.commenting = false;
+          cvm.commentText = "";
+        }
+      });
+
+    //Create comment then update the question
+    cvm.postComment = function () {
+      createService
+        .createComment(cvm.type, cvm.id, cvm.commentText)
+        .then(function () {
+          if (cvm.type == "answer")
+            questionService.get($scope.$parent.vm.question_id);
+          else questionService.get(cvm.id);
         });
+    };
+  }
 
-        //Create comment then update the question
-        cvm.postComment = function () {
-            createService.createComment(cvm.type, cvm.id, cvm.commentText).then(function () {
-                if (cvm.type == 'answer') questionService.get($scope.$parent.vm.question_id);
-                else questionService.get(cvm.id);
-            });
-        };
-    }
-
-    return comments;
+  return comments;
 }
+
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='wrapper-vertical comment-container'>\n    <div ng-repeat='comment in cvm.comments'>\n        <div class='comment' ng-class=\"{'hide': !cvm.expand &amp;&amp; {{$index+1}} > cvm.minifiedResults}\">\n            <span ng-bind-html='comment.comment'></span>\n            <span>-</span>\n            <span class='user'>{{comment.author}}</span>\n            <span>on</span>\n            <span class='time' ng-bind='comment.time | formatDate'></span>\n        </div>\n    </div>\n</div>\n\n<div ng-class='{hide : cvm.commenting == false}'>\n    <form ng-submit='cvm.postComment()' class='wrapper-vertical'>\n        <textarea ng-model='cvm.commentText' class='comment-input' rows=\"2\" placeholder=\"Add a comment...\"\n            required='true' minlength='5' maxlength='500'></textarea>\n        <div class='post-wrapper'>\n            <button type='submit' class='comment-submit'>Post</button>\n        </div>\n    </form>\n</div>\n\n<div class='comments-actions'>\n    <div ng-click='cvm.expand = true'\n        ng-class='{hide : cvm.expand == true || cvm.comments.length &lt;= cvm.minifiedResults}'>\n        Show more comments\n    </div>\n    <div ng-click='cvm.commenting = !cvm.commenting'\n        ng-class='{hide : cvm.commenting == true || (cvm.expand == false &amp;&amp; cvm.comments.length &gt; cvm.minifiedResults)}'>\n        Add a comment\n    </div>\n</div>";
+module.exports = "<div class=\"wrapper-vertical comment-container\">\n  <div ng-repeat=\"comment in cvm.comments\">\n    <div\n      class=\"comment\"\n      ng-class=\"{'hide': !cvm.expand &amp;&amp; {{$index+1}} > cvm.minifiedResults}\"\n    >\n      <span ng-bind-html=\"comment.comment\"></span>\n      <span>-</span>\n      <span class=\"user\">{{comment.author}}</span>\n      <span>on</span>\n      <span class=\"time\" ng-bind=\"comment.time | formatDate\"></span>\n    </div>\n  </div>\n</div>\n\n<div ng-class=\"{hide : cvm.commenting == false}\">\n  <form ng-submit=\"cvm.postComment()\" class=\"wrapper-vertical\">\n    <textarea\n      ng-model=\"cvm.commentText\"\n      class=\"comment-input\"\n      rows=\"2\"\n      placeholder=\"Add a comment...\"\n      required=\"true\"\n      minlength=\"5\"\n      maxlength=\"500\"\n    ></textarea>\n    <div class=\"post-wrapper\">\n      <button type=\"submit\" class=\"comment-submit\">Post</button>\n    </div>\n  </form>\n</div>\n\n<div class=\"comments-actions\">\n  <div\n    ng-click=\"cvm.expand = true\"\n    ng-class=\"{hide : cvm.expand == true || cvm.comments.length &lt;= cvm.minifiedResults}\"\n  >\n    Show more comments\n  </div>\n  <div\n    ng-click=\"cvm.commenting = !cvm.commenting\"\n    ng-class=\"{hide : cvm.commenting == true || (cvm.expand == false &amp;&amp; cvm.comments.length &gt; cvm.minifiedResults)}\"\n  >\n    Add a comment\n  </div>\n</div>\n";
 
 /***/ }),
 /* 10 */
@@ -508,16 +517,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function main_def() {
-    return {
-        template: _templates_main_html__WEBPACK_IMPORTED_MODULE_0___default.a
-    };
+  return {
+    template: _templates_main_html__WEBPACK_IMPORTED_MODULE_0___default.a
+  };
 }
+
 
 /***/ }),
 /* 13 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='wrapper-horizontal' style='min-height:100%'>\n    <div class='left-sidebar'>\n        <div ui-sref-active='active' class='tab'>\n            <a ui-sref='home' class='ui-link'>\n                <div class='tab-text'>Home</div>\n            </a>\n        </div>\n        <div ui-sref-active='active' class='tab'>\n            <a ui-sref='questions' class='ui-link'>\n                <div class='tab-text'>Questions</div>\n            </a>\n        </div>\n        <div ui-sref-active='active' class='tab'>\n            <a ui-sref='tags' class='ui-link'>\n                <div class='tab-text'>Tags</div>\n            </a>\n        </div>\n        <div ui-sref-active='active' class='tab' ng-class='{\"hide\": !isAdmin}'>\n            <a ui-sref='admin' class='ui-link'>\n                <div class='tab-text'>Admin</div>\n            </a>\n        </div>\n    </div>\n    <div class='center-width mainbar'>\n        <ui-view></ui-view>\n    </div>\n    <div class='right-sidebar'></div>\n</div>";
+module.exports = "<div class=\"wrapper-horizontal\" style=\"min-height: 100%;\">\n  <div class=\"left-sidebar\">\n    <div ui-sref-active=\"active\" class=\"tab\">\n      <a ui-sref=\"home\" class=\"ui-link\">\n        <div class=\"tab-text\">Home</div>\n      </a>\n    </div>\n    <div ui-sref-active=\"active\" class=\"tab\">\n      <a ui-sref=\"questions\" class=\"ui-link\">\n        <div class=\"tab-text\">Questions</div>\n      </a>\n    </div>\n    <div ui-sref-active=\"active\" class=\"tab\">\n      <a ui-sref=\"tags\" class=\"ui-link\">\n        <div class=\"tab-text\">Tags</div>\n      </a>\n    </div>\n    <div ui-sref-active=\"active\" class=\"tab\" ng-class='{\"hide\": !isAdmin}'>\n      <a ui-sref=\"admin\" class=\"ui-link\">\n        <div class=\"tab-text\">Admin</div>\n      </a>\n    </div>\n  </div>\n  <div class=\"center-width mainbar\">\n    <ui-view></ui-view>\n  </div>\n  <div class=\"right-sidebar\"></div>\n</div>\n";
 
 /***/ }),
 /* 14 */
@@ -531,20 +541,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function question_preview_def() {
-    var preview = {
-        controller: preview_ctrl,
-        controllerAs: 'vm',
-        scope: false,
-        template: _templates_questionPreview_html__WEBPACK_IMPORTED_MODULE_0___default.a
-    };
-    preview_ctrl.$inject = ["$scope"];
-    function preview_ctrl($scope) {
-        var vm = this;
-        for (var param in $scope.preview) vm[param] = $scope.preview[param];
-    }
+  var preview = {
+    controller: preview_ctrl,
+    controllerAs: "vm",
+    scope: false,
+    template: _templates_questionPreview_html__WEBPACK_IMPORTED_MODULE_0___default.a
+  };
+  preview_ctrl.$inject = ["$scope"];
+  function preview_ctrl($scope) {
+    var vm = this;
+    for (var param in $scope.preview) vm[param] = $scope.preview[param];
+  }
 
-    return preview;
+  return preview;
 }
+
 
 /***/ }),
 /* 15 */
@@ -563,50 +574,51 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_results_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_results_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function results_def() {
-    var results = {
-        template: _templates_results_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        scope: true,
-        controller: results_ctrl,
-        controllerAs: 'vm'
-    };
-    results_ctrl.$inject = ["$stateParams", "$scope", "resultsService"];
-    function results_ctrl($stateParams, $scope, resultsService) {
-        var vm = this;
-        /*
+  var results = {
+    template: _templates_results_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    scope: true,
+    controller: results_ctrl,
+    controllerAs: "vm"
+  };
+  results_ctrl.$inject = ["$stateParams", "$scope", "resultsService"];
+  function results_ctrl($stateParams, $scope, resultsService) {
+    var vm = this;
+    /*
         When using this results directive, method must be set in parent directive/view
         Method defines function to use when querying search results, params defines any additional
         data you wish to pass to the query
         */
-        vm.method = $scope.$parent.vm.resultsMethod;
-        vm.params = $scope.$parent.vm.params || {};
+    vm.method = $scope.$parent.vm.resultsMethod;
+    vm.params = $scope.$parent.vm.params || {};
 
+    vm.filter =
+      $stateParams.filter || (vm.method == "search" ? "relevance" : "newest");
+    vm.page = 1;
 
-        vm.filter = $stateParams.filter || (vm.method == 'search' ? 'relevance' : 'newest');
-        vm.page = 1;
+    vm.update = function () {
+      resultsService
+        .query(vm.method, vm.filter, vm.page, vm.params)
+        .then(function (data) {
+          vm.previews = data.previews;
+          vm.results = data.results;
+          vm.totalPages = Math.ceil(vm.results / data.pageSize);
+          vm.type = data.type;
+        });
+    };
+    vm.update();
 
-        vm.update = function () {
-            resultsService.query(vm.method, vm.filter, vm.page, vm.params)
-                .then(function (data) {
-                    vm.previews = data.previews;
-                    vm.results = data.results;
-                    vm.totalPages = Math.ceil(vm.results / data.pageSize);
-                    vm.type = data.type;
-                });
-        };
-        vm.update();
+    vm.nextPage = function () {
+      vm.page++;
+      vm.update();
+    };
+    vm.lastPage = function () {
+      vm.page--;
+      if (vm.page < 1) vm.page = 1;
+      vm.update();
+    };
+  }
 
-        vm.nextPage = function () {
-            vm.page++;
-            vm.update();
-        };
-        vm.lastPage = function () {
-            vm.page--;
-            if (vm.page < 1) vm.page = 1;
-            vm.update();
-        };
-    }
-
-    return results;
+  return results;
 }
 
 
@@ -614,7 +626,7 @@ function results_def() {
 /* 17 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='filter-tabs wrapper-horizontal'>\n    <div class='tab-spacer'></div>\n    <button ui-sref='{filter:\"relevance\"}' class='btn'\n        ng-class='{active: vm.filter == \"relevance\", \"hide\":vm.method!=\"search\"}'>Relevance</button>\n    <button ui-sref='{filter:\"newest\"}' class='btn' ng-class='{active: vm.filter == \"newest\"}'>Newest</button>\n    <button ui-sref='{filter:\"unanswered\"}' class='btn'\n        ng-class='{active: vm.filter == \"unanswered\", \"hide\":vm.type==\"answer\"}'>Unanswered</button>\n    <button ui-sref='{filter:\"top\"}' class='btn' ng-class='{active: vm.filter == \"top\"}'>Top</button>\n    <div class='tab-spacer' style='max-width:20px'></div>\n</div>\n<div>\n    <div>Found {{vm.results}} {{vm.type}}s</div>\n    <div ng-class='{\"hide\":vm.results==0}'>Page {{vm.page}} of {{vm.totalPages}}</div>\n</div>\n<div class='wrapper-vertical'>\n    <div ng-class='{\"hide\":vm.type!=\"question\"}' class='wrapper-vertical'>\n        <questionpreview ng-repeat='preview in vm.previews' class='preview'></questionpreview>\n    </div>\n    <div ng-class='{\"hide\":vm.type!=\"answer\"}' class='wrapper-vertical'>\n        <answerpreview ng-repeat='preview in vm.previews' class='preview'></answerpreview>\n    </div>\n</div>\n<div class='wrapper-horizontal' style='margin-top:10px' ng-class='{\"hide\":vm.results==0}'>\n    <button ng-click='vm.lastPage()'>Last</button>\n    <div style='flex:1;'></div>\n    <button ng-click='vm.nextPage()' ng-disabled='vm.page == vm.totalPages'>Next</button>\n</div>";
+module.exports = "<div class=\"filter-tabs wrapper-horizontal\">\n  <div class=\"tab-spacer\"></div>\n  <button\n    ui-sref='{filter:\"relevance\"}'\n    class=\"btn\"\n    ng-class='{active: vm.filter == \"relevance\", \"hide\":vm.method!=\"search\"}'\n  >\n    Relevance\n  </button>\n  <button\n    ui-sref='{filter:\"newest\"}'\n    class=\"btn\"\n    ng-class='{active: vm.filter == \"newest\"}'\n  >\n    Newest\n  </button>\n  <button\n    ui-sref='{filter:\"unanswered\"}'\n    class=\"btn\"\n    ng-class='{active: vm.filter == \"unanswered\", \"hide\":vm.type==\"answer\"}'\n  >\n    Unanswered\n  </button>\n  <button\n    ui-sref='{filter:\"top\"}'\n    class=\"btn\"\n    ng-class='{active: vm.filter == \"top\"}'\n  >\n    Top\n  </button>\n  <div class=\"tab-spacer\" style=\"max-width: 20px;\"></div>\n</div>\n<div>\n  <div>Found {{vm.results}} {{vm.type}}s</div>\n  <div ng-class='{\"hide\":vm.results==0}'>\n    Page {{vm.page}} of {{vm.totalPages}}\n  </div>\n</div>\n<div class=\"wrapper-vertical\">\n  <div ng-class='{\"hide\":vm.type!=\"question\"}' class=\"wrapper-vertical\">\n    <questionpreview\n      ng-repeat=\"preview in vm.previews\"\n      class=\"preview\"\n    ></questionpreview>\n  </div>\n  <div ng-class='{\"hide\":vm.type!=\"answer\"}' class=\"wrapper-vertical\">\n    <answerpreview\n      ng-repeat=\"preview in vm.previews\"\n      class=\"preview\"\n    ></answerpreview>\n  </div>\n</div>\n<div\n  class=\"wrapper-horizontal\"\n  style=\"margin-top: 10px;\"\n  ng-class='{\"hide\":vm.results==0}'\n>\n  <button ng-click=\"vm.lastPage()\">Last</button>\n  <div style=\"flex: 1;\"></div>\n  <button ng-click=\"vm.nextPage()\" ng-disabled=\"vm.page == vm.totalPages\">\n    Next\n  </button>\n</div>\n";
 
 /***/ }),
 /* 18 */
@@ -628,32 +640,33 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function search_def() {
-    var search = {
-        template: _templates_search_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        controller: search_ctrl,
-        controllerAs: "vm",
-        scope: true
+  var search = {
+    template: _templates_search_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    controller: search_ctrl,
+    controllerAs: "vm",
+    scope: true
+  };
+  search_ctrl.$inject = ["$state"];
+
+  function search_ctrl($state) {
+    var vm = this;
+    vm.search = function () {
+      $state.go("search", {
+        q: vm.searchText
+      });
     };
-    search_ctrl.$inject = ["$state"];
+    vm.searchText = "";
+  }
 
-    function search_ctrl($state) {
-        var vm = this;
-        vm.search = function() {
-            $state.go('search', {
-                q: vm.searchText
-            });
-        };
-        vm.searchText = "";
-    }
-
-    return search;
+  return search;
 }
+
 
 /***/ }),
 /* 19 */
 /***/ (function(module, exports) {
 
-module.exports = "<form ng-submit='vm.search()'>\n    <div class='wrapper-horizontal centered'>\t\n        <input type='text' placeholder='Search: ' id='search-input' ng-model='vm.searchText' class='search-input'/>\n        <button class='banner-btn'>\n            <i class=\"fa fa-search\"></i> <span class='small-hide'>Search</span>\n        </button>\n    </div>\n</form>";
+module.exports = "<form ng-submit=\"vm.search()\">\n  <div class=\"wrapper-horizontal centered\">\n    <input\n      type=\"text\"\n      placeholder=\"Search: \"\n      id=\"search-input\"\n      ng-model=\"vm.searchText\"\n      class=\"search-input\"\n    />\n    <button class=\"banner-btn\">\n      <i class=\"fa fa-search\"></i> <span class=\"small-hide\">Search</span>\n    </button>\n  </div>\n</form>\n";
 
 /***/ }),
 /* 20 */
@@ -667,16 +680,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function tag_def() {
-    return {
-        template: _templates_tag_html__WEBPACK_IMPORTED_MODULE_0___default.a
-    };
+  return {
+    template: _templates_tag_html__WEBPACK_IMPORTED_MODULE_0___default.a
+  };
 }
+
 
 /***/ }),
 /* 21 */
 /***/ (function(module, exports) {
 
-module.exports = "<a class='ui-link' ui-sref='tag({tag:\"{{tag}}\"})' >\n    <span class='ko-tag'>\n        {{tag}}\n    </span>\n</a>";
+module.exports = "<a class=\"ui-link\" ui-sref='tag({tag:\"{{tag}}\"})'>\n  <span class=\"ko-tag\">\n    {{tag}}\n  </span>\n</a>\n";
 
 /***/ }),
 /* 22 */
@@ -690,69 +704,72 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function votes_def() {
-    var votes = {
-        controller: votes_ctrl,
-        controllerAs: 'vvm',
-        scope: false,
-        template: _templates_votes_html__WEBPACK_IMPORTED_MODULE_0___default.a
+  var votes = {
+    controller: votes_ctrl,
+    controllerAs: "vvm",
+    scope: false,
+    template: _templates_votes_html__WEBPACK_IMPORTED_MODULE_0___default.a
+  };
+  votes_ctrl.$inject = ["$scope", "voteService", "questionService"];
+  function votes_ctrl($scope, voteService, questionService) {
+    var vvm = this;
+    //Directive Data
+    for (var param in $scope.vm) vvm[param] = $scope.vm[param];
+    vvm.type = vvm.answer_id ? "answer" : "question";
+    var id = vvm.type === "question" ? vvm.question_id : vvm.answer_id;
+
+    //On question update save data
+    questionService.subscribe(function (data) {
+      if (data && data.question_id == id) {
+        vvm.votes = data.votes;
+        vvm.starred = data.starred;
+      }
+    });
+
+    //Vote in a direction
+    vvm.vote = function (dir) {
+      vvm.votes += dir - vvm.direction;
+      vvm.direction = dir;
+      voteService.vote(dir, id, vvm.type);
     };
-    votes_ctrl.$inject = ["$scope", "voteService", "questionService"];
-    function votes_ctrl($scope, voteService, questionService) {
-        var vvm = this;
-        //Directive Data
-        for (var param in $scope.vm) vvm[param] = $scope.vm[param];
-        vvm.type = vvm.answer_id ? 'answer' : 'question';
-        var id = (vvm.type === 'question' ? vvm.question_id : vvm.answer_id);
 
-        //On question update save data
-        questionService.subscribe(function (data) {
-            if (data && data.question_id == id) {
-                vvm.votes = data.votes;
-                vvm.starred = data.starred;
-            }
-        });
+    //Handle vote changes
+    voteService.get(id, vvm.type);
+    voteService.subscribe(function (data) {
+      if (data.id === id) vvm.direction = data.dir;
+    });
 
-        //Vote in a direction
-        vvm.vote = function (dir) {
-            vvm.votes += (dir - vvm.direction);
-            vvm.direction = dir;
-            voteService.vote(dir, id, vvm.type);
-        };
-
-        //Handle vote changes
-        voteService.get(id, vvm.type);
-        voteService.subscribe(function (data) {
-            if (data.id === id) vvm.direction = data.dir;
-        });
-
-        if (vvm.type == 'question') {
-            //Handle Star clicked
-            vvm.toggleStarred = function () {
-                vvm.starred = !vvm.starred;
-                questionService.toggleStarred(vvm.starred, id);
-            };
-        } else {
-            //Handle best answer marking
-            var parent = $scope.$parent.vm;
-            vvm.markBestAnswer = function (type) {
-                questionService.markBestAnswer(parent.question_id, vvm.answer_id, type).then(function () {
-                    questionService.get(parent.question_id);
-                });
-            };
-            vvm.best_answer = parent.best_answer === vvm.answer_id;
-            vvm.best_answer_type = parent.best_answer_type;
-            vvm.question_author = parent.author == g_user.getFullName();
-        }
+    if (vvm.type == "question") {
+      //Handle Star clicked
+      vvm.toggleStarred = function () {
+        vvm.starred = !vvm.starred;
+        questionService.toggleStarred(vvm.starred, id);
+      };
+    } else {
+      //Handle best answer marking
+      var parent = $scope.$parent.vm;
+      vvm.markBestAnswer = function (type) {
+        questionService
+          .markBestAnswer(parent.question_id, vvm.answer_id, type)
+          .then(function () {
+            questionService.get(parent.question_id);
+          });
+      };
+      vvm.best_answer = parent.best_answer === vvm.answer_id;
+      vvm.best_answer_type = parent.best_answer_type;
+      vvm.question_author = parent.author == g_user.getFullName();
     }
+  }
 
-    return votes;
+  return votes;
 }
+
 
 /***/ }),
 /* 23 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='vote-container wrapper-vertical'>\n    <div class='arrow'>\n        <i class=\"fa fa-2x fa-chevron-up vote-clickable\" ng-click='vvm.vote(vvm.direction==1?0:1)'\n            ng-class='{\"vote-active\": vvm.direction == 1}'></i>\n    </div>\n\n    <div style='text-align:center'>{{vvm.votes}}</div>\n\n    <div class='arrow'>\n        <i class=\"fa fa-2x fa-chevron-down vote-clickable\" ng-click='vvm.vote(vvm.direction==-1?0:-1)'\n            ng-class='{\"vote-active\": vvm.direction == -1}'></i>\n    </div>\n\n    <div class='best-answer wrapper-vertical centered' ng-class='{\"hide\": vvm.type !== \"answer\"}'>\n        <i class=\"fa fa-2x fa-check\" title=\"The question owner accepted this as the best answer\"\n            ng-class=\"{hide : vvm.best_answer_type !== 'accepted' || !vvm.best_answer}\"></i>\n        <i class=\"fa fa-2x fa-check-circle\" title=\"A moderator marked this as the best answer\"\n            ng-class=\"{hide : vvm.best_answer_type !== 'moderator' || !vvm.best_answer}\"></i>\n        <i class=\"fa fa-2x fa-users\" title=\"The community has voted this as the best answer\"\n            ng-class=\"{hide : vvm.best_answer_type !== 'community' || !vvm.best_answer}\"></i>\n\n\n        <div class='select-answer wrapper-horizontal'>\n            <i class=\"fa fa-2x fa-check\" title=\"Accept this answer\"\n                ng-class=\"{hide : (vvm.best_answer_type === 'moderator' || vvm.best_answer_type === 'community' || vvm.best_answer || !vvm.question_author) }\"\n                ng-click=\"vvm.markBestAnswer('accepted')\"></i>\n            <i class=\"fa fa-2x fa-check-circle\" title=\"Mark this as best answer as moderator\"\n                ng-class=\"{hide : !isAdmin || (vvm.best_answer_type == 'moderator' &amp;&amp; vvm.best_answer)}\"\n                ng-click=\"vvm.markBestAnswer('moderator')\"></i>\n        </div>\n\n\n    </div>\n\n    <div class='star vote-clickable' ng-class='{\"active\": vvm.starred, \"hide\": vvm.type != \"question\"}'>\n        <i ng-click='vvm.toggleStarred()' class=\"fa fa-star\"></i>\n    </div>\n</div>";
+module.exports = "<div class=\"vote-container wrapper-vertical\">\n  <div class=\"arrow\">\n    <i\n      class=\"fa fa-2x fa-chevron-up vote-clickable\"\n      ng-click=\"vvm.vote(vvm.direction==1?0:1)\"\n      ng-class='{\"vote-active\": vvm.direction == 1}'\n    ></i>\n  </div>\n\n  <div style=\"text-align: center;\">{{vvm.votes}}</div>\n\n  <div class=\"arrow\">\n    <i\n      class=\"fa fa-2x fa-chevron-down vote-clickable\"\n      ng-click=\"vvm.vote(vvm.direction==-1?0:-1)\"\n      ng-class='{\"vote-active\": vvm.direction == -1}'\n    ></i>\n  </div>\n\n  <div\n    class=\"best-answer wrapper-vertical centered\"\n    ng-class='{\"hide\": vvm.type !== \"answer\"}'\n  >\n    <i\n      class=\"fa fa-2x fa-check\"\n      title=\"The question owner accepted this as the best answer\"\n      ng-class=\"{hide : vvm.best_answer_type !== 'accepted' || !vvm.best_answer}\"\n    ></i>\n    <i\n      class=\"fa fa-2x fa-check-circle\"\n      title=\"A moderator marked this as the best answer\"\n      ng-class=\"{hide : vvm.best_answer_type !== 'moderator' || !vvm.best_answer}\"\n    ></i>\n    <i\n      class=\"fa fa-2x fa-users\"\n      title=\"The community has voted this as the best answer\"\n      ng-class=\"{hide : vvm.best_answer_type !== 'community' || !vvm.best_answer}\"\n    ></i>\n\n    <div class=\"select-answer wrapper-horizontal\">\n      <i\n        class=\"fa fa-2x fa-check\"\n        title=\"Accept this answer\"\n        ng-class=\"{hide : (vvm.best_answer_type === 'moderator' || vvm.best_answer_type === 'community' || vvm.best_answer || !vvm.question_author) }\"\n        ng-click=\"vvm.markBestAnswer('accepted')\"\n      ></i>\n      <i\n        class=\"fa fa-2x fa-check-circle\"\n        title=\"Mark this as best answer as moderator\"\n        ng-class=\"{hide : !isAdmin || (vvm.best_answer_type == 'moderator' &amp;&amp; vvm.best_answer)}\"\n        ng-click=\"vvm.markBestAnswer('moderator')\"\n      ></i>\n    </div>\n  </div>\n\n  <div\n    class=\"star vote-clickable\"\n    ng-class='{\"active\": vvm.starred, \"hide\": vvm.type != \"question\"}'\n  >\n    <i ng-click=\"vvm.toggleStarred()\" class=\"fa fa-star\"></i>\n  </div>\n</div>\n";
 
 /***/ }),
 /* 24 */
@@ -779,15 +796,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function serviceSetup(mod) {
-    mod.service("voteService", _vote__WEBPACK_IMPORTED_MODULE_3__["vote_service_def"]);
-    mod.service("createService", _create__WEBPACK_IMPORTED_MODULE_4__["create_service_def"]);
-    mod.service("questionService", _question__WEBPACK_IMPORTED_MODULE_1__["question_service_def"]);
-    mod.service("tagsService", _tag__WEBPACK_IMPORTED_MODULE_2__["tags_service_def"]);
-    mod.service("resultsService", _results__WEBPACK_IMPORTED_MODULE_5__["results_service_def"]);
-    mod.service("adminService", _admin__WEBPACK_IMPORTED_MODULE_6__["admin_service_def"]);
-    mod.service('attachmentService', _attachment__WEBPACK_IMPORTED_MODULE_7__["attachment_service_def"]);
-    mod.service('notificationService', _notification__WEBPACK_IMPORTED_MODULE_0__["notification_service_def"]);
+  mod.service("voteService", _vote__WEBPACK_IMPORTED_MODULE_3__["vote_service_def"]);
+  mod.service("createService", _create__WEBPACK_IMPORTED_MODULE_4__["create_service_def"]);
+  mod.service("questionService", _question__WEBPACK_IMPORTED_MODULE_1__["question_service_def"]);
+  mod.service("tagsService", _tag__WEBPACK_IMPORTED_MODULE_2__["tags_service_def"]);
+  mod.service("resultsService", _results__WEBPACK_IMPORTED_MODULE_5__["results_service_def"]);
+  mod.service("adminService", _admin__WEBPACK_IMPORTED_MODULE_6__["admin_service_def"]);
+  mod.service("attachmentService", _attachment__WEBPACK_IMPORTED_MODULE_7__["attachment_service_def"]);
+  mod.service("notificationService", _notification__WEBPACK_IMPORTED_MODULE_0__["notification_service_def"]);
 }
+
 
 /***/ }),
 /* 25 */
@@ -802,22 +820,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function notification_service_def($http) {
-
-    return {
-        remove: function(id) {
-            var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-                id: id
-            });
-            $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].deleteNotification + queryString);
-        },
-        markRead: function() {
-            $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].markNotifications);
-        },
-        get: function() {
-            return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].getNotifications).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-        }
-    };
+  return {
+    remove: function (id) {
+      var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+        id: id
+      });
+      $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].deleteNotification + queryString);
+    },
+    markRead: function () {
+      $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].markNotifications);
+    },
+    get: function () {
+      return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].getNotifications).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+    }
+  };
 }
+
 
 /***/ }),
 /* 26 */
@@ -871,22 +889,22 @@ var path = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
+  buildQueryString: function (params) {
+    //Build the query string with template '?param1=val1&param2=val2...'
+    var esc = encodeURIComponent;
+    var query = Object.keys(params)
+      .map(function (k) {
+        return esc(k) + "=" + esc(params[k]);
+      })
+      .join("&");
+    return "?" + query;
+  },
 
-    buildQueryString: function(params) {
-        //Build the query string with template '?param1=val1&param2=val2...'
-        var esc = encodeURIComponent;
-        var query = Object.keys(params)
-            .map(function(k) {
-                return esc(k) + '=' + esc(params[k]);
-            })
-            .join('&');
-        return "?" + query;
-    },
-
-    transformResponse: function(res) {
-        return res.data.result;
-    }
+  transformResponse: function (res) {
+    return res.data.result;
+  }
 });
+
 
 /***/ }),
 /* 28 */
@@ -901,51 +919,54 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function question_service_def($http) {
-    var publicApi = {
-        get: get,
-        subscribe: subscribe,
-        markBestAnswer: markBestAnswer,
-        toggleStarred: toggleStarred
-    };
+  var publicApi = {
+    get: get,
+    subscribe: subscribe,
+    markBestAnswer: markBestAnswer,
+    toggleStarred: toggleStarred
+  };
 
-    var questionSubscribers = [];
+  var questionSubscribers = [];
 
-    function subscribe(callback) {
-        questionSubscribers.push(callback);
-    }
+  function subscribe(callback) {
+    questionSubscribers.push(callback);
+  }
 
-    function get(question_id) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            id: question_id
+  function get(question_id) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      id: question_id
+    });
+    return $http
+      .get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].getQuestion + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
+      .then(function (result) {
+        questionSubscribers.forEach(function (callback) {
+          callback(result);
         });
-        return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].getQuestion + queryString)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse).then(function(result) {
-                questionSubscribers.forEach(function(callback) {
-                    callback(result);
-                });
-                return result;
-            });
-    }
+        return result;
+      });
+  }
 
-    function markBestAnswer(qid, aid, type) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            qid: qid,
-            aid: aid,
-            type: type
-        });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].markBestAnswer + queryString);
-    }
+  function markBestAnswer(qid, aid, type) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      qid: qid,
+      aid: aid,
+      type: type
+    });
+    return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].markBestAnswer + queryString);
+  }
 
-    function toggleStarred(starred, qid) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            starred: starred,
-            qid: qid
-        });
-        $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].toggleStarred + queryString);
-    }
+  function toggleStarred(starred, qid) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      starred: starred,
+      qid: qid
+    });
+    $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].toggleStarred + queryString);
+  }
 
-    return publicApi;
+  return publicApi;
 }
+
 
 /***/ }),
 /* 29 */
@@ -960,53 +981,55 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function tags_service_def($http) {
-    var publicApi = {
-        autofillTags: autofillTags,
-        getTopTags: getTopTags,
-        watchTag: watchTag,
-        isWatched: isWatched,
-        autoSubscribe: autoSubscribe
-    };
+  var publicApi = {
+    autofillTags: autofillTags,
+    getTopTags: getTopTags,
+    watchTag: watchTag,
+    isWatched: isWatched,
+    autoSubscribe: autoSubscribe
+  };
 
-    function autofillTags(input, fullView) {
-        var query = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            input: input,
-            full: fullView
-        });
-        return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].autofillTags + query)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse).then(autoTagsCallback);
-    }
-    var autoTagsCallback;
+  function autofillTags(input, fullView) {
+    var query = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      input: input,
+      full: fullView
+    });
+    return $http
+      .get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].autofillTags + query)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
+      .then(autoTagsCallback);
+  }
+  var autoTagsCallback;
 
-    function autoSubscribe(callback) {
-        autoTagsCallback = callback;
-    }
+  function autoSubscribe(callback) {
+    autoTagsCallback = callback;
+  }
 
-    function getTopTags(fullView) {
-        var query = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            full: fullView
-        });
-        return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].getTopTags + query).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
+  function getTopTags(fullView) {
+    var query = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      full: fullView
+    });
+    return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].getTopTags + query).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
 
-    function watchTag(tag, watch) {
-        var query = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            tag: tag,
-            watch: watch
-        });
-        return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].watchTag + query).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
+  function watchTag(tag, watch) {
+    var query = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      tag: tag,
+      watch: watch
+    });
+    return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].watchTag + query).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
 
-    function isWatched(tag) {
-        var query = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            tag: tag
-        });
-        return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].tagIsWatched + query)
-            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
-    }
+  function isWatched(tag) {
+    var query = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      tag: tag
+    });
+    return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].tagIsWatched + query).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+  }
 
-    return publicApi;
+  return publicApi;
 }
+
 
 /***/ }),
 /* 30 */
@@ -1021,42 +1044,45 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function vote_service_def($http) {
-    var publicApi = {
-        vote: vote,
-        get: get,
-        subscribe: subscribe
-    };
+  var publicApi = {
+    vote: vote,
+    get: get,
+    subscribe: subscribe
+  };
 
-    function vote(dir, id, param) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            dir: dir,
-            id: id,
-            param: param
+  function vote(dir, id, param) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      dir: dir,
+      id: id,
+      param: param
+    });
+    $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].vote + queryString);
+  }
+
+  function get(id, param) {
+    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+      id: id,
+      param: param
+    });
+    $http
+      .get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].vote + queryString)
+      .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
+      .then(function (result) {
+        subscribers.forEach(function (callback) {
+          callback(result);
         });
-        $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].vote + queryString);
-    }
+      });
+  }
 
-    function get(id, param) {
-        var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-            id: id,
-            param: param
-        });
-        $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].vote + queryString).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
-            .then(function(result) {
-                subscribers.forEach(function(callback) {
-                    callback(result);
-                });
-            });
-    }
+  var subscribers = [];
 
-    var subscribers = [];
+  function subscribe(callback) {
+    subscribers.push(callback);
+  }
 
-    function subscribe(callback) {
-        subscribers.push(callback);
-    }
-
-    return publicApi;
+  return publicApi;
 }
+
 
 /***/ }),
 /* 31 */
@@ -1148,30 +1174,32 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function results_service_def($http) {
-    return {
-        query: function (method, filter, page, obj) {
-            obj.filter = filter;
-            obj.page = page;
+  return {
+    query: function (method, filter, page, obj) {
+      obj.filter = filter;
+      obj.page = page;
 
-            var suffix = (function () {
-                switch (method) {
-                    case 'all':
-                        return 'queryQuestions';
-                    case 'profile':
-                        return 'getProfile';
-                    case 'tagSearch':
-                        return 'searchTag';
-                    case 'search':
-                        return 'searchQuestion';
-                    default:
-                        return 'queryQuestions';
-                }
-            })();
-            return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"][suffix] + _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString(obj))
-                .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+      var suffix = (function () {
+        switch (method) {
+          case "all":
+            return "queryQuestions";
+          case "profile":
+            return "getProfile";
+          case "tagSearch":
+            return "searchTag";
+          case "search":
+            return "searchQuestion";
+          default:
+            return "queryQuestions";
         }
-    };
+      })();
+      return $http
+        .get(_path__WEBPACK_IMPORTED_MODULE_0__["path"][suffix] + _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString(obj))
+        .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse);
+    }
+  };
 }
+
 
 /***/ }),
 /* 33 */
@@ -1313,65 +1341,83 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function attachment_service_def($http) {
-    return {
-        uploadImage: function (encoded_url) {
-            encoded_url = encoded_url.split(";base64,");
-            var type = encoded_url[0].replace("data:", "");
-            var encoded_data = encoded_url[1];
-            //Create a blank entry on the ko table
-            return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createAttachment)
+  return {
+    uploadImage: function (encoded_url) {
+      encoded_url = encoded_url.split(";base64,");
+      var type = encoded_url[0].replace("data:", "");
+      var encoded_data = encoded_url[1];
+      //Create a blank entry on the ko table
+      return $http
+        .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createAttachment)
+        .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
+        .then(function (img) {
+          var name =
+            "ko-" +
+            ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (
+              c
+            ) {
+              return (
+                c ^
+                (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+              ).toString(16);
+            });
+          //Attach the image to it
+          var data = "<request><entry><agent>KO Image Upload</agent><topic>AttachmentCreator</topic><name>"
+            .concat(name, ":")
+            .concat(type, "</name><source>x_nuvo_ko_attachments:")
+            .concat(img.sys_id, "</source><payload>")
+            .concat(encoded_data, "</payload></entry></request>");
+
+          return $http
+            .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].eccQueue, data, {
+              headers: {
+                "Content-Type": "text/xml",
+                Accept: "application/json"
+              }
+            })
+            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
+            .then(function (data) {
+              //And then query the attachment download link
+              return $http
+                .get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].attachmentApi + "?sysparm_query=file_name=" + name)
                 .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
-                .then(function (img) {
-                    var name = "ko-" + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
-                        return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
-                    });
-                    //Attach the image to it
-                    var data =
-                        "<request><entry><agent>KO Image Upload</agent><topic>AttachmentCreator</topic><name>"
-                        .concat(name, ":").concat(type, "</name><source>x_nuvo_ko_attachments:")
-                        .concat(img.sys_id, "</source><payload>").concat(encoded_data, "</payload></entry></request>");
-
-                    return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].eccQueue, data, {
-                        headers: {
-                            'Content-Type': 'text/xml',
-                            'Accept': 'application/json'
-                        }
-                    }).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse).then(function (data) {
-                        //And then query the attachment download link
-                        return $http.get(_path__WEBPACK_IMPORTED_MODULE_0__["path"].attachmentApi + '?sysparm_query=file_name=' + name)
-                            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
-                            .then(function (data) {
-                                return data[0].download_link;
-                            });
-                    });
+                .then(function (data) {
+                  return data[0].download_link;
                 });
+            });
+        });
+    },
 
-        },
-
-        upload: function (file) {
-            //Create blank attachment entry, upload the attachment to it, and return a link
-            return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createAttachment)
-                .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse).then(function (obj) {
-                    var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
-                        file_name: file.name,
-                        table_name: 'x_nuvo_ko_attachments',
-                        table_sys_id: obj.sys_id
-                    });
-                    return $http.post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].fileApi + queryString, file, {
-                        headers: {
-                            'Content-Type': file.type,
-                            'Accept': 'application/json'
-                        }
-                    }).then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse).then(function (data) {
-                        return {
-                            link: data.download_link,
-                            name: file.name
-                        };
-                    });
-                });
-        }
-    };
+    upload: function (file) {
+      //Create blank attachment entry, upload the attachment to it, and return a link
+      return $http
+        .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].createAttachment)
+        .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
+        .then(function (obj) {
+          var queryString = _functions__WEBPACK_IMPORTED_MODULE_1__["default"].buildQueryString({
+            file_name: file.name,
+            table_name: "x_nuvo_ko_attachments",
+            table_sys_id: obj.sys_id
+          });
+          return $http
+            .post(_path__WEBPACK_IMPORTED_MODULE_0__["path"].fileApi + queryString, file, {
+              headers: {
+                "Content-Type": file.type,
+                Accept: "application/json"
+              }
+            })
+            .then(_functions__WEBPACK_IMPORTED_MODULE_1__["default"].transformResponse)
+            .then(function (data) {
+              return {
+                link: data.download_link,
+                name: file.name
+              };
+            });
+        });
+    }
+  };
 }
+
 
 /***/ }),
 /* 35 */
@@ -1563,22 +1609,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-routing.$inject = ['$stateProvider'];
+routing.$inject = ["$stateProvider"];
 
 function routing($stateProvider) {
-    $stateProvider.state('admin_tags', Object(_adminTag__WEBPACK_IMPORTED_MODULE_0__["admin_tag_view_def"])());
-    $stateProvider.state('admin', Object(_admin__WEBPACK_IMPORTED_MODULE_1__["admin_view_def"])());
-    $stateProvider.state('admin_webhook', Object(_adminWebhook__WEBPACK_IMPORTED_MODULE_2__["admin_webhook_view_def"])());
-    $stateProvider.state('ask', Object(_ask__WEBPACK_IMPORTED_MODULE_3__["ask_view_def"])());
-    $stateProvider.state('edit', Object(_edit__WEBPACK_IMPORTED_MODULE_4__["edit_view_def"])());
-    $stateProvider.state('home', Object(_home__WEBPACK_IMPORTED_MODULE_5__["home_view_def"])());
-    $stateProvider.state('profile', Object(_profile__WEBPACK_IMPORTED_MODULE_6__["profile_view_def"])());
-    $stateProvider.state('question', Object(_question__WEBPACK_IMPORTED_MODULE_7__["question_view_def"])());
-    $stateProvider.state('questions', Object(_questions__WEBPACK_IMPORTED_MODULE_8__["questions_view_def"])());
-    $stateProvider.state('search', Object(_search__WEBPACK_IMPORTED_MODULE_9__["search_view_def"])());
-    $stateProvider.state('tags', Object(_tags__WEBPACK_IMPORTED_MODULE_10__["tags_view_def"])());
-    $stateProvider.state('tag', Object(_tag__WEBPACK_IMPORTED_MODULE_11__["tag_view_def"])());
+  $stateProvider.state("admin_tags", Object(_adminTag__WEBPACK_IMPORTED_MODULE_0__["admin_tag_view_def"])());
+  $stateProvider.state("admin", Object(_admin__WEBPACK_IMPORTED_MODULE_1__["admin_view_def"])());
+  $stateProvider.state("admin_webhook", Object(_adminWebhook__WEBPACK_IMPORTED_MODULE_2__["admin_webhook_view_def"])());
+  $stateProvider.state("ask", Object(_ask__WEBPACK_IMPORTED_MODULE_3__["ask_view_def"])());
+  $stateProvider.state("edit", Object(_edit__WEBPACK_IMPORTED_MODULE_4__["edit_view_def"])());
+  $stateProvider.state("home", Object(_home__WEBPACK_IMPORTED_MODULE_5__["home_view_def"])());
+  $stateProvider.state("profile", Object(_profile__WEBPACK_IMPORTED_MODULE_6__["profile_view_def"])());
+  $stateProvider.state("question", Object(_question__WEBPACK_IMPORTED_MODULE_7__["question_view_def"])());
+  $stateProvider.state("questions", Object(_questions__WEBPACK_IMPORTED_MODULE_8__["questions_view_def"])());
+  $stateProvider.state("search", Object(_search__WEBPACK_IMPORTED_MODULE_9__["search_view_def"])());
+  $stateProvider.state("tags", Object(_tags__WEBPACK_IMPORTED_MODULE_10__["tags_view_def"])());
+  $stateProvider.state("tag", Object(_tag__WEBPACK_IMPORTED_MODULE_11__["tag_view_def"])());
 }
+
 
 /***/ }),
 /* 37 */
@@ -1591,106 +1638,116 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_viewAdminTag_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_viewAdminTag_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function admin_tag_view_def() {
-    var view = {
-        template: _templates_viewAdminTag_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        scope: true,
-        controller: view_ctrl,
-        controllerAs: 'vm',
-        url: '/admin/tags'
+  var view = {
+    template: _templates_viewAdminTag_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    scope: true,
+    controller: view_ctrl,
+    controllerAs: "vm",
+    url: "/admin/tags"
+  };
+
+  view_ctrl.$inject = ["$scope", "adminService", "tagsService"];
+  function view_ctrl($scope, adminService, tagsService) {
+    var vm = this;
+    vm.sort = "newest";
+    vm.page = 1;
+    vm.filter = "";
+
+    vm.list = [];
+
+    vm.nextPage = function () {
+      vm.page++;
+      updateList();
+    };
+    vm.lastPage = function () {
+      vm.page--;
+      if (vm.page < 1) vm.page = 1;
+      updateList();
     };
 
-    view_ctrl.$inject = ["$scope", "adminService", "tagsService"];
-    function view_ctrl($scope, adminService, tagsService) {
-        var vm = this;
-        vm.sort = 'newest';
-        vm.page = 1;
-        vm.filter = '';
+    adminService.subscribe(function (data) {
+      vm.list = data.data;
+      vm.results = data.results;
+      vm.totalPages = Math.ceil(vm.results / data.pageSize);
+    });
 
-        vm.list = [];
-
-        vm.nextPage = function () {
-            vm.page++;
-            updateList();
-        };
-        vm.lastPage = function () {
-            vm.page--;
-            if (vm.page < 1) vm.page = 1;
-            updateList();
-        };
-
-        adminService.subscribe(function (data) {
-            vm.list = data.data;
-            vm.results = data.results;
-            vm.totalPages = Math.ceil(vm.results / data.pageSize);
-        });
-
-        function updateList() {
-            adminService.getTags(vm.sort, vm.page, vm.filter);
-        }
-
-        $scope.$watch('vm.filter', function () {
-            vm.page = 1;
-            updateList();
-        });
-        $scope.$watch('vm.sort', function () {
-            vm.page = 1;
-            updateList();
-        });
-
-        vm.state = 'view';
-
-        vm.rename = function (tid, tag) {
-            vm.updateName = tag;
-            vm.editTag = {
-                name: tag,
-                tid: tid
-            };
-            vm.state = 'rename';
-        };
-
-        vm.remap = function (tid, tag) {
-            vm.editTag = {
-                name: tag,
-                tid: tid
-            };
-            vm.state = 'remap';
-        };
-
-        vm.saveRename = function () {
-            adminService.renameTag(vm.editTag.tid, vm.updateName).then(function (status) {
-                if (status == 'fail') alert('Tag renaming failed');
-                else window.location.reload();
-            });
-        };
-
-        vm.remapList = [];
-        vm.remapVal = '';
-
-        tagsService.autoSubscribe(function (tags) {
-            tags.forEach(function (tag) {
-                if (vm.remapList.indexOf(tag.name) == -1) vm.remapList.push(tag.name);
-            });
-        });
-
-        $scope.$watch('vm.remapVal', function (newVal) {
-            if (newVal != '') tagsService.autofillTags(newVal);
-        });
-
-        vm.saveRemap = function () {
-            var oldTag = vm.editTag.name;
-            var newTag = vm.remapVal;
-            if (window.confirm('This will remap the tag "' + oldTag + '" to "' + newTag + '". This cannot be undone. Are you sure you wish to proceed?')) {
-                adminService.remapTag(vm.editTag.tid, newTag).then(function (status) {
-                    if (status == 'fail') alert('Tag remapping failed');
-                    else window.location.reload();
-                });
-            }
-        };
-
+    function updateList() {
+      adminService.getTags(vm.sort, vm.page, vm.filter);
     }
 
-    return view;
+    $scope.$watch("vm.filter", function () {
+      vm.page = 1;
+      updateList();
+    });
+    $scope.$watch("vm.sort", function () {
+      vm.page = 1;
+      updateList();
+    });
+
+    vm.state = "view";
+
+    vm.rename = function (tid, tag) {
+      vm.updateName = tag;
+      vm.editTag = {
+        name: tag,
+        tid: tid
+      };
+      vm.state = "rename";
+    };
+
+    vm.remap = function (tid, tag) {
+      vm.editTag = {
+        name: tag,
+        tid: tid
+      };
+      vm.state = "remap";
+    };
+
+    vm.saveRename = function () {
+      adminService
+        .renameTag(vm.editTag.tid, vm.updateName)
+        .then(function (status) {
+          if (status == "fail") alert("Tag renaming failed");
+          else window.location.reload();
+        });
+    };
+
+    vm.remapList = [];
+    vm.remapVal = "";
+
+    tagsService.autoSubscribe(function (tags) {
+      tags.forEach(function (tag) {
+        if (vm.remapList.indexOf(tag.name) == -1) vm.remapList.push(tag.name);
+      });
+    });
+
+    $scope.$watch("vm.remapVal", function (newVal) {
+      if (newVal != "") tagsService.autofillTags(newVal);
+    });
+
+    vm.saveRemap = function () {
+      var oldTag = vm.editTag.name;
+      var newTag = vm.remapVal;
+      if (
+        window.confirm(
+          'This will remap the tag "' +
+            oldTag +
+            '" to "' +
+            newTag +
+            '". This cannot be undone. Are you sure you wish to proceed?'
+        )
+      ) {
+        adminService.remapTag(vm.editTag.tid, newTag).then(function (status) {
+          if (status == "fail") alert("Tag remapping failed");
+          else window.location.reload();
+        });
+      }
+    };
+  }
+
+  return view;
 }
+
 
 /***/ }),
 /* 38 */
@@ -1706,11 +1763,12 @@ module.exports = "<div class='admin-modal' ng-class='{\"hide\":vm.state==\"view\
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "admin_view_def", function() { return admin_view_def; });
 function admin_view_def() {
-    return {
-        template: "<div><a ui-sref='admin_tags'>Tags</a></div>" +
-            "<div><a ui-sref='admin_webhook'>Webhook Config</a></div>",
-        url: '/admin'
-    };
+  return {
+    template:
+      "<div><a ui-sref='admin_tags'>Tags</a></div>" +
+      "<div><a ui-sref='admin_webhook'>Webhook Config</a></div>",
+    url: "/admin"
+  };
 }
 
 
@@ -1726,97 +1784,99 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function admin_webhook_view_def() {
-    var view = {
-        template: _templates_viewAdminWebhook_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        scope: true,
-        controller: view_ctrl,
-        controllerAs: 'vm',
-        url: '/admin/webhooks'
+  var view = {
+    template: _templates_viewAdminWebhook_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    scope: true,
+    controller: view_ctrl,
+    controllerAs: "vm",
+    url: "/admin/webhooks"
+  };
+
+  view_ctrl.$inject = ["$scope", "adminService", "tagsService"];
+  function view_ctrl($scope, adminService, tagsService) {
+    var vm = this;
+    vm.state = "view";
+    vm.instructions = false;
+    vm.webhooks = [];
+
+    function refresh() {
+      adminService.getWebhooks().then(function (data) {
+        vm.state = "view";
+        vm.webhooks = data;
+      });
+    }
+    refresh();
+
+    vm.edit = function (hook) {
+      //Copy object by value
+      vm.hook = {
+        url: hook.url,
+        id: hook.id,
+        channel: hook.channel,
+        tags: hook.tags.slice(0)
+      };
+      vm.state = "edit";
     };
 
-    view_ctrl.$inject = ["$scope", "adminService", "tagsService"];
-    function view_ctrl($scope, adminService, tagsService) {
-        var vm = this;
-        vm.state = 'view';
-        vm.instructions = false;
-        vm.webhooks = [];
+    vm.updateWebhook = function () {
+      adminService
+        .updateWebhook(vm.hook.id, vm.hook.channel, vm.hook.url, vm.hook.tags)
+        .then(refresh);
+    };
 
-        function refresh() {
-            adminService.getWebhooks().then(function (data) {
-                vm.state = 'view';
-                vm.webhooks = data;
-            });
+    vm.newHook = function () {
+      vm.state = "create";
+      vm.hook = {
+        url: "",
+        channel: "",
+        tags: []
+      };
+    };
+
+    vm.createWebhook = function () {
+      adminService
+        .createWebhook(vm.hook.channel, vm.hook.url, vm.hook.tags)
+        .then(refresh);
+    };
+
+    vm.delete = function (hook) {
+      adminService.deleteWebhook(hook.id).then(refresh);
+    };
+
+    vm.removeTag = function (tag) {
+      vm.hook.tags.splice(vm.hook.tags.indexOf(tag), 1);
+    };
+
+    vm.autofillList = [];
+    tagsService.autoSubscribe(function (tags) {
+      tags.forEach(function (tag) {
+        if (vm.autofillList.indexOf(tag.name) == -1)
+          vm.autofillList.push(tag.name);
+      });
+    });
+
+    $scope.$watch("vm.newTag", function (newVal) {
+      if (newVal != "") tagsService.autofillTags(newVal);
+    });
+
+    vm.addTag = function (e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+
+        if (vm.newTag.length > 0) {
+          vm.hook.tags.push(vm.newTag);
+          vm.hook.tags = vm.hook.tags.filter(function (item, pos) {
+            return vm.hook.tags.indexOf(item) == pos;
+          });
+          vm.newTag = "";
+          vm.autofillList = [];
         }
-        refresh();
-
-        vm.edit = function (hook) {
-            //Copy object by value
-            vm.hook = {
-                url: hook.url,
-                id: hook.id,
-                channel: hook.channel,
-                tags: hook.tags.slice(0)
-            };
-            vm.state = 'edit';
-        };
-
-        vm.updateWebhook = function () {
-            adminService.updateWebhook(vm.hook.id, vm.hook.channel, vm.hook.url, vm.hook.tags)
-                .then(refresh);
-        };
-
-        vm.newHook = function () {
-            vm.state = "create";
-            vm.hook = {
-                url: '',
-                channel: '',
-                tags: []
-            };
-        };
-
-        vm.createWebhook = function () {
-            adminService.createWebhook(vm.hook.channel, vm.hook.url, vm.hook.tags)
-                .then(refresh);
-        };
-
-        vm.delete = function (hook) {
-            adminService.deleteWebhook(hook.id)
-                .then(refresh);
-        };
-
-        vm.removeTag = function (tag) {
-            vm.hook.tags.splice(vm.hook.tags.indexOf(tag), 1);
-        };
-
-        vm.autofillList = [];
-        tagsService.autoSubscribe(function (tags) {
-            tags.forEach(function (tag) {
-                if (vm.autofillList.indexOf(tag.name) == -1) vm.autofillList.push(tag.name);
-            });
-        });
-
-        $scope.$watch('vm.newTag', function (newVal) {
-            if (newVal != '') tagsService.autofillTags(newVal);
-        });
-
-
-        vm.addTag = function (e) {
-            if (e.keyCode == 13) {
-                e.preventDefault();
-
-                if (vm.newTag.length > 0) {
-                    vm.hook.tags.push(vm.newTag);
-                    vm.hook.tags = vm.hook.tags.filter(function (item, pos) {
-                        return vm.hook.tags.indexOf(item) == pos;
-                    });
-                    vm.newTag = "";
-                    vm.autofillList = [];
-                }
-            }
-        };
-    }
-    return view;
+      }
+    };
+  }
+  return view;
 }
+
 
 /***/ }),
 /* 41 */
@@ -2151,7 +2211,7 @@ function home_view_def() {
 /* 47 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <h3 style='color:var(--nuvolo-dark-blue)'>Common Tags</h3>\n    <div id='topic-overview'>\n        <div class='topic-card' ng-repeat='tag in vm.allTags'>\n            <a ui-sref='tag({tag:\"{{tag.name}}\"})' class='ui-link'>\n                <div class='wrapper-horizontal'>\n                    <div class='ko-tag'>{{tag.name}}</div>\n                </div>\n                <span>Questions: <span>{{tag.count}}</span></span>\n            </a>\n        </div>\n    </div>\n    <h3 style='color:var(--nuvolo-dark-blue)'>Recent Questions</h3>\n    <div class='wrapper-vertical'>\n        <questionpreview ng-repeat='preview in vm.recents' class='preview'></questionpreview>\n\t</div>\n\t<button style='margin-top:5px;' ui-sref='questions'>See More</button>\n</div>";
+module.exports = "<div>\n  <h3 style=\"color: var(--nuvolo-dark-blue);\">Common Tags</h3>\n  <div id=\"topic-overview\">\n    <div class=\"topic-card\" ng-repeat=\"tag in vm.allTags\">\n      <a ui-sref='tag({tag:\"{{tag.name}}\"})' class=\"ui-link\">\n        <div class=\"wrapper-horizontal\">\n          <div class=\"ko-tag\">{{tag.name}}</div>\n        </div>\n        <span>Questions: <span>{{tag.count}}</span></span>\n      </a>\n    </div>\n  </div>\n  <h3 style=\"color: var(--nuvolo-dark-blue);\">Recent Questions</h3>\n  <div class=\"wrapper-vertical\">\n    <questionpreview\n      ng-repeat=\"preview in vm.recents\"\n      class=\"preview\"\n    ></questionpreview>\n  </div>\n  <button style=\"margin-top: 5px;\" ui-sref=\"questions\">See More</button>\n</div>\n";
 
 /***/ }),
 /* 48 */
@@ -2164,33 +2224,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_viewProfile_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_viewProfile_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function profile_view_def() {
-    var profile = {
-        template: _templates_viewProfile_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        controller: profile_ctrl,
-        controllerAs: "vm",
-        scope: true,
-        url: '/profile?tab?filter'
+  var profile = {
+    template: _templates_viewProfile_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    controller: profile_ctrl,
+    controllerAs: "vm",
+    scope: true,
+    url: "/profile?tab?filter"
+  };
+
+  profile_ctrl.$inject = ["$stateParams"];
+  function profile_ctrl($stateParams) {
+    var vm = this;
+    vm.tab = $stateParams.tab || "questions";
+
+    vm.resultsMethod = "profile";
+    vm.params = {
+      type: vm.tab
     };
+  }
 
-    profile_ctrl.$inject = ["$stateParams"];
-    function profile_ctrl($stateParams) {
-        var vm = this;
-        vm.tab = $stateParams.tab || 'questions';
-
-        vm.resultsMethod = "profile";
-        vm.params = {
-            type: vm.tab
-        };
-    }
-
-    return profile;
+  return profile;
 }
+
 
 /***/ }),
 /* 49 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class='profile-tabs wrapper-horizontal'>\n    <div class='tab-spacer' style='max-width:20px'></div>\n    <button ui-sref = 'profile({tab:\"questions\"})' class = 'btn' ng-class='{active: vm.tab == \"questions\"}'>Questions</button>\n    <button ui-sref = 'profile({tab:\"answers\"})' class = 'btn' ng-class='{active: vm.tab == \"answers\"}'>Answers</button>\n    <button ui-sref = 'profile({tab:\"starred\"})' class = 'btn' ng-class='{active: vm.tab == \"starred\"}'>Starred</button>\n    <button ui-sref = 'profile({tab:\"tags\"})' class = 'btn' ng-class='{active: vm.tab == \"tags\"}'>Watched Tags</button>\n    <div class='tab-spacer'></div>\n</div>\n<results></results>";
+module.exports = "<div class=\"profile-tabs wrapper-horizontal\">\n  <div class=\"tab-spacer\" style=\"max-width: 20px;\"></div>\n  <button\n    ui-sref='profile({tab:\"questions\"})'\n    class=\"btn\"\n    ng-class='{active: vm.tab == \"questions\"}'\n  >\n    Questions\n  </button>\n  <button\n    ui-sref='profile({tab:\"answers\"})'\n    class=\"btn\"\n    ng-class='{active: vm.tab == \"answers\"}'\n  >\n    Answers\n  </button>\n  <button\n    ui-sref='profile({tab:\"starred\"})'\n    class=\"btn\"\n    ng-class='{active: vm.tab == \"starred\"}'\n  >\n    Starred\n  </button>\n  <button\n    ui-sref='profile({tab:\"tags\"})'\n    class=\"btn\"\n    ng-class='{active: vm.tab == \"tags\"}'\n  >\n    Watched Tags\n  </button>\n  <div class=\"tab-spacer\"></div>\n</div>\n<results></results>\n";
 
 /***/ }),
 /* 50 */
@@ -2314,21 +2375,22 @@ module.exports = "<div ng-class='{\"hide\":!vm.noQuestion}'>\n  No question with
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "questions_view_def", function() { return questions_view_def; });
 function questions_view_def() {
-    var results = {
-        template: '<results></results>',
-        scope: false,
-        url: '/questions?filter',
-        controller: questions_ctrl,
-        controllerAs: 'vm'
-    };
+  var results = {
+    template: "<results></results>",
+    scope: false,
+    url: "/questions?filter",
+    controller: questions_ctrl,
+    controllerAs: "vm"
+  };
 
-    function questions_ctrl() {
-        var vm = this;
-        vm.resultsMethod = 'all';
-    }
+  function questions_ctrl() {
+    var vm = this;
+    vm.resultsMethod = "all";
+  }
 
-    return results;
+  return results;
 }
+
 
 /***/ }),
 /* 53 */
@@ -2341,32 +2403,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_viewSearch_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_viewSearch_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function search_view_def() {
-    var page = {
-        template: _templates_viewSearch_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        controller: page_ctrl,
-        controllerAs: "vm",
-        scope: true,
-        url: '/search?q?filter'
+  var page = {
+    template: _templates_viewSearch_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    controller: page_ctrl,
+    controllerAs: "vm",
+    scope: true,
+    url: "/search?q?filter"
+  };
+
+  page_ctrl.$inject = ["$stateParams"];
+  function page_ctrl($stateParams) {
+    var vm = this;
+    vm.searchPhrase = $stateParams.q;
+    vm.resultsMethod = "search";
+    vm.params = {
+      phrase: vm.searchPhrase
     };
+  }
 
-    page_ctrl.$inject = ["$stateParams"];
-    function page_ctrl($stateParams) {
-        var vm = this;
-        vm.searchPhrase = $stateParams.q;
-        vm.resultsMethod = "search";
-        vm.params = {
-            phrase: vm.searchPhrase
-        };
-    }
-
-    return page;
+  return page;
 }
+
 
 /***/ }),
 /* 54 */
 /***/ (function(module, exports) {
 
-module.exports = "<h3>Search Results for \"{{vm.searchPhrase}}\"</h3>\n<results></results>";
+module.exports = "<h3>Search Results for \"{{vm.searchPhrase}}\"</h3>\n<results></results>\n";
 
 /***/ }),
 /* 55 */
@@ -2379,40 +2442,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_viewTags_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_viewTags_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function tags_view_def() {
-    var view = {
-        template:_templates_viewTags_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        controller: tags_ctrl,
-        controllerAs: "vm",
-        scope: true,
-        url: '/tags'
-    };
+  var view = {
+    template: _templates_viewTags_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    controller: tags_ctrl,
+    controllerAs: "vm",
+    scope: true,
+    url: "/tags"
+  };
 
-    tags_ctrl.$inject = ['$scope', 'tagsService'];
-    function tags_ctrl($scope, tagsService) {
-        var vm = this;
-        vm.tagList = [];
+  tags_ctrl.$inject = ["$scope", "tagsService"];
+  function tags_ctrl($scope, tagsService) {
+    var vm = this;
+    vm.tagList = [];
 
-        //Functions for searching using filter box
-        tagsService.autoSubscribe(function (tags) {
-            vm.tagList = tags;
-        });
-        vm.filter = '';
-        $scope.$watch('vm.filter', function (newVal) {
-            if (newVal != '') tagsService.autofillTags(newVal, true);
-            else getTop();
-        });
+    //Functions for searching using filter box
+    tagsService.autoSubscribe(function (tags) {
+      vm.tagList = tags;
+    });
+    vm.filter = "";
+    $scope.$watch("vm.filter", function (newVal) {
+      if (newVal != "") tagsService.autofillTags(newVal, true);
+      else getTop();
+    });
 
-        function getTop() {
-            tagsService.getTopTags(true).then(function (data) {
-                vm.tagList = data;
-            });
-        }
-        getTop();
-
+    function getTop() {
+      tagsService.getTopTags(true).then(function (data) {
+        vm.tagList = data;
+      });
     }
+    getTop();
+  }
 
-    return view;
+  return view;
 }
+
 
 /***/ }),
 /* 56 */
@@ -2431,42 +2494,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _templates_viewTag_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_templates_viewTag_html__WEBPACK_IMPORTED_MODULE_0__);
 
 function tag_view_def() {
-    var page = {
-        url: '/tag/:tag?filter',
-        template: _templates_viewTag_html__WEBPACK_IMPORTED_MODULE_0___default.a,
-        controller: page_ctrl,
-        controllerAs: 'vm',
-        scope: true
+  var page = {
+    url: "/tag/:tag?filter",
+    template: _templates_viewTag_html__WEBPACK_IMPORTED_MODULE_0___default.a,
+    controller: page_ctrl,
+    controllerAs: "vm",
+    scope: true
+  };
+
+  page_ctrl.$inject = ["$stateParams", "tagsService"];
+  function page_ctrl($stateParams, tagsService) {
+    var vm = this;
+    vm.tag = $stateParams.tag;
+    vm.watched = false;
+
+    vm.resultsMethod = "tagSearch";
+    vm.params = {
+      tag: vm.tag
     };
 
-    page_ctrl.$inject = ["$stateParams", "tagsService"];
-    function page_ctrl($stateParams, tagsService) {
-        var vm = this;
-        vm.tag = $stateParams.tag;
-        vm.watched = false;
+    tagsService.isWatched(vm.tag).then(function (data) {
+      vm.watched = data;
+    });
 
-        vm.resultsMethod = 'tagSearch';
-        vm.params = {
-            tag: vm.tag
-        };
-
-        tagsService.isWatched(vm.tag).then(function(data) {
-            vm.watched = data;
-        });
-
-        vm.watch = function(watch) {
-            tagsService.watchTag(vm.tag, watch);
-            vm.watched = watch;
-        };
-    }
-    return page;
+    vm.watch = function (watch) {
+      tagsService.watchTag(vm.tag, watch);
+      vm.watched = watch;
+    };
+  }
+  return page;
 }
+
 
 /***/ }),
 /* 58 */
 /***/ (function(module, exports) {
 
-module.exports = "<h3>Questions tagged \"{{vm.tag}}\"</h3>\n<button ng-class='{hide: vm.watched == true}' ng-click='vm.watch(true)'><i class=\"fa fa-eye\"></i> Watch Tag</button>\n<button ng-class='{hide: vm.watched == false}' ng-click='vm.watch(false)'><i class=\"fa fa-eye-slash\"></i> Unwatch Tag</button>\n<results></results>";
+module.exports = "<h3>Questions tagged \"{{vm.tag}}\"</h3>\n<button ng-class=\"{hide: vm.watched == true}\" ng-click=\"vm.watch(true)\">\n  <i class=\"fa fa-eye\"></i> Watch Tag\n</button>\n<button ng-class=\"{hide: vm.watched == false}\" ng-click=\"vm.watch(false)\">\n  <i class=\"fa fa-eye-slash\"></i> Unwatch Tag\n</button>\n<results></results>\n";
 
 /***/ }),
 /* 59 */
@@ -2496,7 +2560,7 @@ if (content.locals) {
 
 exports = module.exports = __webpack_require__(61)(false);
 // Module
-exports.push([module.i, "/**\n * @license\n * Copyright (C) 2015 Google Inc.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\n/* Pretty printing styles. Used with prettify.js. */\n\n\n/* SPAN elements with the classes below are added by prettyprint. */\n.pln { color: #000 }  /* plain text */\n\n@media screen {\n  .str { color: #080 }  /* string content */\n  .kwd { color: #008 }  /* a keyword */\n  .com { color: #800 }  /* a comment */\n  .typ { color: #606 }  /* a type name */\n  .lit { color: #066 }  /* a literal value */\n  /* punctuation, lisp open bracket, lisp close bracket */\n  .pun, .opn, .clo { color: #660 }\n  .tag { color: #008 }  /* a markup tag name */\n  .atn { color: #606 }  /* a markup attribute name */\n  .atv { color: #080 }  /* a markup attribute value */\n  .dec, .var { color: #606 }  /* a declaration; a variable name */\n  .fun { color: red }  /* a function name */\n}\n\n/* Use higher contrast and text-weight for printable form. */\n@media print, projection {\n  .str { color: #060 }\n  .kwd { color: #006; font-weight: bold }\n  .com { color: #600; font-style: italic }\n  .typ { color: #404; font-weight: bold }\n  .lit { color: #044 }\n  .pun, .opn, .clo { color: #440 }\n  .tag { color: #006; font-weight: bold }\n  .atn { color: #404 }\n  .atv { color: #060 }\n}\n\n/* Specify class=linenums on a pre to get line numbering */\nol.linenums { margin-top: 0; margin-bottom: 0 } /* IE indents via margin-left */", ""]);
+exports.push([module.i, "/**\n * @license\n * Copyright (C) 2015 Google Inc.\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n *      http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\n/* Pretty printing styles. Used with prettify.js. */\n\n/* SPAN elements with the classes below are added by prettyprint. */\n.pln {\n  color: #000;\n} /* plain text */\n\n@media screen {\n  .str {\n    color: #080;\n  } /* string content */\n  .kwd {\n    color: #008;\n  } /* a keyword */\n  .com {\n    color: #800;\n  } /* a comment */\n  .typ {\n    color: #606;\n  } /* a type name */\n  .lit {\n    color: #066;\n  } /* a literal value */\n  /* punctuation, lisp open bracket, lisp close bracket */\n  .pun,\n  .opn,\n  .clo {\n    color: #660;\n  }\n  .tag {\n    color: #008;\n  } /* a markup tag name */\n  .atn {\n    color: #606;\n  } /* a markup attribute name */\n  .atv {\n    color: #080;\n  } /* a markup attribute value */\n  .dec,\n  .var {\n    color: #606;\n  } /* a declaration; a variable name */\n  .fun {\n    color: red;\n  } /* a function name */\n}\n\n/* Use higher contrast and text-weight for printable form. */\n@media print, projection {\n  .str {\n    color: #060;\n  }\n  .kwd {\n    color: #006;\n    font-weight: bold;\n  }\n  .com {\n    color: #600;\n    font-style: italic;\n  }\n  .typ {\n    color: #404;\n    font-weight: bold;\n  }\n  .lit {\n    color: #044;\n  }\n  .pun,\n  .opn,\n  .clo {\n    color: #440;\n  }\n  .tag {\n    color: #006;\n    font-weight: bold;\n  }\n  .atn {\n    color: #404;\n  }\n  .atv {\n    color: #060;\n  }\n}\n\n/* Specify class=linenums on a pre to get line numbering */\nol.linenums {\n  margin-top: 0;\n  margin-bottom: 0;\n} /* IE indents via margin-left */\n", ""]);
 
 
 /***/ }),
@@ -2911,7 +2975,7 @@ if (content.locals) {
 
 exports = module.exports = __webpack_require__(61)(false);
 // Module
-exports.push([module.i, ":root {\n    --nuvolo-light-blue: #0cb2da;\n    --nuvolo-dark-blue: #0c3561;\n}\n\nbody {\n    margin: 0px !important;\n    padding: 0px !important;\n}\n\nh6.announcement {\n    background: #2c3e50;\n    padding: 16px;\n    margin: 0;\n    color: #ecf0f1;\n    text-align: center;\n}\n\n/*----------------------\n---Overall Format CSS---\n----------------------*/\n\n.mobile {\n    display: none;\n}\n\n.centered {\n    justify-content: center;\n    align-items: center;\n}\n\n.center-width {\n    max-width: 800px;\n    min-width: 400px;\n    width: 100%;\n}\n\n.hide {\n    display: none !important;\n}\n\n.wrapper-horizontal {\n    display: flex;\n    flex-direction: row;\n}\n\n.wrapper-vertical {\n    display: flex;\n    flex-direction: column;\n}\n\n.ui-link {\n    color: inherit;\n    text-decoration: none !important;\n}\n\n.ui-link:hover {\n    color: inherit;\n    text-decoration: none !important;\n    cursor: pointer;\n}\n\n.post-wrapper {\n    margin-left: 5px;\n    margin-top: 3px;\n    width: 80px;\n    display: flex;\n    flex-direction: row;\n}\n\n.post-wrapper button {\n    flex: 1;\n}\n\n.user {\n    color: mediumblue;\n}\n\n.time {\n    color: grey;\n}\n\n/*MAIN PAGE CSS*/\n@media (max-width:750px) {\n    .left-sidebar {\n        display: none;\n    }\n\n    .right-sidebar {\n        display: none;\n    }\n}\n\n@media (max-width:950px) {\n    .left-sidbar {\n        max-width: 150px;\n    }\n\n    .right-sidebar {\n        display: none;\n    }\n\n    .small-hide {\n        display: none !important;\n    }\n}\n\n.left-sidebar {\n    width: calc(50% - 400px - 50px);\n    margin-right: 50px;\n    margin-left: 10px;\n    padding-top: 50px;\n    border-right: 1px solid var(--nuvolo-light-blue);\n    min-width: 150px;\n}\n\n.right-sidebar {\n    width: calc(50% - 400px);\n    min-width: 150px;\n}\n\n.left-sidebar .tab {\n    font-size: 15px;\n}\n\n.left-sidebar .tab.active {\n    background-color: var(--nuvolo-light-blue) !important;\n    font-weight: bold;\n}\n\n.left-sidebar .tab.active .tab-text {\n    color: white !important;\n}\n\n.left-sidebar .tab:hover {\n    background-color: whitesmoke;\n    cursor: pointer;\n}\n\n.left-sidebar .tab-text {\n    color: black;\n    text-decoration: none !important;\n    padding: 5px;\n}\n\n\n/*Banner CSS */\n.banner {\n    background: whitesmoke;\n    flex-wrap: nowrap;\n    width: 100%;\n    padding: 10px;\n}\n\n.search-container {\n    width: 100%;\n    margin: auto;\n}\n\n.search {\n    width: 100%;\n}\n\n.banner .menu-btn:hover {\n    cursor: pointer;\n}\n\n.banner .menu-btn {\n    position: relative;\n    color: var(--nuvolo-dark-blue);\n}\n\n.banner-btn {\n    white-space: nowrap;\n    background-color: inherit !important;\n    color: var(--nuvolo-dark-blue) !important;\n    padding: 7px;\n    border-radius: 3px;\n    border: 1px solid whitesmoke !important;\n    margin-left: 10px;\n    margin-right: 10px;\n    font-size: 14px;\n}\n\n.banner-btn:hover {\n    border: 1px solid var(--nuvolo-light-blue) !important;\n    box-shadow: none !important;\n    user-select: none;\n}\n\n.profile-btn {\n    border-radius: 20%;\n    height: 30px;\n    min-width: 30px;\n    border: 1px solid lightgrey !important;\n    text-align: center;\n    line-height: 28px;\n    padding: 0px;\n    background-color: white !important;\n}\n\n.notifications-num {\n    position: absolute;\n    right: -7px;\n    top: -6px;\n    width: 14px;\n    height: 14px;\n    background-color: red;\n    border-radius: 50%;\n    font-size: 10px;\n    font-weight: 400;\n    text-align: center;\n    color: white;\n    font-family: Arial, Helvetica, sans-serif;\n    font-weight: 900;\n    line-height: 1.3;\n    user-select: none;\n}\n\n.notifications-container {\n    position: absolute;\n    top: 30px;\n    right: 0px;\n    background-color: var(--nuvolo-light-blue);\n    border: 1px solid var(--nuvolo-dark-blue);\n    font-family: SourceSansPro, \"Helvetica Neue\", Arial;\n    font-size: 13px;\n    width: 400px;\n    min-height: 300px;\n    max-height: 500px;\n    overflow: auto;\n    z-index: 100;\n    border-radius: 5px;\n}\n\n.ko-notification {\n    padding: 8px;\n    background-color: whitesmoke;\n    min-height: 50px;\n    border-bottom: 1px solid var(--nuvolo-dark-blue);\n    position: relative;\n    user-select: none;\n    color: black !important;\n    font-family: Gilroy, sans-serif;\n}\n\n.ko-notification.unread {\n    background-color: var(--nuvolo-light-blue);\n    color: white !important;\n}\n\n.ko-notification .delete {\n    display: none;\n    position: absolute;\n    top: 2px;\n    right: 2px;\n    color: grey;\n}\n\n.ko-notification:hover .delete {\n    display: block;\n}\n\n.ko-notification .delete:hover {\n    cursor: pointer !important;\n    color: black !important;\n}\n\n.notification-title {\n    font-weight: 600;\n}\n\n.notification-content {\n    width: 100%;\n    max-width: 300px;\n    white-space: normal;\n    padding-top: 3px;\n    padding-bottom: 3px;\n    font-weight: 100;\n}\n\n.notification-time {\n    text-align: right;\n    font-weight: 100;\n    color: var(--nuvolo-dark-blue);\n    font-family: SourceSansPro, \"Helvetica Neue\", Arial;\n}\n\n/*------------------\n---Tag Card CSS---\n------------------*/\n.topic-card {\n    border-bottom: 4px dotted var(--nuvolo-light-blue);\n    margin: 15px;\n    padding: 10px;\n}\n\n#topic-overview {\n    display: grid;\n    grid-gap: 15px;\n    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));\n    justify-content: space-around;\n}\n\n\n/*------------------ \n---Search Box CSS---\n------------------*/\n.search-container {\n    width: 100%;\n    margin-top: 10px;\n    margin-bottom: 10px;\n    min-width: 200px;\n}\n\n.search-input {\n    flex-grow: 1;\n    height: 30px;\n    padding: 5px;\n}\n\n\n/*--------------------- \n---Question Page CSS---\n---------------------*/\n\n/* Sidebar upvote/downvote css */\n.vote-container {\n    margin: 10px;\n}\n\n.arrow {\n    color: lightgrey;\n    text-align: center;\n}\n\n.vote-clickable:hover {\n    color: lightgreen;\n    cursor: pointer;\n}\n\n.vote-active {\n    color: var(--nuvolo-light-blue);\n}\n\n.star {\n    margin-top: 10px;\n    text-align: center;\n    font-size: 25px;\n    color: lightgrey;\n}\n\n.star.active {\n    color: #FCDC3B;\n}\n\n.best-answer {\n    margin-top: 10px;\n    color: #45A163;\n}\n\n.best-answer .select-answer {\n    color: gainsboro;\n}\n\n/*Other stuff on question page */\n.answers-container {\n    border-top: 1px solid lightgrey;\n}\n\n.question-container,\n.answer-container {\n    margin: 20px;\n    width: 100%;\n}\n\ncode {\n    background-color: #eff0f1;\n}\n\n.question-container img {\n    max-width: 100%;\n}\n\n.info {\n    text-align: right;\n}\n\n\n/* Comment CSS - container, color, author info */\n.comment-input {\n    resize: none;\n    margin: 5px;\n    flex: 1;\n    padding: 5px;\n    height: 200px !important;\n    border-radius: 4px;\n    border-color: #ccc;\n}\n\n.comments-actions {\n    padding: 5px;\n\n}\n\n.comments-actions div {\n    color: #989898;\n    display: inline;\n}\n\n.comments-actions div:hover {\n    color: deepskyblue;\n    cursor: pointer;\n}\n\n.comment {\n    padding: 3px 15px 3px 30px;\n    border-top: 1px solid lightgray;\n    display: block;\n}\n\n.comment p {\n    display: inline;\n}\n\n.comment-container {\n    margin-top: 20px;\n}\n\n/*------------------------\n------NEW QUESTION CSS----\n------------------------*/\n.tags-container.tag-input,\n.title-input {\n    border: 1px solid #ddd;\n    min-height: 40px;\n}\n\n.title-input {\n    padding: 4px;\n    width: 100%;\n}\n\n.tags-container {\n    padding: 0px 4px;\n    flex-wrap: wrap;\n    align-items: center;\n}\n\n.tags-input {\n    flex: 1;\n    border: none;\n    outline: none;\n    margin-left: 10px;\n    height: 35px;\n}\n\n/* ----------------------\n-Question, Answer editor-\n------------------------*/\n.editor-container {\n    display: block;\n}\n\n.editor-container .CodeMirror,\n.editor-container .CodeMirror-scroll {\n    min-height: 250px;\n    max-height: 250px;\n}\n\n.question-preview {\n    border: 1px solid #ddd;\n}\n\n.input-file {\n    width: 0.1px;\n    height: 0.1px;\n    opacity: 0;\n    overflow: hidden;\n    position: absolute;\n    z-index: -1;\n}\n\n/* ----------------------\n---Review New Question---\n------------------------*/\n.post-review {\n    position: fixed;\n    z-index: 2;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%;\n    overflow: auto;\n    background-color: rgb(0, 0, 0);\n    background-color: rgba(0, 0, 0, 0.4);\n}\n\n.review-content {\n    background-color: #fefefe;\n    margin: auto;\n    padding: 20px;\n    border: 1px solid #888;\n    width: 80%;\n}\n\n.question-preview .preview {\n    flex: 1;\n    border: 1px solid black;\n    border-radius: 5px;\n    padding: 10px;\n    min-height: 100px;\n}\n\n/* -------------------------\n-------Blue Tag Style-------\n--------------------------*/\n.ko-tag {\n    white-space: nowrap;\n    margin: 1px;\n    background: lightskyblue;\n    color: var(--nuvolo-dark-blue);\n    border-radius: 11px;\n    padding: 3px 8px;\n}\n\n.tag-delete:hover {\n    color: red;\n}\n\n\n/* -------------------------\n---Question Preview Style---\n--------------------------*/\n.preview .community-info {\n    color: gray;\n    text-align: center;\n    padding: 5px;\n}\n\n.preview {\n    border-bottom: 1px solid #eff0f1;\n}\n\n.preview .community-info .value {\n    font-size: 18px;\n}\n\n.preview .community-info .info-container {\n    padding: 5px;\n    margin: 5px;\n    border-radius: 5px;\n}\n\n.preview .community-info .info-container.info-highlight {\n    color: #45A163;\n    border: 1px solid #45A163;\n}\n\n.preview .community-info .info-container.info-solid {\n    background-color: #45A163;\n    color: white;\n}\n\n.question-title {\n    color: #07C;\n}\n\n/* -------------------------\n--------Profile Style-------\n--------------------------*/\n.profile-tabs {\n    margin-top: 10px;\n}\n\n.profile-tabs .btn {\n    margin: 0px;\n    border: 0px;\n    border-radius: 3px 3px 0px 0px;\n    border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n.profile-tabs .active {\n    border-style: solid;\n    border-color: var(--nuvolo-light-blue);\n    border-width: 1px 1px 0px 1px;\n    box-shadow: none;\n}\n\n.profile-tabs .tab-spacer {\n    flex: 1;\n    border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n/* -------------------------\n--------Results Styling-------\n--------------------------*/\n.filter-tabs {\n    margin-top: 10px;\n}\n\n.filter-tabs .btn {\n    margin: 0px;\n    border: 0px;\n    border-radius: 3px 3px 0px 0px;\n    border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n.filter-tabs .active {\n    border-style: solid;\n    border-color: var(--nuvolo-light-blue);\n    border-width: 1px 1px 0px 1px;\n    box-shadow: none;\n}\n\n.filter-tabs .tab-spacer {\n    flex: 1;\n    border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n\n/*----------------------\n----Filter all Tags-----\n----------------------*/\n\n.tag-view {\n    display: grid;\n    grid-gap: 15px;\n    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));\n    justify-content: space-around;\n}\n\n.filter-tag-input {\n    border: 1px solid #ddd;\n    min-height: 30px;\n    margin: 15px;\n    width: 30%;\n    min-width: 250px;\n    padding-left: 10px;\n}\n\n\n.edit-button {\n    padding: 3px;\n    color: #989898;\n}\n\n.edit-button span:hover {\n    cursor: pointer;\n    color: deepskyblue;\n}\n\n\n/*--------------------------\n-----Admin Styling----\n----------------------------*/\n.sort {\n    color: lightgrey;\n}\n\n.sort:hover {\n    cursor: pointer;\n}\n\n.sort.active {\n    color: black;\n}\n\n.admin-tag-table .btn {\n    padding: 3px 8px;\n    border-radius: 5px;\n    min-height: 20px;\n    border: 1px solid #bdc0c4;\n}\n\n.admin-tag-table {\n    table-layout: fixed;\n    width: 100%;\n}\n\n.admin-tag-table tr {\n    height: 35px;\n    width: 100%;\n}\n\n.admin-tag-table .content-row {\n    border-top: 1px solid lightgrey;\n}\n\n.admin-tag-table td {\n    align-items: center;\n    display: flex;\n}\n\n.admin-tag-table .col-tag,\n.admin-tag-table .col-date,\n.admin-tag-table .col-questions {\n    max-width: 33%;\n}\n\n.admin-tag-table .col-actions {\n    min-width: 150px !important;\n}\n\n.admin-modal {\n    position: fixed;\n    z-index: 1;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%;\n    overflow: auto;\n    background-color: rgb(0, 0, 0);\n    background-color: rgba(0, 0, 0, 0.4);\n}\n\n.admin-modal-content {\n    background-color: #fefefe;\n    margin: 15% auto;\n    padding: 20px;\n    border: 1px solid #888;\n    width: 80%;\n}\n\n.rename-container {\n    margin-bottom: 10px;\n}\n\n.rename-container .modal-text div {\n    height: 30px;\n}\n\n.admin-webhook-table .col-channel,\n.admin-webhook-table .col-tags {\n    padding: 5px;\n}\n\n.admin-webhook-table .content-row {\n    border-top: 1px solid lightgrey;\n    height: 30px;\n}\n\n.admin-webhook-table .btn {\n    padding: 3px 8px;\n    border-radius: 5px;\n    min-height: 20px;\n    border: 1px solid #bdc0c4;\n}\n\n\n\n.webhook-edit {\n    display: flex;\n    flex-direction: column;\n}\n\n.url-input {\n    resize: none;\n    border: 1px solid #ccc;\n    ;\n    padding: 10px;\n}\n\n.admin-modal .input-wrapper {\n    margin-bottom: 15px;\n    display: inherit;\n    flex-direction: inherit;\n}\n\n.admin-modal .input-wrapper input {\n    padding: 10px;\n}\n\n.instructions .i-general {\n    color: #D32905;\n}\n\n.instructions {\n    margin-bottom: 20px;\n}\n\n.i-action {\n    color: #989898;\n}\n\n.i-action:hover {\n    color: deepskyblue;\n    cursor: pointer;\n}\n\n.col-tags a {\n    line-height: 25px;\n}", ""]);
+exports.push([module.i, ":root {\n  --nuvolo-light-blue: #0cb2da;\n  --nuvolo-dark-blue: #0c3561;\n}\n\nbody {\n  margin: 0px !important;\n  padding: 0px !important;\n}\n\nh6.announcement {\n  background: #2c3e50;\n  padding: 16px;\n  margin: 0;\n  color: #ecf0f1;\n  text-align: center;\n}\n\n/*----------------------\n---Overall Format CSS---\n----------------------*/\n\n.mobile {\n  display: none;\n}\n\n.centered {\n  justify-content: center;\n  align-items: center;\n}\n\n.center-width {\n  max-width: 800px;\n  min-width: 400px;\n  width: 100%;\n}\n\n.hide {\n  display: none !important;\n}\n\n.wrapper-horizontal {\n  display: flex;\n  flex-direction: row;\n}\n\n.wrapper-vertical {\n  display: flex;\n  flex-direction: column;\n}\n\n.ui-link {\n  color: inherit;\n  text-decoration: none !important;\n}\n\n.ui-link:hover {\n  color: inherit;\n  text-decoration: none !important;\n  cursor: pointer;\n}\n\n.post-wrapper {\n  margin-left: 5px;\n  margin-top: 3px;\n  width: 80px;\n  display: flex;\n  flex-direction: row;\n}\n\n.post-wrapper button {\n  flex: 1;\n}\n\n.user {\n  color: mediumblue;\n}\n\n.time {\n  color: grey;\n}\n\n/*MAIN PAGE CSS*/\n@media (max-width: 750px) {\n  .left-sidebar {\n    display: none;\n  }\n\n  .right-sidebar {\n    display: none;\n  }\n}\n\n@media (max-width: 950px) {\n  .left-sidbar {\n    max-width: 150px;\n  }\n\n  .right-sidebar {\n    display: none;\n  }\n\n  .small-hide {\n    display: none !important;\n  }\n}\n\n.left-sidebar {\n  width: calc(50% - 400px - 50px);\n  margin-right: 50px;\n  margin-left: 10px;\n  padding-top: 50px;\n  border-right: 1px solid var(--nuvolo-light-blue);\n  min-width: 150px;\n}\n\n.right-sidebar {\n  width: calc(50% - 400px);\n  min-width: 150px;\n}\n\n.left-sidebar .tab {\n  font-size: 15px;\n}\n\n.left-sidebar .tab.active {\n  background-color: var(--nuvolo-light-blue) !important;\n  font-weight: bold;\n}\n\n.left-sidebar .tab.active .tab-text {\n  color: white !important;\n}\n\n.left-sidebar .tab:hover {\n  background-color: whitesmoke;\n  cursor: pointer;\n}\n\n.left-sidebar .tab-text {\n  color: black;\n  text-decoration: none !important;\n  padding: 5px;\n}\n\n/*Banner CSS */\n.banner {\n  background: whitesmoke;\n  flex-wrap: nowrap;\n  width: 100%;\n  padding: 10px;\n}\n\n.search-container {\n  width: 100%;\n  margin: auto;\n}\n\n.search {\n  width: 100%;\n}\n\n.banner .menu-btn:hover {\n  cursor: pointer;\n}\n\n.banner .menu-btn {\n  position: relative;\n  color: var(--nuvolo-dark-blue);\n}\n\n.banner-btn {\n  white-space: nowrap;\n  background-color: inherit !important;\n  color: var(--nuvolo-dark-blue) !important;\n  padding: 7px;\n  border-radius: 3px;\n  border: 1px solid whitesmoke !important;\n  margin-left: 10px;\n  margin-right: 10px;\n  font-size: 14px;\n}\n\n.banner-btn:hover {\n  border: 1px solid var(--nuvolo-light-blue) !important;\n  box-shadow: none !important;\n  user-select: none;\n}\n\n.profile-btn {\n  border-radius: 20%;\n  height: 30px;\n  min-width: 30px;\n  border: 1px solid lightgrey !important;\n  text-align: center;\n  line-height: 28px;\n  padding: 0px;\n  background-color: white !important;\n}\n\n.notifications-num {\n  position: absolute;\n  right: -7px;\n  top: -6px;\n  width: 14px;\n  height: 14px;\n  background-color: red;\n  border-radius: 50%;\n  font-size: 10px;\n  font-weight: 400;\n  text-align: center;\n  color: white;\n  font-family: Arial, Helvetica, sans-serif;\n  font-weight: 900;\n  line-height: 1.3;\n  user-select: none;\n}\n\n.notifications-container {\n  position: absolute;\n  top: 30px;\n  right: 0px;\n  background-color: var(--nuvolo-light-blue);\n  border: 1px solid var(--nuvolo-dark-blue);\n  font-family: SourceSansPro, \"Helvetica Neue\", Arial;\n  font-size: 13px;\n  width: 400px;\n  min-height: 300px;\n  max-height: 500px;\n  overflow: auto;\n  z-index: 100;\n  border-radius: 5px;\n}\n\n.ko-notification {\n  padding: 8px;\n  background-color: whitesmoke;\n  min-height: 50px;\n  border-bottom: 1px solid var(--nuvolo-dark-blue);\n  position: relative;\n  user-select: none;\n  color: black !important;\n  font-family: Gilroy, sans-serif;\n}\n\n.ko-notification.unread {\n  background-color: var(--nuvolo-light-blue);\n  color: white !important;\n}\n\n.ko-notification .delete {\n  display: none;\n  position: absolute;\n  top: 2px;\n  right: 2px;\n  color: grey;\n}\n\n.ko-notification:hover .delete {\n  display: block;\n}\n\n.ko-notification .delete:hover {\n  cursor: pointer !important;\n  color: black !important;\n}\n\n.notification-title {\n  font-weight: 600;\n}\n\n.notification-content {\n  width: 100%;\n  max-width: 300px;\n  white-space: normal;\n  padding-top: 3px;\n  padding-bottom: 3px;\n  font-weight: 100;\n}\n\n.notification-time {\n  text-align: right;\n  font-weight: 100;\n  color: var(--nuvolo-dark-blue);\n  font-family: SourceSansPro, \"Helvetica Neue\", Arial;\n}\n\n/*------------------\n---Tag Card CSS---\n------------------*/\n.topic-card {\n  border-bottom: 4px dotted var(--nuvolo-light-blue);\n  margin: 15px;\n  padding: 10px;\n}\n\n#topic-overview {\n  display: grid;\n  grid-gap: 15px;\n  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));\n  justify-content: space-around;\n}\n\n/*------------------ \n---Search Box CSS---\n------------------*/\n.search-container {\n  width: 100%;\n  margin-top: 10px;\n  margin-bottom: 10px;\n  min-width: 200px;\n}\n\n.search-input {\n  flex-grow: 1;\n  height: 30px;\n  padding: 5px;\n}\n\n/*--------------------- \n---Question Page CSS---\n---------------------*/\n\n/* Sidebar upvote/downvote css */\n.vote-container {\n  margin: 10px;\n}\n\n.arrow {\n  color: lightgrey;\n  text-align: center;\n}\n\n.vote-clickable:hover {\n  color: lightgreen;\n  cursor: pointer;\n}\n\n.vote-active {\n  color: var(--nuvolo-light-blue);\n}\n\n.star {\n  margin-top: 10px;\n  text-align: center;\n  font-size: 25px;\n  color: lightgrey;\n}\n\n.star.active {\n  color: #fcdc3b;\n}\n\n.best-answer {\n  margin-top: 10px;\n  color: #45a163;\n}\n\n.best-answer .select-answer {\n  color: gainsboro;\n}\n\n/*Other stuff on question page */\n.answers-container {\n  border-top: 1px solid lightgrey;\n}\n\n.question-container,\n.answer-container {\n  margin: 20px;\n  width: 100%;\n}\n\ncode {\n  background-color: #eff0f1;\n}\n\n.question-container img {\n  max-width: 100%;\n}\n\n.info {\n  text-align: right;\n}\n\n.internalize {\n  color: var(--nuvolo-light-blue);\n  margin-right: 5px;\n}\n.internalize:hover {\n  color: var(--nuvolo-dark-blue);\n  cursor: pointer;\n}\n\n/* Comment CSS - container, color, author info */\n.comment-input {\n  resize: none;\n  margin: 5px;\n  flex: 1;\n  padding: 5px;\n  height: 200px !important;\n  border-radius: 4px;\n  border-color: #ccc;\n}\n\n.comments-actions {\n  padding: 5px;\n}\n\n.comments-actions div {\n  color: #989898;\n  display: inline;\n}\n\n.comments-actions div:hover {\n  color: deepskyblue;\n  cursor: pointer;\n}\n\n.comment {\n  padding: 3px 15px 3px 30px;\n  border-top: 1px solid lightgray;\n  display: block;\n}\n\n.comment p {\n  display: inline;\n}\n\n.comment-container {\n  margin-top: 20px;\n}\n\n/*------------------------\n------NEW QUESTION CSS----\n------------------------*/\n.tags-container.tag-input,\n.title-input {\n  border: 1px solid #ddd;\n  min-height: 40px;\n}\n\n.title-input {\n  padding: 4px;\n  width: 100%;\n}\n\n.tags-container {\n  padding: 0px 4px;\n  flex-wrap: wrap;\n  align-items: center;\n}\n\n.tags-input {\n  flex: 1;\n  border: none;\n  outline: none;\n  margin-left: 10px;\n  height: 35px;\n}\n\n.internal-input {\n  display: flex;\n  align-items: center;\n}\n\n/* ----------------------\n-Question, Answer editor-\n------------------------*/\n.editor-container {\n  display: block;\n}\n\n.editor-container .CodeMirror,\n.editor-container .CodeMirror-scroll {\n  min-height: 250px;\n  max-height: 250px;\n}\n\n.question-preview {\n  border: 1px solid #ddd;\n}\n\n.input-file {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1;\n}\n\n/* ----------------------\n---Review New Question---\n------------------------*/\n.post-review {\n  position: fixed;\n  z-index: 2;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n  background-color: rgb(0, 0, 0);\n  background-color: rgba(0, 0, 0, 0.4);\n}\n\n.review-content {\n  background-color: #fefefe;\n  margin: auto;\n  padding: 20px;\n  border: 1px solid #888;\n  width: 80%;\n}\n\n.question-preview .preview {\n  flex: 1;\n  border: 1px solid black;\n  border-radius: 5px;\n  padding: 10px;\n  min-height: 100px;\n}\n\n/* -------------------------\n-------Blue Tag Style-------\n--------------------------*/\n.ko-tag {\n  white-space: nowrap;\n  margin: 1px;\n  background: lightskyblue;\n  color: var(--nuvolo-dark-blue);\n  border-radius: 11px;\n  padding: 3px 8px;\n}\n\n.tag-delete:hover {\n  color: red;\n}\n\n/* -------------------------\n---Question Preview Style---\n--------------------------*/\n.preview .community-info {\n  color: gray;\n  text-align: center;\n  padding: 5px;\n}\n\n.preview {\n  border-bottom: 1px solid #eff0f1;\n}\n\n.preview .community-info .value {\n  font-size: 18px;\n}\n\n.preview .community-info .info-container {\n  padding: 5px;\n  margin: 5px;\n  border-radius: 5px;\n}\n\n.preview .community-info .info-container.info-highlight {\n  color: #45a163;\n  border: 1px solid #45a163;\n}\n\n.preview .community-info .info-container.info-solid {\n  background-color: #45a163;\n  color: white;\n}\n\n.question-title {\n  color: #07c;\n}\n\n/* -------------------------\n--------Profile Style-------\n--------------------------*/\n.profile-tabs {\n  margin-top: 10px;\n}\n\n.profile-tabs .btn {\n  margin: 0px;\n  border: 0px;\n  border-radius: 3px 3px 0px 0px;\n  border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n.profile-tabs .active {\n  border-style: solid;\n  border-color: var(--nuvolo-light-blue);\n  border-width: 1px 1px 0px 1px;\n  box-shadow: none;\n}\n\n.profile-tabs .tab-spacer {\n  flex: 1;\n  border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n/* -------------------------\n--------Results Styling-------\n--------------------------*/\n.filter-tabs {\n  margin-top: 10px;\n}\n\n.filter-tabs .btn {\n  margin: 0px;\n  border: 0px;\n  border-radius: 3px 3px 0px 0px;\n  border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n.filter-tabs .active {\n  border-style: solid;\n  border-color: var(--nuvolo-light-blue);\n  border-width: 1px 1px 0px 1px;\n  box-shadow: none;\n}\n\n.filter-tabs .tab-spacer {\n  flex: 1;\n  border-bottom: 1px solid var(--nuvolo-light-blue);\n}\n\n/*----------------------\n----Filter all Tags-----\n----------------------*/\n\n.tag-view {\n  display: grid;\n  grid-gap: 15px;\n  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));\n  justify-content: space-around;\n}\n\n.filter-tag-input {\n  border: 1px solid #ddd;\n  min-height: 30px;\n  margin: 15px;\n  width: 30%;\n  min-width: 250px;\n  padding-left: 10px;\n}\n\n.edit-button {\n  padding: 3px;\n  color: #989898;\n}\n\n.edit-button span:hover {\n  cursor: pointer;\n  color: deepskyblue;\n}\n\n/*--------------------------\n-----Admin Styling----\n----------------------------*/\n.sort {\n  color: lightgrey;\n}\n\n.sort:hover {\n  cursor: pointer;\n}\n\n.sort.active {\n  color: black;\n}\n\n.admin-tag-table .btn {\n  padding: 3px 8px;\n  border-radius: 5px;\n  min-height: 20px;\n  border: 1px solid #bdc0c4;\n}\n\n.admin-tag-table {\n  table-layout: fixed;\n  width: 100%;\n}\n\n.admin-tag-table tr {\n  height: 35px;\n  width: 100%;\n}\n\n.admin-tag-table .content-row {\n  border-top: 1px solid lightgrey;\n}\n\n.admin-tag-table td {\n  align-items: center;\n  display: flex;\n}\n\n.admin-tag-table .col-tag,\n.admin-tag-table .col-date,\n.admin-tag-table .col-questions {\n  max-width: 33%;\n}\n\n.admin-tag-table .col-actions {\n  min-width: 150px !important;\n}\n\n.admin-modal {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n  background-color: rgb(0, 0, 0);\n  background-color: rgba(0, 0, 0, 0.4);\n}\n\n.admin-modal-content {\n  background-color: #fefefe;\n  margin: 15% auto;\n  padding: 20px;\n  border: 1px solid #888;\n  width: 80%;\n}\n\n.rename-container {\n  margin-bottom: 10px;\n}\n\n.rename-container .modal-text div {\n  height: 30px;\n}\n\n.admin-webhook-table .col-channel,\n.admin-webhook-table .col-tags {\n  padding: 5px;\n}\n\n.admin-webhook-table .content-row {\n  border-top: 1px solid lightgrey;\n  height: 30px;\n}\n\n.admin-webhook-table .btn {\n  padding: 3px 8px;\n  border-radius: 5px;\n  min-height: 20px;\n  border: 1px solid #bdc0c4;\n}\n\n.webhook-edit {\n  display: flex;\n  flex-direction: column;\n}\n\n.url-input {\n  resize: none;\n  border: 1px solid #ccc;\n  padding: 10px;\n}\n\n.admin-modal .input-wrapper {\n  margin-bottom: 15px;\n  display: inherit;\n  flex-direction: inherit;\n}\n\n.admin-modal .input-wrapper input {\n  padding: 10px;\n}\n\n.instructions .i-general {\n  color: #d32905;\n}\n\n.instructions {\n  margin-bottom: 20px;\n}\n\n.i-action {\n  color: #989898;\n}\n\n.i-action:hover {\n  color: deepskyblue;\n  cursor: pointer;\n}\n\n.col-tags a {\n  line-height: 25px;\n}\n", ""]);
 
 
 /***/ }),
@@ -2942,7 +3006,7 @@ if (content.locals) {
 
 exports = module.exports = __webpack_require__(61)(false);
 // Module
-exports.push([module.i, "@media screen and (max-width: 500px) {\n    \n    .mobile-hide{\n        display:none !important;\n    }\n    .banner{\n        width:100%;\n        overflow: auto;\n        display:flex;\n        height:60px;\n    }\n    .search-container {\nmin-width:auto;\n    }\n    .search-button, .menu{\n        display:block;\n        width:auto;\n    }\n\n    .search {\n        display:block;\n    }\n\n    .banner .side-button {\n        width: 150px;\n        white-space: nowrap;\n    }\n\n    .mobile-menu{\n        position: absolute;\n        top:55px;\n        z-index: 50;\n        width:100%;\n        background:whitesmoke;\n        padding-top:5px;\n        border-bottom:1px solid grey;\n    }\n    .mobile-menu-item{\n        height:50px;\n        border-top:1px solid grey;\n        padding:5px;\n        text-align: center;\n        font-size:20px;\n    }\n    .mainbar{\n        min-width:200px;\n        padding-right:10px;\n        padding-left:10px;\n    }\n\n    #topic-overview{\n        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));\n        grid-gap:5px;\n    }\n}", ""]);
+exports.push([module.i, "@media screen and (max-width: 500px) {\n  .mobile-hide {\n    display: none !important;\n  }\n  .banner {\n    width: 100%;\n    overflow: auto;\n    display: flex;\n    height: 60px;\n  }\n  .search-container {\n    min-width: auto;\n  }\n  .search-button,\n  .menu {\n    display: block;\n    width: auto;\n  }\n\n  .search {\n    display: block;\n  }\n\n  .banner .side-button {\n    width: 150px;\n    white-space: nowrap;\n  }\n\n  .mobile-menu {\n    position: absolute;\n    top: 55px;\n    z-index: 50;\n    width: 100%;\n    background: whitesmoke;\n    padding-top: 5px;\n    border-bottom: 1px solid grey;\n  }\n  .mobile-menu-item {\n    height: 50px;\n    border-top: 1px solid grey;\n    padding: 5px;\n    text-align: center;\n    font-size: 20px;\n  }\n  .mainbar {\n    min-width: 200px;\n    padding-right: 10px;\n    padding-left: 10px;\n  }\n\n  #topic-overview {\n    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));\n    grid-gap: 5px;\n  }\n}\n", ""]);
 
 
 /***/ })

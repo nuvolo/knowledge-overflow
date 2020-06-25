@@ -1,18 +1,21 @@
 <div>
-    <h3 style='color:var(--nuvolo-dark-blue)'>Common Tags</h3>
-    <div id='topic-overview'>
-        <div class='topic-card' ng-repeat='tag in vm.allTags'>
-            <a ui-sref='tag({tag:"{{tag.name}}"})' class='ui-link'>
-                <div class='wrapper-horizontal'>
-                    <div class='ko-tag'>{{tag.name}}</div>
-                </div>
-                <span>Questions: <span>{{tag.count}}</span></span>
-            </a>
+  <h3 style="color: var(--nuvolo-dark-blue);">Common Tags</h3>
+  <div id="topic-overview">
+    <div class="topic-card" ng-repeat="tag in vm.allTags">
+      <a ui-sref='tag({tag:"{{tag.name}}"})' class="ui-link">
+        <div class="wrapper-horizontal">
+          <div class="ko-tag">{{tag.name}}</div>
         </div>
+        <span>Questions: <span>{{tag.count}}</span></span>
+      </a>
     </div>
-    <h3 style='color:var(--nuvolo-dark-blue)'>Recent Questions</h3>
-    <div class='wrapper-vertical'>
-        <questionpreview ng-repeat='preview in vm.recents' class='preview'></questionpreview>
-	</div>
-	<button style='margin-top:5px;' ui-sref='questions'>See More</button>
+  </div>
+  <h3 style="color: var(--nuvolo-dark-blue);">Recent Questions</h3>
+  <div class="wrapper-vertical">
+    <questionpreview
+      ng-repeat="preview in vm.recents"
+      class="preview"
+    ></questionpreview>
+  </div>
+  <button style="margin-top: 5px;" ui-sref="questions">See More</button>
 </div>

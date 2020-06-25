@@ -1,28 +1,28 @@
-<div class='wrapper-horizontal' style='min-height:100%'>
-    <div class='left-sidebar'>
-        <div ui-sref-active='active' class='tab'>
-            <a ui-sref='home' class='ui-link'>
-                <div class='tab-text'>Home</div>
-            </a>
-        </div>
-        <div ui-sref-active='active' class='tab'>
-            <a ui-sref='questions' class='ui-link'>
-                <div class='tab-text'>Questions</div>
-            </a>
-        </div>
-        <div ui-sref-active='active' class='tab'>
-            <a ui-sref='tags' class='ui-link'>
-                <div class='tab-text'>Tags</div>
-            </a>
-        </div>
-        <div ui-sref-active='active' class='tab' ng-class='{"hide": !isAdmin}'>
-            <a ui-sref='admin' class='ui-link'>
-                <div class='tab-text'>Admin</div>
-            </a>
-        </div>
+<div class="wrapper-horizontal" style="min-height: 100%;">
+  <div class="left-sidebar">
+    <div ui-sref-active="active" class="tab">
+      <a ui-sref="home" class="ui-link">
+        <div class="tab-text">Home</div>
+      </a>
     </div>
-    <div class='center-width mainbar'>
-        <ui-view></ui-view>
+    <div ui-sref-active="active" class="tab">
+      <a ui-sref="questions" class="ui-link">
+        <div class="tab-text">Questions</div>
+      </a>
     </div>
-    <div class='right-sidebar'></div>
+    <div ui-sref-active="active" class="tab">
+      <a ui-sref="tags" class="ui-link">
+        <div class="tab-text">Tags</div>
+      </a>
+    </div>
+    <div ui-sref-active="active" class="tab" ng-class='{"hide": !isAdmin}'>
+      <a ui-sref="admin" class="ui-link">
+        <div class="tab-text">Admin</div>
+      </a>
+    </div>
+  </div>
+  <div class="center-width mainbar">
+    <ui-view></ui-view>
+  </div>
+  <div class="right-sidebar"></div>
 </div>

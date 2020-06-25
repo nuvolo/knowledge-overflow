@@ -1,27 +1,63 @@
-<div class='filter-tabs wrapper-horizontal'>
-    <div class='tab-spacer'></div>
-    <button ui-sref='{filter:"relevance"}' class='btn'
-        ng-class='{active: vm.filter == "relevance", "hide":vm.method!="search"}'>Relevance</button>
-    <button ui-sref='{filter:"newest"}' class='btn' ng-class='{active: vm.filter == "newest"}'>Newest</button>
-    <button ui-sref='{filter:"unanswered"}' class='btn'
-        ng-class='{active: vm.filter == "unanswered", "hide":vm.type=="answer"}'>Unanswered</button>
-    <button ui-sref='{filter:"top"}' class='btn' ng-class='{active: vm.filter == "top"}'>Top</button>
-    <div class='tab-spacer' style='max-width:20px'></div>
+<div class="filter-tabs wrapper-horizontal">
+  <div class="tab-spacer"></div>
+  <button
+    ui-sref='{filter:"relevance"}'
+    class="btn"
+    ng-class='{active: vm.filter == "relevance", "hide":vm.method!="search"}'
+  >
+    Relevance
+  </button>
+  <button
+    ui-sref='{filter:"newest"}'
+    class="btn"
+    ng-class='{active: vm.filter == "newest"}'
+  >
+    Newest
+  </button>
+  <button
+    ui-sref='{filter:"unanswered"}'
+    class="btn"
+    ng-class='{active: vm.filter == "unanswered", "hide":vm.type=="answer"}'
+  >
+    Unanswered
+  </button>
+  <button
+    ui-sref='{filter:"top"}'
+    class="btn"
+    ng-class='{active: vm.filter == "top"}'
+  >
+    Top
+  </button>
+  <div class="tab-spacer" style="max-width: 20px;"></div>
 </div>
 <div>
-    <div>Found {{vm.results}} {{vm.type}}s</div>
-    <div ng-class='{"hide":vm.results==0}'>Page {{vm.page}} of {{vm.totalPages}}</div>
+  <div>Found {{vm.results}} {{vm.type}}s</div>
+  <div ng-class='{"hide":vm.results==0}'>
+    Page {{vm.page}} of {{vm.totalPages}}
+  </div>
 </div>
-<div class='wrapper-vertical'>
-    <div ng-class='{"hide":vm.type!="question"}' class='wrapper-vertical'>
-        <questionpreview ng-repeat='preview in vm.previews' class='preview'></questionpreview>
-    </div>
-    <div ng-class='{"hide":vm.type!="answer"}' class='wrapper-vertical'>
-        <answerpreview ng-repeat='preview in vm.previews' class='preview'></answerpreview>
-    </div>
+<div class="wrapper-vertical">
+  <div ng-class='{"hide":vm.type!="question"}' class="wrapper-vertical">
+    <questionpreview
+      ng-repeat="preview in vm.previews"
+      class="preview"
+    ></questionpreview>
+  </div>
+  <div ng-class='{"hide":vm.type!="answer"}' class="wrapper-vertical">
+    <answerpreview
+      ng-repeat="preview in vm.previews"
+      class="preview"
+    ></answerpreview>
+  </div>
 </div>
-<div class='wrapper-horizontal' style='margin-top:10px' ng-class='{"hide":vm.results==0}'>
-    <button ng-click='vm.lastPage()'>Last</button>
-    <div style='flex:1;'></div>
-    <button ng-click='vm.nextPage()' ng-disabled='vm.page == vm.totalPages'>Next</button>
+<div
+  class="wrapper-horizontal"
+  style="margin-top: 10px;"
+  ng-class='{"hide":vm.results==0}'
+>
+  <button ng-click="vm.lastPage()">Last</button>
+  <div style="flex: 1;"></div>
+  <button ng-click="vm.nextPage()" ng-disabled="vm.page == vm.totalPages">
+    Next
+  </button>
 </div>
